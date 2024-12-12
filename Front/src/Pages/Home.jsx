@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from '../logo.png'; // Ensure this path is correct
-import backgroundImage from '../bcg.jpg'; // Make sure this path is correct.
+import logo from '../logo.png'; 
+import Carousel from '../components/carousel';
 
 
 const Home = () => {
@@ -28,15 +28,10 @@ const Home = () => {
         </div>
       </nav>
 
-      {/* Main Content */}
-      <header className="flex-grow bg-cover bg-center min-h-[90vh] flex justify-center items-center" style={{ backgroundImage: `url(${backgroundImage})` }}
-      >
-        <div className="h-90vh flex flex-col justify-center items-center text-white text-center">
-          <h1 className="text-4xl font-bold">Welcome to CampusLink!</h1>
-          <p className="text-xl mt-4">The official campus community platform at University Of Ruhuna</p>
-          <button className="mt-6 bg-blue-900 hover:bg-blue-800 text-white py-2 px-6 rounded-lg text-lg">Sign In</button>
-        </div>
-      </header>
+      {/* Carousel Section */}
+      <section className="flex-grow">
+        <Carousel />
+      </section>
 
       {/* Footer */}
       <footer className="bg-blue-900 text-white py-0 mt-auto ">
