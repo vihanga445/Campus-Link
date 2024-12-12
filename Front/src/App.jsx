@@ -1,6 +1,14 @@
-import React from 'react'
+import React from 'react';
+import Home from './Pages/Home'; // Import your Home component
 
-export default function App() {
+
+const App = () => {
   return (
-<div class="bg-blue-500 text-white p-4">Hello, Tailwind!</div>  )
+    <div className="min-h-screen bg-gray-100"> {/* Set a light background color */}
+      {/* Render the Home component */}
+      <Home />
+    </div>
+  );
 }
+
+export default App;
