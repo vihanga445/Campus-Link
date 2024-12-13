@@ -18,10 +18,10 @@ const Home = () => {
           </div>
 
           <ul className="flex space-x-6 text-white">
-            <li><a href="#home" className="hover:text-gray-300 underline">Home</a></li>
-            <li><a href="#about" className="hover:text-gray-300 underline">About Us</a></li>
-            <li><a href="#contact" className="hover:text-gray-300 underline">Contact Us</a></li>
-            <li><a href="#signup" className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-bold shadow-lg"> Sign Up </a>
+            <li><a href="/" className="hover:text-gray-300 underline">Home</a></li>
+            <li><a href="/about" className="hover:text-gray-300 underline">About Us</a></li>
+            <li><a href="/contact" className="hover:text-gray-300 underline">Contact Us</a></li>
+            <li><a href="/sign-up" className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-bold shadow-lg"> Sign Up </a>
 </li>
 
           </ul>
