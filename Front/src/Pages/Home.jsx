@@ -1,32 +1,13 @@
 import React from 'react';
-import logo from '../logo.png'; 
 import Carousel from '../components/carousel';
 import UpcomingEventsCarousel from '../components/UpcomingEventsCarousel';
+import Header from '../components/Header';
 
 const Home = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navigation Bar */}
-      <nav className="bg-blue-900 py-4 shadow-md sticky top-0 z-50">
-        <div className="container mx-auto flex justify-between items-center">
-          {/* Logo */}
-          <div className="flex items-center">
-            <a href="#home" className="flex items-center">
-              <img src={logo} alt="University of Ruhuna Logo" className="w-24 h-12" />
-              <span className="ml-2 text-white text-2xl font-bold">CampusLink</span>
-            </a>
-          </div>
-
-          <ul className="flex space-x-6 text-white">
-            <li><a href="/" className="hover:text-gray-300 underline">Home</a></li>
-            <li><a href="/about" className="hover:text-gray-300 underline">About Us</a></li>
-            <li><a href="/contact" className="hover:text-gray-300 underline">Contact Us</a></li>
-            <li><a href="/sign-up" className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-bold shadow-lg"> Sign Up </a>
-</li>
-
-          </ul>
-        </div>
-      </nav>
+   
 
       {/* Carousel Section */}
       <section className="flex-grow">
