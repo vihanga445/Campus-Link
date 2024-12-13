@@ -63,34 +63,17 @@ const Carousel = () => {
               key={index}
               className="w-full h-screen flex-shrink-0 flex items-center justify-center bg-cover bg-center"
               style={{ backgroundImage: `url(${slide.bgImage})` }}
+              aria-label={slide.text}
             >
-              <div className="text-center text-white bg-opacity-20">
-                <h1 className="text-6xl font-bold">{slide.text}</h1>
-                {index === 0 && (
-                  <p className="mt-2 text-2xl font-light-bold">
-                    Connect with your university like never before.
-                  </p>
-                )}
-                {index === 1 && (
-                 <p className="mt-2 text-2xl font-light-bold">
-                     See what is happening around campus
-                  </p>
-                )}
-                {index === 2 && (
-                 <p className="mt-2 text-2xl font-light-bold">
-                     Find your tribe and grow together
-                  </p>
-                )}
-                {index === 3 && (
-                 <p className="mt-2 text-2xl font-light-bold">
-                     Get the latest news and updates here.
-                  </p>
-                )}
-                {index === 4 && (
-                 <p className="mt-2 text-2xl font-light-bold">
-                     Lost something? We're here to help!
-                  </p>
-                )}
+              <div className="text-center text-white bg-opacity-20 p-4">
+                <h1 className="text-4xl md:text-6xl font-bold">{slide.text}</h1>
+                <p className="mt-2 text-lg md:text-2xl font-light-bold">
+                  {index === 0 && "Connect with your university like never before."}
+                  {index === 1 && "See what is happening around campus."}
+                  {index === 2 && "Find your tribe and grow together."}
+                  {index === 3 && "Get the latest news and updates here."}
+                  {index === 4 && "Lost something? We're here to help!"}
+                </p>
                 <button className="mt-6 bg-blue-900 hover:bg-blue-800 text-white py-2 px-6 rounded-lg text-lg">
                   {slide.button}
                 </button>
@@ -102,22 +85,37 @@ const Carousel = () => {
 
       {/* Left and Right Buttons */}
       <button
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black text-white p-2 rounded-full opacity-50 hover:opacity-100"
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black text-white w-12 h-12 text-3xl rounded-md opacity-75 hover:opacity-100 flex items-center justify-center"
         onClick={prevSlide}
+        aria-label="Previous slide"
       >
         &#8249;
       </button>
       <button
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black text-white p-2 rounded-full opacity-50 hover:opacity-100"
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black text-white w-12 h-12 text-3xl rounded-md opacity-75 hover:opacity-100 flex items-center justify-center"
         onClick={nextSlide}
+        aria-label="Next slide"
       >
         &#8250;
       </button>
 
-      {/* Down Arrow to Indicate Scroll */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-white">
-        <a href="#content" className="text-3xl">
-          &#8595;
+      {/* Smart Down Arrow */}
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+        <a href="#content" aria-label="Scroll down">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-10 w-10"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
         </a>
       </div>
     </div>

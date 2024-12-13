@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from '../logo.png'; 
 import Carousel from '../components/carousel';
-
+import UpcomingEventsCarousel from '../components/UpcomingEventsCarousel';
 
 const Home = () => {
   return (
@@ -31,6 +31,7 @@ const Home = () => {
       {/* Carousel Section */}
       <section className="flex-grow">
         <Carousel />
+        <UpcomingEventsCarousel/>
       </section>
 
       {/* Footer */}
