@@ -2,6 +2,8 @@ import React from 'react';
 import Carousel from '../components/carousel';
 import UpcomingEventsCarousel from '../components/UpcomingEventsCarousel';
 import ClubsAndSocietiesCarousel from '../components/ClubsAndSocietiesCarousel';
+import AnnouncementsCarousel from '../components/AnnouncementsCarousel';
+import LostAndFound from '../components/LostAndFound';
 
 const Home = () => {
   return (
@@ -14,6 +16,8 @@ const Home = () => {
         <Carousel />
         <UpcomingEventsCarousel/>
         <ClubsAndSocietiesCarousel/>
+        <AnnouncementsCarousel/>
+        <LostAndFound/>
       </section>
 
       {/* Footer */}
