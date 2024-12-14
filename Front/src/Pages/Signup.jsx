@@ -1,6 +1,7 @@
 import { Button, Label, TextInput , Alert, Spinner} from 'flowbite-react';
 import { useState } from 'react';
 import { Link , useNavigate} from 'react-router-dom';
+import OAuth from '../components/OAuth';
 
 
 export default function Signup() {
@@ -96,6 +97,7 @@ export default function Signup() {
             ): 'Sign Up'}
           
           </Button>
+          <OAuth />
         </form>
         {/* Footer */}
         <div className="text-center text-sm text-gray-500 mt-5">
