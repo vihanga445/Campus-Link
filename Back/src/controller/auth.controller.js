@@ -21,6 +21,7 @@ export const signup = async (req, res,next) => {
     try{
         await user.save();
         res.status(201).json("user created successfully");
+        
     }
     catch(error){   
        next(error);            
@@ -30,19 +31,41 @@ export const signup = async (req, res,next) => {
 export const signin = async (req, res,next) => {
      
     const {email,password} = req.body;
+
+    if (
+        
+        !email ||
+        !password ||
+        email === '' ||
+        password === ''
+      ) {
+       return next(errorHandler(400, 'All fields are required'));
+      
+    }
+    
+    try{
     const validUser = await User.findOne({email});
+    
 
     if(!validUser){
-        return res.status(404).json("user not found");
+        return next(errorHandler(401,"user not found"));
     }
     const validPassword =  bcryptjs.compareSync(password,validUser.password);
 
     if(!validPassword){
-        return res.status(401).json("invalid credentials");
-    }
+        return next(errorHandler(401,"invalid password"));}
 
-    const token = jwt.sign({id:validUser._id},"secretkey",{expiresIn:"1h"});
+    const token = jwt.sign({id:validUser._id},"secretkey");
   
+    const { password: pass, ...rest } = validUser._doc;
 
-    res.status(200).json({token});
+    res
+    .status(200)
+    .cookie('access_token', token, {
+      httpOnly: true,
+    })
+    .json(rest);}
+catch(error){
+    next(error);
+}
 }

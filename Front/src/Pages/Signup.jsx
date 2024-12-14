@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link , useNavigate} from 'react-router-dom';
 
 
-export default function SignUp() {
+export default function Signup() {
   const [formData , setFormData] = useState({})
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
