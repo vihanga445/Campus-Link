@@ -1,7 +1,7 @@
 import React from 'react';
 import Carousel from '../components/carousel';
 import UpcomingEventsCarousel from '../components/UpcomingEventsCarousel';
-import Header from '../components/Header';
+import ClubsAndSocietiesCarousel from '../components/ClubsAndSocietiesCarousel';
 
 const Home = () => {
   return (
@@ -13,6 +13,7 @@ const Home = () => {
       <section className="flex-grow">
         <Carousel />
         <UpcomingEventsCarousel/>
+        <ClubsAndSocietiesCarousel/>
       </section>
 
       {/* Footer */}
