@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Avatar,Button,Dropdown,Navbar,TextInput } from 'flowbite-react';
+import { Link , useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import logo from '../logo.png';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const {currentUser} = useSelector(state=>state.user);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -38,12 +41,33 @@ export default function Header() {
           <li><Link to="/about" className="text-white hover:text-gray-300 text-lg underline">About Us</Link></li>
           <li><Link to="/contact" className="text-white hover:text-gray-300 text-lg underline">Contact Us</Link></li>
           <li>
-            <Link
+           {currentUser ?(
+            <Dropdown
+            arrowIcon={false}
+            inline
+            label={<Avatar alt='user' img={currentUser.profilePicture} rounded />}
+            >
+            <Dropdown.Header>
+            <span className='block text-sm'>@{currentUser.username}</span>
+            <span className='block text-sm font-medium truncate'>{currentUser.email}</span>
+            </Dropdown.Header>
+            <Link to={'/dashboard?tab=profile'}>'
+            <Dropdown.Item>Profile</Dropdown.Item>
+            </Link>
+            <Dropdown.Divider />
+            <Dropdown.Item>Sign out</Dropdown.Item>
+            </Dropdown>
+            ):(<Link
               to="/sign-up"
               className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-bold shadow-lg text-lg"
             >
               Sign Up
             </Link>
+
+           )}
+
+
+            
           </li>
         </ul>
       </div>
