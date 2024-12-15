@@ -4,7 +4,7 @@ import { BrowserRouter, Route,Routes } from 'react-router-dom'; // Import the Ro
 import About from './Pages/AboutUs';
 import Signin from './Pages/Signin';
 import Signup from './Pages/Signup';
-import Conatact from './Pages/Contact';
+import Conatact from './Pages/ContactUs';
 import Header from './components/Header';
 import Dashboard from './Pages/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
