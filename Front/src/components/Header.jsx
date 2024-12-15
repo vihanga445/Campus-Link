@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Avatar,Button,Dropdown,Navbar,TextInput } from 'flowbite-react';
-import { Link , useLocation } from 'react-router-dom';
+import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import logo from '../logo.png';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const {currentUser} = useSelector(state=>state.user);
+  const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -33,41 +34,52 @@ export default function Header() {
 
         {/* Navigation Links */}
         <ul
-          className={`fixed md:static top-0 left-0 w-full md:w-auto bg-blue-900 md:bg-transparent h-screen md:h-auto flex flex-col md:flex-row items-center justify-center space-y-6 md:space-y-0 md:space-x-6 transition-transform transform md:translate-x-0 ${
-            menuOpen ? 'translate-x-0' : '-translate-x-full'
-          } md:relative z-40`}
+          className={`md:flex md:items-center space-y-6 md:space-y-0 md:space-x-6 ${
+            menuOpen ? 'block' : 'hidden'
+          } md:block`}
         >
-          <li><Link to="/" className="text-white hover:text-gray-300 text-lg underline">Home</Link></li>
-          <li><Link to="/about" className="text-white hover:text-gray-300 text-lg underline">About Us</Link></li>
-          <li><Link to="/contact" className="text-white hover:text-gray-300 text-lg underline">Contact Us</Link></li>
           <li>
-           {currentUser ?(
-            <Dropdown
-            arrowIcon={false}
-            inline
-            label={<Avatar alt='user' img={currentUser.profilePicture} rounded />}
-            >
-            <Dropdown.Header>
-            <span className='block text-sm'>@{currentUser.username}</span>
-            <span className='block text-sm font-medium truncate'>{currentUser.email}</span>
-            </Dropdown.Header>
-            <Link to={'/dashboard?tab=profile'}>'
-            <Dropdown.Item>Profile</Dropdown.Item>
+            <Link to="/" className="text-white hover:text-gray-300 text-lg underline">
+              Home
             </Link>
-            <Dropdown.Divider />
-            <Dropdown.Item>Sign out</Dropdown.Item>
-            </Dropdown>
-            ):(<Link
-              to="/sign-up"
-              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-bold shadow-lg text-lg"
-            >
-              Sign Up
+          </li>
+          <li>
+            <Link to="/about" className="text-white hover:text-gray-300 text-lg underline">
+              About Us
             </Link>
-
-           )}
-
-
-            
+          </li>
+          <li>
+            <Link to="/contact" className="text-white hover:text-gray-300 text-lg underline">
+              Contact Us
+            </Link>
+          </li>
+          <li>
+            {currentUser ? (
+              <Dropdown
+                arrowIcon={false}
+                inline
+                label={<Avatar alt="user" img={currentUser.profilePicture} rounded />}
+              >
+                <Dropdown.Header>
+                  <span className="block text-sm">@{currentUser.username}</span>
+                  <span className="block text-sm font-medium truncate">
+                    {currentUser.email}
+                  </span>
+                </Dropdown.Header>
+                <Dropdown.Item onClick={() => navigate('/dashboard?tab=profile')}>
+                  Profile
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item>Sign out</Dropdown.Item>
+              </Dropdown>
+            ) : (
+              <Link
+                to="/sign-up"
+                className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-bold shadow-lg text-lg"
+              >
+                Sign Up
+              </Link>
+            )}
           </li>
         </ul>
       </div>
