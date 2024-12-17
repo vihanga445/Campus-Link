@@ -3,7 +3,7 @@ import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import logo from '../logo.png';
-
+import { signoutSuccess } from '../redux/user/userSlice';
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
@@ -11,6 +11,21 @@ export default function Header() {
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+  const handleSignout = async () => {
+    try {
+      const res = await fetch('/Back/user/signout', {
+        method: 'POST',
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signoutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -70,7 +85,7 @@ export default function Header() {
                   Profile
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item>Sign out</Dropdown.Item>
+                <Dropdown.Item onClick={handleSignout}>Sign out</Dropdown.Item>
               </Dropdown>
             ) : (
               <Link

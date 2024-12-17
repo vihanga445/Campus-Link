@@ -3,6 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import authRoutes from './routes/auth.route.js';
+import userRoutes from './routes/user.route.js';
+import cookieParser from 'cookie-parser';
 
 
 dotenv.config();
@@ -11,7 +13,7 @@ const app = express(); // create express app instance that will handle all the i
 // Middleware
 app.use(cors()); // handle middleware for all incoming requests. allows handling handle requests from different oringins
 app.use(express.json());// this makes the data available in req.body
-
+app.use(cookieParser());
 // Sample route
 // app.get('/', (req, res) => {
 //   res.send('API is running...');
@@ -35,6 +37,7 @@ mongoose
 
 // Routes
 app.use('/Back/auth',authRoutes);
+app.use('/Back/user',userRoutes);
 
 app.use((err,req, res , next) => {
   const statusCode = err.statusCode || 500;;
