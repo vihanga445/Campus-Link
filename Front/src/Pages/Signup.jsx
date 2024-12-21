@@ -36,7 +36,7 @@ export default function Signup() {
         navigate('/sign-in');
       }
     } catch (error) {
-
+       // this is from client side error doesnot have internet or something 
        setErrorMessage(error.message);
        setLoading(false);
 
