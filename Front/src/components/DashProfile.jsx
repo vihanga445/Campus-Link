@@ -22,6 +22,7 @@ import {
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
+import { Link, Navigate } from 'react-router-dom';
 
 export default function DashProfile() {
   const { currentUser, error } = useSelector((state) => state.user);
@@ -148,8 +149,11 @@ export default function DashProfile() {
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
+
       } else {
         dispatch(signoutSuccess());
+        
+
       }
     } catch (error) {
       console.log(error.message);
@@ -229,6 +233,15 @@ export default function DashProfile() {
         <Button type='submit' gradientDuoTone='purpleToBlue' outline>
           Update
         </Button>
+        <Link to={'/create-post'}>
+            <Button
+              type='button'
+              gradientDuoTone='purpleToPink'
+              className='w-full'
+            >
+              Create a post
+            </Button>
+          </Link>
       </form>
 
       {/* Delete and Signout */}

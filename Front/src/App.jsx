@@ -8,6 +8,7 @@ import Conatact from './Pages/ContactUs';
 import Header from './components/Header';
 import Dashboard from './Pages/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
+import CreatePost from './Pages/CreatePost';
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
         <Route element={<PrivateRoute />}>
 
            <Route path="/dashboard" element={<Dashboard />} />
+           <Route path='/create-post' element={<CreatePost />} />
 
         </Route>
 
