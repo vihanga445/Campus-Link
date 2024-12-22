@@ -11,23 +11,23 @@ export default function CreatePost() {
       </h1>
       <form className='flex flex-col gap-6'>
         {/* Title and Category */}
-        <div className='flex flex-col gap-6 sm:flex-row justify-between'>
-          <div className='flex-1'>
+        <div className='flex flex-column gap-6 sm:flex-row justify-between'>
+          <div className='flex-column w-full'>
             <TextInput
               type='text'
-              placeholder='Post Title'
+              placeholder='Title'
+              className='border-blue-400 focus:ring-blue-500 focus:border-blue-500'
               required
-              id='title'
-              className='flex-1 border-blue-400 focus:ring-blue-500 focus:border-blue-500'
             />
+
           </div>
           <div className='flex items-center w-full'>
             <FaLayerGroup className='text-blue-500 mr-2' />
             <Select className='border-blue-400 focus:ring-blue-500 focus:border-blue-500 flex-1'>
               <option value='uncategorized'>Select a category</option>
-              <option value='javascript'>JavaScript</option>
-              <option value='reactjs'>React.js</option>
-              <option value='nextjs'>Next.js</option>
+              <option value='Event'>Event</option>
+              <option value='lost-found'>lost-found</option>
+              <option value='memberships'>memberships</option>
             </Select>
           </div>
         </div>

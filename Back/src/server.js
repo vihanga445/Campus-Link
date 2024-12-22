@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import authRoutes from './routes/auth.route.js';
 import userRoutes from './routes/user.route.js';
 import cookieParser from 'cookie-parser';
-
+import postRoutes from './routes/post.route.js';
 
 dotenv.config();
 const app = express(); // create express app instance that will handle all the incoming HTTP requests.
@@ -38,6 +38,7 @@ mongoose
 // Routes
 app.use('/Back/auth',authRoutes);
 app.use('/Back/user',userRoutes);
+app.use('/Back/post',postRoutes);
 
 app.use((err,req, res , next) => {
   const statusCode = err.statusCode || 500;;
