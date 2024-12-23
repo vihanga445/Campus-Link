@@ -1,9 +1,56 @@
-import { Button, FileInput, Select, TextInput } from 'flowbite-react';
+import { Alert ,Button, FileInput, Select, TextInput } from 'flowbite-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { FaUpload, FaEdit, FaLayerGroup } from 'react-icons/fa';
+import { useState } from 'react';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 export default function CreatePost() {
+  const [file, setFile] = useState(null);
+  const [imageUploadProgress, setImageUploadProgress] = useState(null);
+  const [imageUploadError, setImageUploadError] = useState(null);
+  const [formData, setFormData] = useState({});
+
+  const handleUploadImage = async () => {
+
+    try{
+      if(!file){
+        setImageUploadError('Please select an image to upload');
+        return;
+      }
+      setImageUploadError(null);
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'final_project');
+
+      const response = await fetch('https://api.cloudinary.com/v1_1/dfu1zqt5s/image/upload',{
+        method: 'POST',
+        body: formData,
+        onUploadProgress: (progressEvent) => {
+          const progress = Math.round(progressEvent.loaded / progressEvent.total * 100);
+          setImageUploadProgress(progress);
+        }
+      } );
+      if(!response.ok){
+        throw new Error('Failed to upload image');
+      }
+      const data = await response.json();
+      setFormData({ ...formData, image: data.secure_url });
+      setImageUploadProgress(null);
+      setImageUploadError(null);
+    }
+    catch(error){
+      setImageUploadError("image upload failed"); 
+      setImageUploadProgress(null);
+      console.log(error);
+    }
+    
+
+
+
+  };
+
   return (
     <div className='p-4 max-w-3xl mx-auto min-h-screen bg-gray-50 rounded-lg shadow-lg'>
       <h1 className='text-center text-4xl my-8 font-bold text-blue-700 flex items-center justify-center gap-2'>
@@ -40,6 +87,9 @@ export default function CreatePost() {
               type='file'
               accept='image/*'
               className='file:bg-indigo-200 file:border-indigo-400 file:font-semibold file:rounded-lg file:cursor-pointer'
+              onChange={(e) => {
+                setFile(e.target.files[0]);
+              }}
             />
           </div>
           <Button
@@ -48,12 +98,26 @@ export default function CreatePost() {
             size='sm'
             className='hover:scale-105 flex items-center gap-2'
             outline
+            onClick={handleUploadImage}
+            disabled={imageUploadProgress}
           >
-            <FaUpload />
-            Upload Image
+          {imageUploadProgress ? (
+              <div className='w-16 h-16'>
+                <CircularProgressbar
+                  value={imageUploadProgress}
+                  text={`${imageUploadProgress || 0}%`}
+                />
+              </div>
+            ) : (
+              'Upload Image'
+            )}
+            
           </Button>
         </div>
-
+         {imageUploadError && <Alert color='red'>{imageUploadError}</Alert>}
+         {formData.image && (
+          <img src={formData.image} alt='upload' className='w-full h-72 object-cover'  />
+         )}
         {/* Text Editor */}
         <ReactQuill
           theme='snow'
