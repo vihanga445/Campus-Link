@@ -3,6 +3,9 @@ import Post from '../model/post.model.js';
 import { errorHandler } from '../../utils/error.js';
 
 export const create = async(req,res,next)=>{
+
+    console.log('Request Body:', req.body);
+    console.log('User:', req.user);
   
     if(!req.user){
         return next(errorHandler(401,'You are not authorized to create a post'));
