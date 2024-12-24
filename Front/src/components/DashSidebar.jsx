@@ -49,7 +49,6 @@ export default function DashSidebar() {
           </Sidebar.Item>
           </Link>
 
-          {currentUser.isAdmin && (
                       
                       <Link to ='/dashboard?tab=posts'>
                       <Sidebar.Item
@@ -57,10 +56,10 @@ export default function DashSidebar() {
                         icon={HiDocumentText}
                         
                       >
-                        Posts
+                        My posts
                       </Sidebar.Item>
                       </Link>
-          )}
+          
 
           <Sidebar.Item
             icon={HiArrowSmRight}
