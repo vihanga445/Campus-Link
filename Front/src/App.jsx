@@ -9,6 +9,8 @@ import Header from './components/Header';
 import Dashboard from './Pages/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 import CreatePost from './Pages/CreatePost';
+import UpdatePost from './Pages/UpdatePost';
+import PostPage from './Pages/PostPage';
 
 
 const App = () => {
@@ -25,8 +27,13 @@ const App = () => {
 
            <Route path="/dashboard" element={<Dashboard />} />
            <Route path='/create-post' element={<CreatePost />} />
+           <Route path='/update-post/:postId' element={<UpdatePost />} />
 
         </Route>
+
+        <Route path='/post/:postSlug' element={<PostPage />} />
+
+
 
       </Routes>
     </BrowserRouter>

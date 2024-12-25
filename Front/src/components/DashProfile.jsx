@@ -18,11 +18,12 @@ import {
   deleteUserFailure,
   signoutSuccess,
 } from '../redux/user/userSlice';
-
+import { useNavigate } from 'react-router-dom';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
-import { Link } from 'react-router-dom';
+import { Link  } from 'react-router-dom';
+
 
 export default function DashProfile() {
   const { currentUser, error } = useSelector((state) => state.user);
@@ -35,6 +36,7 @@ export default function DashProfile() {
   const [formData, setFormData] = useState({});
   const filePickerRef = useRef();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Handle Image Selection
   const handleImageChange = (e) => {
@@ -142,6 +144,9 @@ export default function DashProfile() {
       } else {
         dispatch(signoutSuccess());
       }
+      if(res.ok){    
+        navigate('/signup');
+      }  
     } catch (error) {
       console.log(error.message);
     }
