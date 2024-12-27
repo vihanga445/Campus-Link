@@ -145,9 +145,10 @@ export default function DashProfile() {
         console.log(data.message);
       } else {
         dispatch(signoutSuccess());
+        navigate('/');
+
       }
       if(res.ok){    
-        navigate('/signup');
       }  
     } catch (error) {
       console.log(error.message);

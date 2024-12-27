@@ -4,6 +4,7 @@ import UpcomingEventsCarousel from '../components/UpcomingEventsCarousel';
 import ClubsAndSocietiesCarousel from '../components/ClubsAndSocietiesCarousel';
 import AnnouncementsCarousel from '../components/AnnouncementsCarousel';
 import LostAndFound from '../components/LostAndFound';
+import Dummy from '../components/Dummy.jsx';
 
 const Home = () => {
   return (
@@ -18,6 +19,7 @@ const Home = () => {
         <ClubsAndSocietiesCarousel/>
         <AnnouncementsCarousel/>
         <LostAndFound/>
+        <Dummy/>
       </section>
 
       {/* Footer */}
