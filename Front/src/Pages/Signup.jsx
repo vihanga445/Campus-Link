@@ -2,7 +2,8 @@ import { Button, Label, TextInput , Alert, Spinner} from 'flowbite-react';
 import { useState } from 'react';
 import { Link , useNavigate} from 'react-router-dom';
 import OAuth from '../components/OAuth';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Signup() {
   const [formData , setFormData] = useState({})
@@ -16,28 +17,35 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.username || !formData.email || !formData.password) {
-      return setErrorMessage('Please fill out all fields.');
+      // return setErrorMessage('Please fill out all fields.');
+      return toast.error('Please fill out all fields.');
     }
     try {
      
       setLoading(true);
-      setErrorMessage(null);
+      // setErrorMessage(null);
       const res = await fetch('/Back/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      if(data.success==false){
-        return setErrorMessage(data.message);
-      }
       setLoading(false);
+
+      if(data.success==false){
+          // return setErrorMessage(data.message);
+          return toast.error(data.message); }
+
       if(res.ok){
+        toast.success('Signup successful! Redirecting to sign-in...');
+
         navigate('/sign-in');
       }
     } catch (error) {
        // this is from client side error doesnot have internet or something 
-       setErrorMessage(error.message);
+      //  setErrorMessage(error.message);
+      toast.error(error.message || 'Something went wrong!');
+
        setLoading(false);
 
     }
@@ -106,11 +114,9 @@ export default function Signup() {
             Sign In
           </Link>
         </div>
-        {errorMessage && (
-          <Alert className="mt-5" type="failure">
-            {errorMessage}  
-          </Alert>  
-        )}
+        <ToastContainer position="top-right" autoClose={3000} />
+
+      
       </div>
     </div>
   );
