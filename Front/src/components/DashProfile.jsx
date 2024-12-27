@@ -23,6 +23,8 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { Link  } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 
 
 export default function DashProfile() {
@@ -143,9 +145,10 @@ export default function DashProfile() {
         console.log(data.message);
       } else {
         dispatch(signoutSuccess());
+        navigate('/');
+
       }
       if(res.ok){    
-        navigate('/signup');
       }  
     } catch (error) {
       console.log(error.message);
