@@ -11,6 +11,8 @@ import PrivateRoute from './components/PrivateRoute';
 import CreatePost from './Pages/CreatePost';
 import UpdatePost from './Pages/UpdatePost';
 import PostPage from './Pages/PostPage';
+import Event from './Pages/Eventspage';
+
 
 
 const App = () => {
@@ -23,6 +25,8 @@ const App = () => {
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/contact" element={<Conatact />} />
+        <Route path="/events" element={<Event/>}/>
+        
         <Route element={<PrivateRoute />}>
 
            <Route path="/dashboard" element={<Dashboard />} />
