@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import bgImage from "../bcg.jpg";
 import eventsImage from "../events.jpg";
 import clubsImage from "../clubs.jpg";
@@ -12,26 +13,31 @@ const Carousel = () => {
       text: "Welcome to CampusLink!",
       button: "Sign In",
       bgImage: bgImage,
+      link: "/sign-in", // Add a link for each slide
     },
     {
       text: "Events on Campus!",
       button: "Events",
       bgImage: eventsImage,
+      link: "/events", // Link to events page
     },
     {
       text: "Find Your Community!",
       button: "Clubs & Societies",
       bgImage: clubsImage,
+      link: "/clubs", // Link to clubs page
     },
     {
       text: "Stay Informed!",
       button: "Announcements",
       bgImage: announcementsImage,
+      link: "/announcements", // Link to announcements page
     },
     {
       text: "Reunite with Your Belongings!",
       button: "Lost/Found",
       bgImage: lostFoundImage,
+      link: "/lostfound", // Link to lost & found page
     },
   ];
 
@@ -74,9 +80,12 @@ const Carousel = () => {
                   {index === 3 && "Get the latest news and updates here."}
                   {index === 4 && "Lost something? We're here to help!"}
                 </p>
-                <button className="mt-6 bg-blue-900 hover:bg-blue-800 text-white py-2 px-6 rounded-lg text-lg">
-                  {slide.button}
-                </button>
+                {/* Use Link for navigation */}
+                <Link to={slide.link}>
+                  <button className="mt-6 bg-blue-900 hover:bg-blue-800 text-white py-2 px-6 rounded-lg text-lg">
+                    {slide.button}
+                  </button>
+                </Link>
               </div>
             </div>
           ))}
