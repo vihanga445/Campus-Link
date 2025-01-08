@@ -1,4 +1,5 @@
 import Post from '../model/post.model.js';
+import User from '../model/user.js';
 
 import { errorHandler } from '../../utils/error.js';
 
@@ -32,6 +33,64 @@ export const create = async(req,res,next)=>{
 
 };
 
+export const getPendingPosts = async(req,res,next)=>{
+    
+    try{
+        const user = await User.findById(req.user.id);
+        if(!user.moderatorRole.isModerator){
+            return next(errorHandler(403,'only moderators can access  pending posts'));
+        }
+        const pendingPosts = await Post.find({
+            status:'pending',
+            category:user.moderatorRole.category,
+        }).populate('userId','username email');
+        res.status(200).json(pendingPosts);
+    }catch(error){
+        next(error);
+    }
+};
+
+export const moderatePost = async (req, res, next) => {
+    try {
+        const { status, rejectionReason } = req.body;
+        const { postId } = req.params;
+
+        // Verify moderator and their permissions
+        const user = await User.findById(req.user.id);
+
+        if (!user.moderatorRole.isModerator) {
+            return next(errorHandler(403, 'Only moderators can moderate posts'));
+        }
+
+        const post = await Post.findById(postId);
+        if (!post) {
+            return next(errorHandler(404, 'Post not found'));
+        }
+
+        // Check if moderator is assigned to this category
+        if (post.category !== user.moderatorRole.category) {
+            return next(errorHandler(403, 'You can only moderate posts in your assigned category'));
+        }
+
+        // Update post status
+        post.status = status;
+        post.moderationDetails = {
+            moderatorId: user._id,
+            rejectionReason: status === 'rejected' ? rejectionReason : '',
+            moderatedAt: new Date()
+        };
+
+        await post.save();
+
+        res.status(200).json({
+            message: `Post has been ${status}`,
+            post
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 export const getposts = async(req,res,next)=>{
 
@@ -40,6 +99,8 @@ export const getposts = async(req,res,next)=>{
         const limit = parseInt(req.query.limit) || 9;
         const sortDirection = req.query.order === 'asc' ? 1 : -1 ;
         const posts = await Post.find({
+
+            status:'approved',
             ...(req.query.userId && {userId:req.query.userId}),
             ...(req.query.category && {category:req.query.category}),
             ...(req.query.slug && {slug:req.query.slug}),
@@ -51,10 +112,7 @@ export const getposts = async(req,res,next)=>{
                 ],
               }),
 
-
-
-
-        })
+ })
         .sort({updatedAt:sortDirection})
         .skip(startIndex)
         .limit(limit);

@@ -1,5 +1,5 @@
 import { Sidebar } from 'flowbite-react';
-import { HiUser, HiArrowSmRight , HiDocumentText } from 'react-icons/hi';
+import { HiUser, HiArrowSmRight, HiDocumentText } from 'react-icons/hi';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { signoutSuccess } from '../redux/user/userSlice';
@@ -42,23 +42,37 @@ export default function DashSidebar() {
           <Sidebar.Item
             active={tab === 'profile'}
             icon={HiUser}
-            label={currentUser.isAdmin ? 'Admin':'User'}
+            label={
+              currentUser.isAdmin 
+                ? 'Admin' 
+                : currentUser.moderatorRole?.isModerator
+                  ? `Moderator (${currentUser.moderatorRole.category})`
+                  : 'User'
+            }
             labelColor="dark"
           >
             Profile
           </Sidebar.Item>
           </Link>
-
+          {currentUser.moderatorRole?.isModerator && (
+            <Link to='/dashboard?tab=pending'>
+              <Sidebar.Item
+                active={tab === 'pending'}
+                icon={HiDocumentText}
+              >
+                Pending Posts
+              </Sidebar.Item>
+            </Link>
+          )}
                       
-                      <Link to ='/dashboard?tab=posts'>
-                      <Sidebar.Item
-                        active={tab === 'posts'}
-                        icon={HiDocumentText}
-                        
-                      >
-                        My posts
-                      </Sidebar.Item>
-                      </Link>
+          <Link to ='/dashboard?tab=posts'>
+              <Sidebar.Item
+                active={tab === 'posts'}
+                icon={HiDocumentText}
+              >
+              My posts
+              </Sidebar.Item>
+          </Link>
           
 
           <Sidebar.Item
