@@ -29,6 +29,31 @@ const postSchema = new mongoose.Schema({
         required:true,
         unique:true
     },
+    status:{
+        type:String,
+        enum:['pending','approved','rejected'],
+        default:'pending',
+    },
+    rejectionReason:{
+        type:String,
+        default:'',
+    },
+    moderationDetails: {
+        moderatorId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            default: null
+        },
+        rejectionReason:{
+            type: String,
+            default: ''
+
+        },
+        moderatedAt: {
+            type: Date,
+            default: null
+        }   
+    }
 },{timestamps: true});
 
 

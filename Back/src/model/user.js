@@ -24,8 +24,22 @@ const userSchema = new mongoose.Schema({
     isAdmin:{
         type: Boolean,
         default: false,
+    },
+    moderatorRole: {
+        isModerator: {
+            type: Boolean,
+            default: false
+        },
+        category: {
+            
+            type: String,
+            enum: ['Event', 'lost-found', 'memberships', null],
+            default: null
+        }
     }
 },{timestamps: true});
+
+userSchema.index({ 'moderatorRole.isModerator': 1, 'moderatorRole.category': 1 });
 
 const User = mongoose.model("User",userSchema);
 

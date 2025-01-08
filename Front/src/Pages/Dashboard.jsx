@@ -4,6 +4,7 @@ import {useLocation} from 'react-router-dom'
 import DashProfile from '../components/DashProfile'
 import DashSidebar from '../components/DashSidebar'
 import DashPosts from '../components/DashPosts'
+import PendingPosts from '../components/PendingPosts'
 export default function Dashboard() {
     const location = useLocation();
     const [tab,setTab] = useState('');
@@ -24,6 +25,9 @@ export default function Dashboard() {
       {tab === 'profile' && <DashProfile />}
       {/* posts... */}
       {tab === 'posts' && <DashPosts />}
+      {/* pending posts... */}
+      {tab === 'pending' && <PendingPosts/>}
+       
     </div>
   )
 }
