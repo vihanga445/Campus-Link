@@ -4,16 +4,18 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import authRoutes from './routes/auth.route.js';
 import userRoutes from './routes/user.route.js';
-import cookieParser from 'cookie-parser';
 import postRoutes from './routes/post.route.js';
+import eventRoutes from './routes/event.route.js'; // Import the event routes
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
-const app = express(); // create express app instance that will handle all the incoming HTTP requests.
+const app = express();
 
 // Middleware
-app.use(cors()); // handle middleware for all incoming requests. allows handling handle requests from different oringins
-app.use(express.json());// this makes the data available in req.body
+app.use(cors());
+app.use(express.json());
 app.use(cookieParser());
+
 // Sample route
 // app.get('/', (req, res) => {
 //   res.send('API is running...');
@@ -34,21 +36,19 @@ mongoose
     console.error('Error connecting to MongoDB:', error);
   });
 
-
 // Routes
-app.use('/Back/auth',authRoutes);
-app.use('/Back/user',userRoutes);
-app.use('/Back/post',postRoutes);
+app.use('/Back/auth', authRoutes);
+app.use('/Back/user', userRoutes);
+app.use('/Back/post', postRoutes);
+app.use('/Back/events', eventRoutes); // Use the event routes
 
-app.use((err,req, res , next) => {
-  const statusCode = err.statusCode || 500;;
+// Error handling middleware
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
   return res.status(statusCode).json({
-    
-    success:false,
+    success: false,
     statusCode,
-    message
-    
-    
+    message,
   });
 });
