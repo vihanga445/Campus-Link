@@ -1,5 +1,5 @@
 import { Sidebar } from 'flowbite-react';
-import { HiUser, HiArrowSmRight, HiDocumentText } from 'react-icons/hi';
+import { HiUser, HiArrowSmRight, HiDocumentText, HiLogout,HiX } from 'react-icons/hi';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { signoutSuccess } from '../redux/user/userSlice';
@@ -73,8 +73,16 @@ export default function DashSidebar() {
               My posts
               </Sidebar.Item>
           </Link>
-          
-
+          {(!currentUser.isAdmin && !currentUser.moderatorRole?.isModerator) && (
+    <Link to='/dashboard?tab=rejected'>
+        <Sidebar.Item
+            active={tab === 'rejected'}
+            icon={HiX}
+        >
+            My Rejected Posts
+        </Sidebar.Item>
+    </Link>
+)}
           <Sidebar.Item
             icon={HiArrowSmRight}
             className="cursor-pointer"
