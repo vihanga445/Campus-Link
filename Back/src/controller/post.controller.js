@@ -181,3 +181,17 @@ export const updatePost = async (req,res,next)=>{
    }
 
 }
+
+
+export const getRejectedPosts = async(req,res,next)=>{
+    try{
+        const rejectedPosts = await Post.find({
+            userId: req.user.id,
+            status: 'rejected',
+        }).sort({updatedAt: -1});
+        res.status(200).json(rejectedPosts);
+    }
+    catch(error){
+        next(error);
+    }
+};
