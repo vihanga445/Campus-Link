@@ -44,12 +44,12 @@ const LostAndFoundSection = () => {
   ];
 
   return (
-    <div className="bg-blue-100 py-12 px-6">
+    <div className=" py-12 px-6">
       <div className="my-12">
         <h2 className="text-3xl font-bold text-center mb-8">Lost and Found</h2>
 
         {/* Lost Items */}
-        <div className="bg-blue-100 mb-10">
+        <div className=" mb-10">
           <h3 className="text-2xl font-semibold mb-6">Lost Items</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {lostItems.map((lost, index) => (
@@ -66,7 +66,7 @@ const LostAndFoundSection = () => {
 
         {/* Found Items */}
         <div>
-          <h3 className="bg-blue-100 text-2xl font-semibold mb-6">Found Items</h3>
+          <h3 className=" text-2xl font-semibold mb-6">Found Items</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {foundItems.map((found, index) => (
               <div key={index} className="bg-white p-4 shadow-md rounded-lg">

@@ -12,13 +12,25 @@ import CreatePost from './Pages/CreatePost';
 import UpdatePost from './Pages/UpdatePost';
 import PostPage from './Pages/PostPage';
 import Event from './Pages/Eventspage';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const App = () => {
   return (
     <BrowserRouter>
     <Header />
+    <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -41,6 +53,7 @@ const App = () => {
 
       </Routes>
     </BrowserRouter>
+    
   );
 }
 

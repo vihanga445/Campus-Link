@@ -102,8 +102,9 @@ export default function CreatePost() {
             <Select className='border-blue-400 focus:ring-blue-500 focus:border-blue-500 flex-1' onChange = { (e)=> setFormData({...formData, category: e.target.value})}>
               <option value='uncategorized'>Select a category</option>
               <option value='Event'>Event</option>
-              <option value='lost-found'>lost-found</option>
-              <option value='memberships'>memberships</option>
+              <option value='Clubs and Societies'>Clubs and Societies</option>
+              <option value='Lost-Found'>Lost-Found</option>
+              <option value='Announcements'>Announcements</option>
             </Select>
           </div>
         </div>
