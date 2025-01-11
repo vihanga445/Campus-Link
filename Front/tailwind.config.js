@@ -11,6 +11,7 @@ export default {
   theme: {
     extend: {},
   },
+  darkMode: 'class',
   plugins: [
     flowbite.plugin(),
     require('tailwind-scrollbar'),

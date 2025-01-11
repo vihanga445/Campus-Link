@@ -17,7 +17,7 @@ export default function Dashboard() {
         }
     },[location])
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
+    <div className="min-h-screen flex flex-col md:flex-row dark:bg-gray-900">
       <div className='md:w-56'>
         {/* Sidebar */}
         <DashSidebar />
