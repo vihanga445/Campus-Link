@@ -8,22 +8,22 @@ import Dummy from '../components/Dummy.jsx';
 
 const Home = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 text-black dark:text-white">
       {/* Navigation Bar */}
-   
+      {/* Add your navigation bar code here if needed */}
 
       {/* Carousel Section */}
       <section className="flex-grow">
         <Carousel />
-        <UpcomingEventsCarousel/>
-        <ClubsAndSocietiesCarousel/>
-        <AnnouncementsCarousel/>
-        <LostAndFound/>
-        <Dummy/>
+        <UpcomingEventsCarousel />
+        <ClubsAndSocietiesCarousel />
+        <AnnouncementsCarousel />
+        <LostAndFound />
+        <Dummy />
       </section>
 
       {/* Footer */}
-      <footer className="bg-blue-900 text-white py-0 mt-auto ">
+      <footer className="bg-blue-900 dark:bg-blue-800 text-white dark:text-gray-300 py-0 mt-auto">
         <div className="container mx-auto flex justify-between">
           {/* Left Side: Contact Information */}
           <div className="text-sm space-y-2 ml-40">
@@ -40,16 +40,16 @@ const Home = () => {
           <div className="text-lg space-y-3 mr-20">
             <h3 className="text-lg font-semibold">QUICK LINKS</h3>
             <ul>
-              <li><a href="#home" className="hover:text-gray-400">Home</a></li>
-              <li><a href="#announcements" className="hover:text-gray-400">Announcements</a></li>
-              <li><a href="#events" className="hover:text-gray-400">Events</a></li>
-              <li><a href="#lost/found" className="hover:text-gray-400">Lost/found</a></li>
-              <li><a href="#societies" className="hover:text-gray-400">Clubs & Societies</a></li>
+              <li><a href="#home" className="hover:text-gray-400 dark:hover:text-gray-500">Home</a></li>
+              <li><a href="#announcements" className="hover:text-gray-400 dark:hover:text-gray-500">Announcements</a></li>
+              <li><a href="#events" className="hover:text-gray-400 dark:hover:text-gray-500">Events</a></li>
+              <li><a href="#lost/found" className="hover:text-gray-400 dark:hover:text-gray-500">Lost/found</a></li>
+              <li><a href="#societies" className="hover:text-gray-400 dark:hover:text-gray-500">Clubs & Societies</a></li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-10 text-center text-sm bg-gray-800 py-2">
+        <div className="mt-10 text-center text-sm bg-gray-800 dark:bg-gray-700 py-2">
           © 2024 Department of Computer Science. All Rights Reserved.
         </div>
       </footer>

@@ -71,7 +71,7 @@ const Carousel = () => {
               style={{ backgroundImage: `url(${slide.bgImage})` }}
               aria-label={slide.text}
             >
-              <div className="text-center text-white bg-opacity-20 p-4">
+              <div className="text-center text-white bg-opacity-20 dark:bg-opacity-50 p-4">
                 <h1 className="text-4xl md:text-6xl font-bold">{slide.text}</h1>
                 <p className="mt-2 text-lg md:text-2xl font-light-bold">
                   {index === 0 && "Connect with your university like never before."}

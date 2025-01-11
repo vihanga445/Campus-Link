@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
         category: {
             
             type: String,
-            enum: ['Event', 'lost-found', 'memberships', null],
+            enum: ['Event', 'Lost-Found', 'Clubs and Societies', 'Announcements', null],
             default: null
         }
     }
