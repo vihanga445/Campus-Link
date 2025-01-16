@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { HiCheck, HiX } from 'react-icons/hi';
+import parse from 'html-react-parser';
 
 export default function PendingPosts() {
     const [pendingPosts, setPendingPosts] = useState([]);
@@ -87,7 +88,7 @@ export default function PendingPosts() {
                     className="w-full h-48 object-cover rounded-lg my-2"
                 />
             )}
-            <div className="line-clamp-2 text-gray-700 mt-2">{post.content}</div>
+            <div className="line-clamp-2 text-gray-700 mt-2">{parse(post.content)}</div>
         </div>
     ))}
 </div>
@@ -106,7 +107,7 @@ export default function PendingPosts() {
                             />
                         )}
                         <div className="prose max-w-none mb-6">
-                            {selectedPost.content}
+                            {parse(selectedPost.content)}
                         </div>
                         
                         <div className="flex gap-4">

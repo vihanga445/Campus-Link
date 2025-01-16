@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
         default:
           'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
       },
+    coverPicture:{
+        type: String,
+        default:'https://images.pexels.com/photos/733857/pexels-photo-733857.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+    },
     isAdmin:{
         type: Boolean,
         default: false,

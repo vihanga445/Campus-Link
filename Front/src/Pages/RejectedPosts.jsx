@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import parse from 'html-react-parser';
 
 export default function RejectedPosts() {
     const [rejectedPosts, setRejectedPosts] = useState([]);

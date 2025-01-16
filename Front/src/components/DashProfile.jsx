@@ -146,6 +146,7 @@ export default function DashProfile() {
         body: JSON.stringify({
           ...formData,
           profilePicture: imageFileUrl || currentUser.profilePicture,
+          coverPicture: coverFileUrl || currentUser.coverPicture,
         }),
       });
       const data = await res.json();
@@ -207,7 +208,7 @@ export default function DashProfile() {
         onClick={() => coverPickerRef.current.click()}
       >
         <img
-          src={coverFileUrl || currentUser.coverPhoto || image2} // Default cover photo
+          src={coverFileUrl || currentUser.coverPicture || image2} // Default cover photo
           alt="Cover"
           className="w-full h-full object-cover"
         />
