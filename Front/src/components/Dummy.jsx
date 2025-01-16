@@ -1,6 +1,7 @@
 
 
 import React, { useRef, useState, useEffect } from 'react';
+import parse from 'html-react-parser';
 
 
 function Dummy() {
@@ -95,7 +96,7 @@ function Dummy() {
 
                   {/* Content */}
                   <p className="text-sm mt-2 text-gray-700 line-clamp-3">
-                    {post.content || 'No description available.'}
+                    {parse(post.content)}
                   </p>
 
                   {/* Created Date */}

@@ -27,3 +27,12 @@
   .dark .post-content a {
     color: red;
   }
+
+.prose p {
+    margin: 0;
+    display: inline;
+}
+
+.prose * {
+    all: revert;
+}
