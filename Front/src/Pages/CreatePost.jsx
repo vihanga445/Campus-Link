@@ -8,22 +8,37 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
-import {toast, ToastContainer} from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function CreatePost() {
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    eventDetails: {
+      type: '',
+      date: '',
+      time: '',
+      venue: '',
+      organizer: '',
+      registration: {
+        required: false,
+        deadline: '',
+        link: ''
+      },
+      maxParticipants: 0,
+      currentParticipants: 0
+    }
+  });
   const [publishError, setPublishError] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
   
   const navigate = useNavigate();
-  console.log(formData);
+
   const handleUploadImage = async () => {
-  
-    try{
-      if(!file){
+    try {
+      if (!file) {
         setImageUploadError('Please select an image to upload');
         return;
       }
@@ -32,46 +47,49 @@ export default function CreatePost() {
       formDataUpload.append('file', file);
       formDataUpload.append('upload_preset', 'final_project');
 
-      const response = await fetch('https://api.cloudinary.com/v1_1/dfu1zqt5s/image/upload',{
+      const response = await fetch('https://api.cloudinary.com/v1_1/dfu1zqt5s/image/upload', {
         method: 'POST',
         body: formDataUpload,
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(progressEvent.loaded / progressEvent.total * 100);
           setImageUploadProgress(progress);
         }
-      } );
-      if(!response.ok){
+      });
+      if (!response.ok) {
         throw new Error('Failed to upload image');
       }
       const data = await response.json();
       setFormData({ ...formData, image: data.secure_url });
       setImageUploadProgress(null);
       setImageUploadError(null);
-    }
-    catch(error){
-      setImageUploadError("image upload failed"); 
+    } catch (error) {
+      setImageUploadError("Image upload failed");
       setImageUploadProgress(null);
       console.log(error);
     }
   };
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
-    try{
-      const res = await fetch('Back/post/create',{
+    try {
+      console.log('Form Data before event details:', formData); // Log form data before event details
+       
+      const eventDetails = formData.category === 'Event' ? formData.eventDetails : undefined;
+
+      const res = await fetch('/Back/post/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),   
+        body: JSON.stringify({ ...formData, eventDetails }),
       });
       const data = await res.json();
-      if(!res.ok){
-         setPublishError(data.message);
-         toast.error(data.message);
-         return;}
-      if(res.ok){
+      if (!res.ok) {
+        setPublishError(data.message);
+        toast.error(data.message);
+        return;
+      }
+      if (res.ok) {
         setPublishError(null);
         toast.success('Post submitted for admin review!', {
           position: "top-center",
@@ -81,11 +99,10 @@ export default function CreatePost() {
           pauseOnHover: true,
           draggable: true,
         });
-        navigate('/dashboard?tab=profile');}
-
-    }
-    catch(error){
-      setPublishError('Something went wrong');  
+        navigate('/dashboard?tab=posts');
+      }
+    } catch (error) {
+      setPublishError('Something went wrong');
     }
   };
 
@@ -125,6 +142,68 @@ export default function CreatePost() {
               </Select>
             </div>
           </div>
+
+          {/* Event Details */}
+          {formData.category === 'Event' && (
+            <>
+              <div className='space-y-2'>
+                <label className='text-sm font-medium text-gray-700'>Event Type</label>
+                <Select 
+                  className='w-full'
+                  onChange={(e) => setFormData({ ...formData, eventDetails: { ...formData.eventDetails, type: e.target.value } })}
+                >
+                  <option value=''>Select event type</option>
+                  <option value='Academic'>Academic</option>
+                  <option value='Cultural'>Cultural</option>
+                  <option value='Sports'>Sports</option>
+                  <option value='Workshop'>Workshop</option>
+                  <option value='Career'>Career</option>
+                  <option value='Club'>Club</option>
+                </Select>
+              </div>
+              <div className='space-y-2'>
+                <label className='text-sm font-medium text-gray-700'>Event Date</label>
+                <TextInput
+                  type='date'
+                  required
+                  onChange={(e) => setFormData({ ...formData, eventDetails: { ...formData.eventDetails, date: e.target.value } })}
+                />
+              </div>
+              <div className='space-y-2'>
+                <label className='text-sm font-medium text-gray-700'>Event Time</label>
+                <TextInput
+                  type='time'
+                  required
+                  onChange={(e) => setFormData({ ...formData, eventDetails: { ...formData.eventDetails, time: e.target.value } })}
+                />
+              </div>
+              <div className='space-y-2'>
+                <label className='text-sm font-medium text-gray-700'>Venue</label>
+                <TextInput
+                  type='text'
+                  placeholder='Enter event venue'
+                  required
+                  onChange={(e) => setFormData({ ...formData, eventDetails: { ...formData.eventDetails, venue: e.target.value } })}
+                />
+              </div>
+              <div className='space-y-2'>
+                <label className='text-sm font-medium text-gray-700'>Organizer</label>
+                <TextInput
+                  type='text'
+                  placeholder='Enter organizer name'
+                  onChange={(e) => setFormData({ ...formData, eventDetails: { ...formData.eventDetails, organizer: e.target.value } })}
+                />
+              </div>
+              <div className='space-y-2'>
+                <label className='text-sm font-medium text-gray-700'>Registration Link</label>
+                <TextInput
+                  type='url'
+                  placeholder='Enter registration link'
+                  onChange={(e) => setFormData({ ...formData, eventDetails: { ...formData.eventDetails, registration: { ...formData.eventDetails.registration, link: e.target.value } } })}
+                />
+              </div>
+            </>
+          )}
 
           {/* Image Upload Section */}
           <div className='flex items-center gap-4'>
@@ -230,7 +309,7 @@ export default function CreatePost() {
               {parse(formData.content || '')}
             </div>
 
-            <div className='mt-15 flex justify-end gap-4'>
+            <div className='mt-6 flex justify-end gap-4'>
               <Button
                 onClick={() => setShowPreview(false)}
                 outline
@@ -251,8 +330,8 @@ export default function CreatePost() {
           </div>
         </div>
       )}
+
       <ToastContainer />
     </div>
-    
   );
 }
