@@ -14,6 +14,7 @@ import PostPage from './Pages/PostPage';
 import Event from './Pages/Eventspage';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import InviteFriends from './components/InviteFriends';
 
 
 const App = () => {
@@ -44,11 +45,11 @@ const App = () => {
            <Route path="/dashboard" element={<Dashboard />} />
            <Route path='/create-post' element={<CreatePost />} />
            <Route path='/update-post/:postId' element={<UpdatePost />} />
-
+    
         </Route>
-
+        
         <Route path='/post/:postSlug' element={<PostPage />} />
-
+        <Route path='/dashboard?tab=invite' element={<InviteFriends />} />
 
 
       </Routes>
