@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import logo from '../logo.png';
 import { signoutSuccess } from '../redux/user/userSlice';
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
