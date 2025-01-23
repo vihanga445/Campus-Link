@@ -1,5 +1,6 @@
 import { Sidebar } from 'flowbite-react';
 import { HiUser, HiArrowSmRight, HiDocumentText, HiX, HiSun, HiMoon } from 'react-icons/hi';
+import { FaStar, FaUserPlus } from 'react-icons/fa'; // New icons
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { signoutSuccess } from '../redux/user/userSlice';
@@ -91,7 +92,7 @@ export default function DashSidebar() {
               active={tab === 'posts'}
               icon={HiDocumentText}
             >
-              My posts
+              My Posts
             </Sidebar.Item>
           </Link>
           {(!currentUser.isAdmin && !currentUser.moderatorRole?.isModerator) && (
@@ -104,6 +105,26 @@ export default function DashSidebar() {
               </Sidebar.Item>
             </Link>
           )}
+
+          {/* New Favourites button */}
+          <Link to='/dashboard?tab=favourites'>
+            <Sidebar.Item
+              active={tab === 'favourites'}
+              icon={FaStar} 
+            >
+              Favourites
+            </Sidebar.Item>
+          </Link>
+
+          {/* New Invite Friends button */}
+          <Link to='/dashboard?tab=invite'>
+            <Sidebar.Item
+              active={tab === 'invite'}
+              icon={FaUserPlus}
+            >
+              Invite Friends
+            </Sidebar.Item>
+          </Link>
           
           <Sidebar.Item
             icon={HiArrowSmRight}
@@ -121,7 +142,6 @@ export default function DashSidebar() {
           >
             {darkMode ? 'Light Mode' : 'Dark Mode'}
           </Sidebar.Item>
-
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>

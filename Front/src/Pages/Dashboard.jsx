@@ -6,6 +6,7 @@ import DashSidebar from '../components/DashSidebar'
 import DashPosts from '../components/DashPosts'
 import PendingPosts from '../components/PendingPosts'
 import RejectedPosts from './RejectedPosts'
+import InviteFriends from '../components/InviteFriends';
 export default function Dashboard() {
     const location = useLocation();
     const [tab,setTab] = useState('');
@@ -30,6 +31,7 @@ export default function Dashboard() {
       {tab === 'pending' && <PendingPosts/>}
       {/* rejected posts... */}
       {tab === 'rejected' && <RejectedPosts/>}
+      {tab === 'invite' && <InviteFriends />} 
 
        
     </div>
