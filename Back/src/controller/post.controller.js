@@ -195,3 +195,28 @@ export const getRejectedPosts = async(req,res,next)=>{
         next(error);
     }
 };
+
+
+export const savePost = async(req,res,next)=>{
+    try{
+         const user = await User.findById(req.user.id);
+         if(!user.savedPosts.includes(req.params.postId)){
+            user.savedPosts.push(req.params.postId);
+            await user.save() ;
+        }
+         res.status(200).json('Post saved successfully');
+    }
+    catch(error){
+        next(error);
+    }
+}
+
+
+export const getSavedPosts = async(req,res,next)=>{
+    try{
+        const user = await User.findById(req.user.id).populate('savedPosts');
+        res.status(200).json(user.savedPosts);
+    } catch(error){
+        res.status(500).json(error);
+    }
+}

@@ -40,7 +40,11 @@ const userSchema = new mongoose.Schema({
             enum: ['Event', 'Lost-Found', 'Clubs and Societies', 'Announcements', null],
             default: null
         }
-    }
+    },
+    savedPosts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post',
+    }],
 },{timestamps: true});
 
 userSchema.index({ 'moderatorRole.isModerator': 1, 'moderatorRole.category': 1 });
