@@ -1,23 +1,22 @@
-import React, { useState } from 'react';
-import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useSelector,useDispatch } from 'react-redux';
-import logo from '../logo.png';
-import { signoutSuccess } from '../redux/user/userSlice';
+import React, { useState } from "react";
+import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import logo from "../logo.png";
+import { signoutSuccess } from "../redux/user/userSlice";
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
   const handleSignout = async () => {
     try {
-      const res = await fetch('/Back/user/signout', {
-        method: 'POST',
+      const res = await fetch("/Back/user/signout", {
+        method: "POST",
       });
       const data = await res.json();
       if (!res.ok) {
@@ -36,8 +35,14 @@ export default function Header() {
         {/* Logo */}
         <div className="flex items-center">
           <Link to="#home" className="flex items-center">
-            <img src={logo} alt="University of Ruhuna Logo" className="w-24 h-12" />
-            <span className="ml-2 text-white text-2xl font-bold">CampusLink</span>
+            <img
+              src={logo}
+              alt="University of Ruhuna Logo"
+              className="w-24 h-12"
+            />
+            <span className="ml-2 text-white text-2xl font-bold">
+              CampusLink
+            </span>
           </Link>
         </div>
 
@@ -52,21 +57,38 @@ export default function Header() {
         {/* Navigation Links */}
         <ul
           className={`md:flex md:items-center space-y-6 md:space-y-0 md:space-x-6 ${
-            menuOpen ? 'block' : 'hidden'
+            menuOpen ? "block" : "hidden"
           } md:block`}
         >
           <li>
-            <Link to="/" className="text-white hover:text-gray-300 text-lg underline">
+            <Link
+              to="/"
+              className="text-white hover:text-gray-300 text-lg underline"
+            >
               Home
             </Link>
           </li>
           <li>
-            <Link to="/about" className="text-white hover:text-gray-300 text-lg underline">
+            <Link
+              to="/fearures"
+              className="text-white hover:text-gray-300 text-lg underline"
+            >
+              Features
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/about"
+              className="text-white hover:text-gray-300 text-lg underline"
+            >
               About Us
             </Link>
           </li>
           <li>
-            <Link to="/contact" className="text-white hover:text-gray-300 text-lg underline">
+            <Link
+              to="/contact"
+              className="text-white hover:text-gray-300 text-lg underline"
+            >
               Contact Us
             </Link>
           </li>
@@ -75,7 +97,9 @@ export default function Header() {
               <Dropdown
                 arrowIcon={false}
                 inline
-                label={<Avatar alt="user" img={currentUser.profilePicture} rounded />}
+                label={
+                  <Avatar alt="user" img={currentUser.profilePicture} rounded />
+                }
               >
                 <Dropdown.Header>
                   <span className="block text-sm">@{currentUser.username}</span>
@@ -83,7 +107,9 @@ export default function Header() {
                     {currentUser.email}
                   </span>
                 </Dropdown.Header>
-                <Dropdown.Item onClick={() => navigate('/dashboard?tab=profile')}>
+                <Dropdown.Item
+                  onClick={() => navigate("/dashboard?tab=profile")}
+                >
                   Profile
                 </Dropdown.Item>
                 <Dropdown.Divider />
