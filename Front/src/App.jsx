@@ -49,6 +49,7 @@ const App = () => {
 
         <Route path="/post/:postSlug" element={<PostPage />} />
         <Route path="/dashboard?tab=invite" element={<InviteFriends />} />
+        
       </Routes>
     </BrowserRouter>
   );
