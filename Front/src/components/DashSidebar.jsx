@@ -107,12 +107,12 @@ export default function DashSidebar() {
           )}
 
           {/* New Favourites button */}
-          <Link to='/dashboard?tab=favourites'>
+          <Link to='/dashboard?tab=saved'>
             <Sidebar.Item
-              active={tab === 'favourites'}
+              active={tab === 'saved'}
               icon={FaStar} 
             >
-              Favourites
+              Saved posts
             </Sidebar.Item>
           </Link>
 

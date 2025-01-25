@@ -1,14 +1,17 @@
 import React, { useEffect } from 'react';
 import { Button, Spinner, Avatar } from 'flowbite-react';
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { FaRegClock, FaRegCalendar, FaShare, FaBookmark, FaRegEnvelope, FaPhone, FaCalendarAlt } from 'react-icons/fa';
-
+import { useSelector } from 'react-redux';
 function PostPage() {
     const { postSlug } = useParams();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);   
     const [post, setPost] = useState(null);
+    const [isSaved , setIsSaved] = useState(false);
+    const { currentUser} = useSelector((state) => state.user); 
+    
     
     useEffect(() => {
         const fetchPost = async () => {
@@ -33,7 +36,42 @@ function PostPage() {
         };
         fetchPost();
       }, [postSlug]);
-    
+      useEffect(() => {
+        const checkIfSaved = async () => {
+            
+          try {
+            const res = await fetch(`/Back/post/saved-posts`);
+            const data = await res.json();
+            setIsSaved(data.some(savedPost => savedPost._id === post._id));
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        if (currentUser) {
+          checkIfSaved();
+        }
+      }, [post, currentUser]);
+      const handleSave = async () => {
+        if (!currentUser) {
+          Navigate('/sign-in');
+          return;
+        }
+        try {
+          const method = isSaved ? 'DELETE' : 'POST';
+          const res = await fetch(`/Back/post/save/${post._id}`, {
+            method,
+            headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ userId: currentUser._id }),
+          });
+          if (res.ok) {
+            setIsSaved(!isSaved);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
     return (
         <main className='min-h-screen bg-gray-50 py-8'>
             {loading ? (
@@ -124,8 +162,9 @@ function PostPage() {
                       <div className='bg-white rounded-xl p-8 shadow-sm mb-8'>
                         <h2 className='text-2xl font-bold mb-4'>User Interaction</h2>
                         <div className='flex items-center gap-4'>
-                            <Button gradientDuoTone='purpleToBlue' size='sm'>
-                                <FaBookmark className='mr-2' /> Save/Bookmark
+                            <Button gradientDuoTone='purpleToBlue' size='sm' onClick={handleSave}>
+                            <FaBookmark className={`mr-2 ${isSaved ? 'text-yellow-500' : ''}`} />
+                            {isSaved ? 'Unsave' : 'Save'}
                             </Button>
                             <Button gradientDuoTone='purpleToBlue' size='sm'>
                                 <FaShare className='mr-2' /> Share

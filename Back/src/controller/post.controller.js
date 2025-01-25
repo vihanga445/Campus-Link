@@ -220,3 +220,18 @@ export const getSavedPosts = async(req,res,next)=>{
         res.status(500).json(error);
     }
 }
+
+export const unSavePost = async (req,res,next)=>{
+    try{
+        const user = await User.findById(req.user.id);
+        user.savedPosts = user.savedPosts.filter(
+            (postId)=>postId.toString() !== req.params.postId
+        );
+        await user.save();
+        res.status(200).json('Post unsaved successfully');
+    }catch(error){
+        next(error);
+    }    
+};  
+        
+
