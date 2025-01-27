@@ -1,47 +1,59 @@
 import React from "react";
-import clubImage from "../image.png"; // Assuming you have this image in your project
+import clubImage from "../clubbg.png";
 import { motion } from "framer-motion";
 
-const clubsData = [
+// Category images (replace these with actual paths to your images)
+import academicImg from "../clb1.png";
+import creativeImg from "../clb2.png";
+import socialImg from "../clb3.png";
+import culturalImg from "../clb4.png";
+import spiritualImg from "../clb5.png";
+import sportsImg from "../clb6.png";
+
+const clubCategories = [
   {
     id: 1,
-    name: "Coding Club",
-    description:
-      "Join our Coding Club to enhance your programming skills, participate in hackathons, and collaborate on projects with fellow students.",
-    meetingTime: "Every Wednesday, 4:00 PM",
-    location: "Tech Lab, Room 102",
+    name: "Academic Clubs",
+    image: academicImg,
+    description: "Explore academic growth and knowledge sharing.",
   },
   {
     id: 2,
-    name: "Photography Society",
-    description:
-      "Passionate about capturing moments? Our Photography Society organizes workshops and photo walks for students of all skill levels.",
-    meetingTime: "Every Friday, 3:00 PM",
-    location: "Art Studio, Room 205",
+    name: "Creative Clubs",
+    image: creativeImg,
+    description: "Foster your creative skills and artistic talents.",
   },
   {
     id: 3,
-    name: "Drama Club",
-    description:
-      "Express yourself through theater and drama! Our Drama Club holds regular rehearsals and performances throughout the semester.",
-    meetingTime: "Every Tuesday, 6:00 PM",
-    location: "Auditorium, Main Stage",
+    name: "Social Clubs",
+    image: socialImg,
+    description: "Engage with social activities and connect with peers.",
   },
   {
     id: 4,
-    name: "Debate Club",
-    description:
-      "Develop your public speaking and debate skills. Join the Debate Club and participate in friendly debates and competitions.",
-    meetingTime: "Every Thursday, 5:00 PM",
-    location: "Lecture Hall, Room 303",
+    name: "Cultural Clubs",
+    image: culturalImg,
+    description: "Embrace diversity and celebrate different cultures.",
+  },
+  {
+    id: 5,
+    name: "Spiritual Clubs",
+    image: spiritualImg,
+    description: "Connect on a deeper, spiritual level with others.",
+  },
+  {
+    id: 6,
+    name: "Sports & Fitness Clubs",
+    image: sportsImg,
+    description: "Stay fit, active, and competitive through sports.",
   },
 ];
 
 const Clubspage = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       {/* Top Section with Image and Title */}
-      <div className="relative w-full h-64">
+      <div className="relative w-full h-80">
         <motion.img
           src={clubImage}
           alt="Clubs"
@@ -51,39 +63,63 @@ const Clubspage = () => {
           transition={{ duration: 1.0 }}
         />
         <motion.div
-          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0"
+          className="absolute inset-0 flex items-center justify-start p-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.0 }}
         >
-          <h1 className="text-white text-4xl font-bold">Clubs and Societies</h1>
+          {/* Glass effect div */}
+          <div className="bg-white bg-opacity-20 backdrop-blur-md p-6 rounded-xl shadow-lg">
+            <h1 className="text-white text-6xl lg:text-7xl font-extrabold drop-shadow-md">
+              Clubs and Societies
+            </h1>
+          </div>
         </motion.div>
       </div>
 
-      {/* Club Details Section */}
-      <div className="container mx-auto p-8">
-        <h2 className="text-3xl font-bold mb-6 text-center">
-          Explore Our Clubs
-        </h2>
+      {/* Introductory Text Section */}
+      <div className="container mx-auto p-8 text-center">
+        <p className="text-lg text-gray-800 leading-relaxed mb-4">
+          Whether you're into technology, arts, sports, or cultural activities,
+          CampusLink has a wide range of clubs and societies just for you.
+        </p>
+        <p className="text-lg text-gray-800 leading-relaxed">
+          Looking to develop new skills, connect with like-minded students, or
+          simply take part in something you enjoy? CampusLink's clubs and
+          societies offer something for everyone. Discover what suits you and
+          join the fun!
+        </p>
+      </div>
 
-        <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {clubsData.map((club) => (
-            <div
-              key={club.id}
-              className="border border-gray-200 rounded-lg shadow-lg p-6 bg-white hover:shadow-xl transition-shadow duration-300"
+      {/* Club Categories Section */}
+      <div className="container mx-auto p-8">
+        <h2 className="text-4xl font-bold text-center mb-10">
+          Club Categories
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {clubCategories.map((category) => (
+            <motion.div
+              key={category.id}
+              className="relative group rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+              whileHover={{ scale: 1.05 }}
             >
-              <h3 className="text-2xl font-semibold mb-2">{club.name}</h3>
-              <p className="mt-4 text-gray-800">{club.description}</p>
-              <p className="text-gray-600 mt-4">
-                <strong>Meeting Time:</strong> {club.meetingTime}
-              </p>
-              <p className="text-gray-600">
-                <strong>Location:</strong> {club.location}
-              </p>
-              <button className="mt-4 bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded-lg">
-                Join Club
-              </button>
-            </div>
+              <img
+                src={category.image}
+                alt={category.name}
+                className="w-full h-60 object-cover"
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <h3 className="text-3xl font-bold text-white mb-4">
+                  {category.name}
+                </h3>
+                <p className="text-white text-center mb-4">
+                  {category.description}
+                </p>
+                <button className="bg-white text-black py-2 px-4 rounded-lg">
+                  More Info
+                </button>
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>
