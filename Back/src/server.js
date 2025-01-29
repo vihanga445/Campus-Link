@@ -7,12 +7,8 @@ import postRoutes from "./routes/post.route.js";
 import eventRoutes from "./routes/event.route.js"; // Import the event routes
 import inviteRoutes from "./routes/invite.route.js";
 import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
+import "dotenv/config.js";
 
-dotenv.config();
-// Log the environment variables
-console.log("EMAIL_USER:", process.env.EMAIL_USER); // Check if EMAIL_USER is loaded
-console.log("EMAIL_PASS:", process.env.EMAIL_PASS); // Check if EMAIL_PASS is loaded
 const app = express();
 
 // Middleware
