@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const StartClubPage = () => {
   return (
@@ -79,7 +80,7 @@ const StartClubPage = () => {
             CampusLink.
           </p>
           <button className="bg-white text-blue-600 font-semibold py-3 px-8 rounded-lg hover:bg-gray-100 transition duration-300">
-            Get Start
+            <Link to="/create-club">Get Started</Link>
           </button>
         </div>
       </div>

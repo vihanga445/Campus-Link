@@ -17,7 +17,7 @@ import StartClubPage from "./components/StartClubPage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InviteFriends from "./components/InviteFriends";
-
+import CreateClubForm from "./components/CreateClubForm";
 const App = () => {
   return (
     <BrowserRouter>
@@ -43,6 +43,7 @@ const App = () => {
 
         <Route path="/clubs" element={<Clubs />} />
         <Route path="/start-club" element={<StartClubPage />} />
+        <Route path="/create-club" element={<CreateClubForm />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
