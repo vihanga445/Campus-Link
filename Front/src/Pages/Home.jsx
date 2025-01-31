@@ -1,10 +1,10 @@
-import React from 'react';
-import Carousel from '../components/carousel';
-import UpcomingEventsCarousel from '../components/UpcomingEventsCarousel';
-import ClubsAndSocietiesCarousel from '../components/ClubsAndSocietiesCarousel';
-import AnnouncementsCarousel from '../components/AnnouncementsCarousel';
-import LostAndFound from '../components/LostAndFound';
-import Dummy from '../components/Dummy.jsx';
+import React from "react";
+import Carousel from "../components/carousel";
+import UpcomingEventsCarousel from "../components/UpcomingEventsCarousel";
+import ClubsAndSocietiesCarousel from "../components/ClubsAndSocietiesCarousel";
+import AnnouncementsCarousel from "../components/AnnouncementsCarousel";
+import LostAndFound from "../components/LostAndFound";
+import Dummy from "../components/Dummy.jsx";
 
 const Home = () => {
   return (
@@ -23,7 +23,7 @@ const Home = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-blue-900 dark:bg-blue-800 text-white dark:text-gray-300 py-0 mt-auto">
+      <footer className="bg-dark-blue dark:bg-blue-800 text-white dark:text-gray-300 py-0 mt-auto">
         <div className="container mx-auto flex justify-between">
           {/* Left Side: Contact Information */}
           <div className="text-sm space-y-2 ml-40">
@@ -40,11 +40,46 @@ const Home = () => {
           <div className="text-lg space-y-3 mr-20">
             <h3 className="text-lg font-semibold">QUICK LINKS</h3>
             <ul>
-              <li><a href="#home" className="hover:text-gray-400 dark:hover:text-gray-500">Home</a></li>
-              <li><a href="#announcements" className="hover:text-gray-400 dark:hover:text-gray-500">Announcements</a></li>
-              <li><a href="#events" className="hover:text-gray-400 dark:hover:text-gray-500">Events</a></li>
-              <li><a href="#lost/found" className="hover:text-gray-400 dark:hover:text-gray-500">Lost/found</a></li>
-              <li><a href="#societies" className="hover:text-gray-400 dark:hover:text-gray-500">Clubs & Societies</a></li>
+              <li>
+                <a
+                  href="#home"
+                  className="hover:text-gray-400 dark:hover:text-gray-500"
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#announcements"
+                  className="hover:text-gray-400 dark:hover:text-gray-500"
+                >
+                  Announcements
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#events"
+                  className="hover:text-gray-400 dark:hover:text-gray-500"
+                >
+                  Events
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#lost/found"
+                  className="hover:text-gray-400 dark:hover:text-gray-500"
+                >
+                  Lost/found
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#societies"
+                  className="hover:text-gray-400 dark:hover:text-gray-500"
+                >
+                  Clubs & Societies
+                </a>
+              </li>
             </ul>
           </div>
         </div>
