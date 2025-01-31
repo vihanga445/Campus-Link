@@ -18,6 +18,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InviteFriends from "./components/InviteFriends";
 import CreateClubForm from "./components/CreateClubForm";
+import AcademicClubsPage from "./pages/AcademicClubsPage";
+import CreativeClubsPage from "./pages/CreativeClubsPage";
+import SocialClubsPage from "./pages/SocialClubsPage";
+import CulturalClubsPage from "./pages/CulturalClubsPage";
+import SpiritualClubsPage from "./pages/SpiritualClubsPage";
+import SportsClubsPage from "./pages/SportsClubsPage";
 const App = () => {
   return (
     <BrowserRouter>
@@ -44,6 +50,12 @@ const App = () => {
         <Route path="/clubs" element={<Clubs />} />
         <Route path="/start-club" element={<StartClubPage />} />
         <Route path="/create-club" element={<CreateClubForm />} />
+        <Route path="/academic-clubs" element={<AcademicClubsPage />} />
+        <Route path="/creative-clubs" element={<CreativeClubsPage />} />
+        <Route path="/social-clubs" element={<SocialClubsPage />} />
+        <Route path="/cultural-clubs" element={<CulturalClubsPage />} />
+        <Route path="/spiritual-clubs" element={<SpiritualClubsPage />} />
+        <Route path="/sports-clubs" element={<SportsClubsPage />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />

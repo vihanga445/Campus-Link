@@ -118,7 +118,33 @@ const Clubspage = () => {
                 <p className="text-white text-center mb-4">
                   {category.description}
                 </p>
-                <button className="bg-white text-black py-2 px-4 rounded-lg">
+                <button
+                  className="bg-white text-black py-2 px-4 rounded-lg"
+                  onClick={() => {
+                    switch (category.id) {
+                      case 1:
+                        navigate("/academic-clubs");
+                        break;
+                      case 2:
+                        navigate("/creative-clubs");
+                        break;
+                      case 3:
+                        navigate("/social-clubs");
+                        break;
+                      case 4:
+                        navigate("/cultural-clubs");
+                        break;
+                      case 5:
+                        navigate("/spiritual-clubs");
+                        break;
+                      case 6:
+                        navigate("/sports-clubs");
+                        break;
+                      default:
+                        break;
+                    }
+                  }}
+                >
                   More Info
                 </button>
               </div>
