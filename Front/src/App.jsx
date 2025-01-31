@@ -1,6 +1,6 @@
 import React from "react";
-import Home from "./Pages/Home"; // Import your Home component
-import { BrowserRouter, Route, Routes } from "react-router-dom"; // Import the Router, Route, and Switch components
+import Home from "./Pages/Home";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import About from "./Pages/AboutUs";
 import Signin from "./Pages/Signin";
 import Signup from "./Pages/Signup";
@@ -13,10 +13,11 @@ import UpdatePost from "./Pages/UpdatePost";
 import PostPage from "./Pages/PostPage";
 import Event from "./Pages/Eventspage";
 import Clubs from "./Pages/Clubspage";
+import StartClubPage from "./components/StartClubPage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InviteFriends from "./components/InviteFriends";
-
+import CreateClubForm from "./components/CreateClubForm";
 const App = () => {
   return (
     <BrowserRouter>
@@ -39,7 +40,10 @@ const App = () => {
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/contact" element={<Conatact />} />
         <Route path="/events" element={<Event />} />
+
         <Route path="/clubs" element={<Clubs />} />
+        <Route path="/start-club" element={<StartClubPage />} />
+        <Route path="/create-club" element={<CreateClubForm />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
@@ -49,7 +53,6 @@ const App = () => {
 
         <Route path="/post/:postSlug" element={<PostPage />} />
         <Route path="/dashboard?tab=invite" element={<InviteFriends />} />
-        
       </Routes>
     </BrowserRouter>
   );
