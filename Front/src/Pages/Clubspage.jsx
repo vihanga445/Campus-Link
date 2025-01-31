@@ -1,8 +1,9 @@
 import React from "react";
 import clubImage from "../clubbg.png";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-// Category images (replace these with actual paths to your images)
+// Category images
 import academicImg from "../clb1.png";
 import creativeImg from "../clb2.png";
 import socialImg from "../clb3.png";
@@ -50,6 +51,8 @@ const clubCategories = [
 ];
 
 const Clubspage = () => {
+  const navigate = useNavigate(); // Initialize navigate
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Section with Image and Title */}
@@ -121,6 +124,33 @@ const Clubspage = () => {
               </div>
             </motion.div>
           ))}
+        </div>
+      </div>
+
+      {/* New Club Section */}
+      <div className="container mx-auto p-8 mt-12">
+        <h2 className="text-4xl font-bold text-center mb-8">
+          Want to Start a New Club?
+        </h2>
+        <p className="text-lg text-gray-800 text-center leading-relaxed mb-6">
+          Starting a club or society is a great way to make like-minded friends,
+          engage with the campus community, and learn life-long skills in
+          management and organization. Whether you want to start a creative,
+          sports, academic, cultural, or spiritual club through CampusLink, the
+          opportunities are endless.
+        </p>
+        <p className="text-lg text-gray-800 text-center leading-relaxed mb-6">
+          Take the lead and create a space where students can connect, grow, and
+          enjoy their passions. Start a new chapter for your club journey today
+          with CampusLink!
+        </p>
+        <div className="flex justify-center">
+          <button
+            onClick={() => navigate("/start-club")} // Navigate to StartClubPage
+            className="bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-300"
+          >
+            Start Your Club
+          </button>
         </div>
       </div>
     </div>
