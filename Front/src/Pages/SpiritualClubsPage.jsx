@@ -6,22 +6,22 @@ import { useNavigate } from "react-router-dom";
 const spiritualClubs = [
   {
     id: 1,
-    name: "Meditation and Mindfulness Group",
+    name: "Catholic Student Society",
     description: "Find inner peace through guided meditation and mindfulness.",
-    image: "./src/cl2.jpg", // Update with actual image path
+    image: "./src/cl19.jpg", // Update with actual image path
   },
   {
     id: 2,
-    name: "Yoga Society",
-    description: "Focus on physical and mental wellness with yoga practice.",
-    image: "./src/cl3.jpeg", // Update with actual image path
+    name: "Buddhist Society",
+    description: "Focus on physical and mental wellness with Bavana practice.",
+    image: "./src/cl20.jpg", // Update with actual image path
   },
   {
     id: 3,
-    name: "Spiritual Awakening Fellowship",
+    name: "Islam Student Society",
     description:
       "Explore spiritual teachings and engage in thought-provoking discussions.",
-    image: "./src/cl4.jpeg", // Update with actual image path
+    image: "./src/cl21.jpg", // Update with actual image path
   },
   // Add more clubs as needed
 ];
@@ -35,7 +35,7 @@ const SpiritualClubsPage = () => {
       <div
         className="relative w-full h-96 bg-cover bg-center"
         style={{
-          backgroundImage: 'url("./src/cl1.jpg")', // Replace with actual image path
+          backgroundImage: 'url("./src/cl18.jpg")', // Replace with actual image path
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end justify-start p-8">

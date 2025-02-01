@@ -6,24 +6,24 @@ import { useNavigate } from "react-router-dom";
 const socialClubs = [
   {
     id: 1,
-    name: "Student Volunteer Network",
+    name: "LEO Club- University of Ruhuna",
     description:
       "Get involved in social causes and make a difference in the community.",
-    image: "./src/cl2.jpg", // Update with actual image path
+    image: "./src/cl16.jpg", // Update with actual image path
   },
   {
     id: 2,
-    name: "Cultural Exchange Society",
+    name: "AIESEC- University of Ruhuna",
     description:
       "Connect with students from around the world and learn about different cultures.",
-    image: "./src/cl3.jpeg", // Update with actual image path
+    image: "./src/cl14.jpg", // Update with actual image path
   },
   {
     id: 3,
-    name: "Community Outreach Club",
+    name: "Gavel Club- University of Ruhuna",
     description:
       "Organize events and activities that support local communities.",
-    image: "./src/cl4.jpeg", // Update with actual image path
+    image: "./src/cl15.jpg", // Update with actual image path
   },
   // Add more clubs as needed
 ];
@@ -37,7 +37,7 @@ const SocialClubsPage = () => {
       <div
         className="relative w-full h-96 bg-cover bg-center"
         style={{
-          backgroundImage: 'url("./src/cl1.jpg")', // Replace with actual image path
+          backgroundImage: 'url("./src/cl17.png")', // Replace with actual image path
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end justify-start p-8">
