@@ -4,6 +4,7 @@ import { Button } from 'flowbite-react';
 import { useSelector } from 'react-redux';
 import { FaBookmark, FaShare, FaCalendarAlt, FaMapMarkerAlt, 
          FaRegEnvelope, FaPhone, FaUserFriends } from 'react-icons/fa';
+import CommentSection from '../components/CommentSection';
 
 export default function PostPage() {
     const { postSlug } = useParams();
@@ -137,37 +138,6 @@ export default function PostPage() {
 
                     </div>
 
-                    {/* Rules and Requirements */}
-                    {/* <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
-                        <h2 className='text-3xl font-bold mb-6 text-gray-800 font-[Poppins]'>Rules and Requirements</h2>
-                        <div className='space-y-4 text-lg'>
-                            <p className='flex items-start'>
-                                <span className='font-medium min-w-[120px]'>Rules:</span>
-                                <span className='ml-4'>{post.eventDetails.rules}</span>
-                            </p>
-                            <p className='flex items-start'>
-                                <span className='font-medium min-w-[120px]'>Materials:</span>
-                                <span className='ml-4'>{post.eventDetails.materials}</span>
-                            </p>
-                        </div>
-                    </div> */}
-
-                    {/* Contact Information */}
-                    {/* <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
-                        <h2 className='text-3xl font-bold mb-6 text-gray-800 font-[Poppins]'>Contact Information</h2>
-                        <div className='flex flex-col md:flex-row gap-6'>
-                            <a href={`mailto:${post.eventDetails.contactEmail}`} 
-                               className='flex items-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors'>
-                                <FaRegEnvelope className='text-2xl text-blue-500 mr-3' />
-                                <span>{post.eventDetails.contactEmail}</span>
-                            </a>
-                            <a href={`tel:${post.eventDetails.contactPhone}`}
-                               className='flex items-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors'>
-                                <FaPhone className='text-2xl text-blue-500 mr-3' />
-                                <span>{post.eventDetails.contactPhone}</span>
-                            </a>
-                        </div>
-                    </div> */}
 
                     {/* Registration */}
                     <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
@@ -222,6 +192,9 @@ export default function PostPage() {
                     </div>
                 </div>
             )}
+            <CommentSection postId={post._id}/>
+            
+        
         </main>
     );
 }
