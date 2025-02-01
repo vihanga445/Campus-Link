@@ -6,24 +6,24 @@ import { useNavigate } from "react-router-dom";
 const sportsAndFitnessClubs = [
   {
     id: 1,
-    name: "Campus Football Club",
+    name: "Elle Club- University of Ruhuna",
     description:
       "Join us for football matches, training, and friendly competitions.",
-    image: "./src/cl2.jpg", // Update with actual image path
+    image: "./src/cl25.jpg", // Update with actual image path
   },
   {
     id: 2,
-    name: "Fitness and Wellness Club",
+    name: "Badminton Club- University of Ruhuna",
     description:
       "Focus on improving your fitness with group workouts and wellness sessions.",
-    image: "./src/cl3.jpeg", // Update with actual image path
+    image: "./src/cl24.jpg", // Update with actual image path
   },
   {
     id: 3,
     name: "Basketball Society",
     description:
       "Practice basketball with fellow enthusiasts, participate in games and tournaments.",
-    image: "./src/cl4.jpeg", // Update with actual image path
+    image: "./src/cl22.jpg", // Update with actual image path
   },
   // Add more clubs as needed
 ];
@@ -37,7 +37,7 @@ const SportsAndFitnessClubsPage = () => {
       <div
         className="relative w-full h-96 bg-cover bg-center"
         style={{
-          backgroundImage: 'url("./src/cl1.jpg")', // Replace with actual image path
+          backgroundImage: 'url("./src/cl23.jpg")', // Replace with actual image path
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end justify-start p-8">

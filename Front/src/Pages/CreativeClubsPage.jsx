@@ -8,20 +8,20 @@ const creativeClubs = [
     id: 1,
     name: "Photography Club",
     description: "Capture moments and learn photography techniques.",
-    image: "./src/cl2.jpg", // Update with actual image path
+    image: "./src/cl10.jpg", // Update with actual image path
   },
   {
     id: 2,
     name: "Art and Design Society",
     description:
       "Unleash your creativity with painting, design, and sculpture.",
-    image: "./src/cl3.jpeg", // Update with actual image path
+    image: "./src/cl12.jpg", // Update with actual image path
   },
   {
     id: 3,
     name: "Music and Performing Arts Club",
     description: "Explore the world of music, dance, and drama.",
-    image: "./src/cl4.jpeg", // Update with actual image path
+    image: "./src/cl11.jpg", // Update with actual image path
   },
   // Add more clubs as needed
 ];
@@ -35,7 +35,7 @@ const CreativeClubsPage = () => {
       <div
         className="relative w-full h-96 bg-cover bg-center"
         style={{
-          backgroundImage: 'url("./src/cl1.jpg")', // Replace with actual image path
+          backgroundImage: 'url("./src/cl13.jpg")', // Replace with actual image path
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end justify-start p-8">
