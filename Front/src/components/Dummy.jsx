@@ -1,7 +1,6 @@
-
-
 import React, { useRef, useState, useEffect } from 'react';
 import parse from 'html-react-parser';
+import PostCard from './PostCard';
 
 
 function Dummy() {
@@ -60,67 +59,30 @@ function Dummy() {
 
         {/* Carousel Container */}
         <div
-          className="flex overflow-x-auto space-x-6 scrollbar-hide"
+          className="relative w-full px-4 py-6"
           ref={carouselRef}
         >
+            <div 
+    className="flex overflow-x-auto gap-6 pb-4 scroll-smooth no-scrollbar" 
+    ref={carouselRef}
+    style={{ 
+      scrollbarWidth: 'none',
+      '-ms-overflow-style': 'none'
+    }}
+  >
           {userPosts && userPosts.length > 0 ? (
             userPosts.map((post) => (
-              <div
-                key={post._id}
-                className="w-full flex-shrink-0 p-4 transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl bg-white shadow-xl rounded-lg"
-                style={{ width: '300px' }}
-              >
-                {/* Post Image */}
-                <div
-                  className="h-40 bg-cover bg-center rounded-t-lg"
-                  style={{
-                    backgroundImage: `url(${post.image || 'https://via.placeholder.com/300'})`,
-                  }}
-                ></div>
-
-                {/* Post Details */}
-                <div className="p-4">
-                  {/* Category Badge */}
-                  <span
-                    className={`inline-block px-2 py-1 text-sm rounded-full ${
-                      post.category === 'Lost and Found'
-                        ? 'bg-red-100 text-red-800'
-                        : 'bg-gray-200 text-gray-800'
-                    }`}
-                  >
-                    {post.category || 'Uncategorized'}
-                  </span>
-
-                  {/* Title */}
-                  <h3 className="text-lg font-bold mt-2">{post.title}</h3>
-
-                  {/* Content */}
-                  <p className="text-sm mt-2 text-gray-700 line-clamp-3">
-                    {parse(post.content)}
-                  </p>
-
-                  {/* Created Date */}
-                  <p className="text-sm text-gray-500 mt-2">
-                    {new Date(post.createdAt).toLocaleDateString()}
-                  </p>
-
-                  {/* View Details Link */}
-                  <div className="mt-4">
-                    <a
-                      href={`/post/${post.slug}`}
-                      className="text-blue-500 text-sm font-medium hover:underline"
-                    >
-                      View Details
-                    </a>
-                  </div>
-                </div>
+              
+              <div key={post._id} className='flex-none w-[300px]'>
+               <PostCard key={post._id} post={post} />
               </div>
+  
             ))
           ) : (
             <div className="p-4 text-gray-500">No posts available.</div>
           )}
         </div>
-        
+        </div>
 
         {/* Right Arrow */}
         <button

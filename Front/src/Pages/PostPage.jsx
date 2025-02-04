@@ -1,18 +1,20 @@
-import React, { useEffect } from 'react';
-import { Button, Spinner, Avatar } from 'flowbite-react';
-import { useState } from 'react';
-import { Link, Navigate, useParams } from 'react-router-dom';
-import { FaRegClock, FaRegCalendar, FaShare, FaBookmark, FaRegEnvelope, FaPhone, FaCalendarAlt } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Button } from 'flowbite-react';
 import { useSelector } from 'react-redux';
-function PostPage() {
+import { FaBookmark, FaShare, FaCalendarAlt, FaMapMarkerAlt, 
+         FaRegEnvelope, FaPhone, FaUserFriends } from 'react-icons/fa';
+import CommentSection from '../components/CommentSection';
+
+export default function PostPage() {
     const { postSlug } = useParams();
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);   
+    const { currentUser } = useSelector((state) => state.user);
     const [post, setPost] = useState(null);
-    const [isSaved , setIsSaved] = useState(false);
-    const { currentUser} = useSelector((state) => state.user); 
-    
-    
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [isSaved, setIsSaved] = useState(false);
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchPost = async () => {
           try {
@@ -53,7 +55,7 @@ function PostPage() {
       }, [post, currentUser]);
       const handleSave = async () => {
         if (!currentUser) {
-          Navigate('/sign-in');
+          navigate('/sign-in');
           return;
         }
         try {
@@ -72,114 +74,127 @@ function PostPage() {
           console.log(error);
         }
       };
+
+    if (loading) return <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+    </div>;
+
+    if (error) return <div className="text-red-500 text-center p-8">{error}</div>;
+
     return (
-        <main className='min-h-screen bg-gray-50 py-8'>
-            {loading ? (
-                <div className='flex justify-center items-center min-h-screen'>
-                    <Spinner size='xl' />
-                </div>
-            ) : error ? (
-                <div className='flex flex-col items-center justify-center min-h-screen'>
-                    <p className='text-red-500 mb-4'>Error loading post</p>
-                    <Link to='/' className='text-blue-500 hover:underline'>
-                        Back to Home
-                    </Link>
-                </div>
-            ) : (
-                <div className='max-w-4xl mx-auto px-4'>
-                    {/* Event Title and Image */}
-                    <div className='mb-6'>
-                        <h1 className='text-4xl font-bold text-gray-900 mb-4'>
-                            {post.title}
-                        </h1>
+        <main className='min-h-screen bg-gray-50'>
+            {post && (
+                <div className='max-w-6xl mx-auto p-4'>
+                    {/* Hero Section */}
+                    <div className='relative h-[400px] rounded-2xl overflow-hidden shadow-xl mb-8'>
                         {post.image && (
-                            <div className='relative h-[400px] w-full mb-8 rounded-xl overflow-hidden shadow-lg'>
-                                <img
-                                    src={post.image}
-                                    alt={post.title}
-                                    className='absolute inset-0 w-full h-full object-cover'
-                                />
-                            </div>
+                            <img
+                                src={post.image}
+                                alt={post.title}
+                                className='w-full h-full object-cover'
+                            />
                         )}
-                    </div>
-
-                    {/* Event Details */}
-                    <div className='bg-white rounded-xl p-8 shadow-sm mb-8'>
-                        <h2 className='text-2xl font-bold mb-4'>Event Details</h2>
-                        <div className='text-gray-800 leading-relaxed text-lg space-y-4'>
-                            <p><strong>Type:</strong> {post.eventDetails.type}</p>
-                            <p><strong>Date:</strong> {new Date(post.eventDetails.date).toLocaleDateString()}</p>
-                            <p><strong>Time:</strong> {post.eventDetails.time}</p>
-                            <p><strong>Venue:</strong> {post.eventDetails.venue}</p>
-                            <p><strong>Organizer:</strong> {post.eventDetails.organizer}</p>
-                            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                        <div className='absolute inset-0 bg-gradient-to-t from-black/70 to-transparent'></div>
+                        <div className='absolute bottom-0 p-8'>
+                            <h1 className='text-4xl font-bold text-white mb-4 font-[Poppins]'>
+                                {post.title}
+                            </h1>
                         </div>
                     </div>
 
-                    {/* Event Rules and Requirements */}
-                    <div className='bg-white rounded-xl p-8 shadow-sm mb-8'>
-                        <h2 className='text-2xl font-bold mb-4'>Event Rules and Requirements</h2>
-                        <div className='text-gray-800 leading-relaxed text-lg space-y-4'>
-                            <p><strong>Rules:</strong> {post.eventDetails.rules}</p>
-                            <p><strong>Required Materials/Dress Code:</strong> {post.eventDetails.materials}</p>
+                    {/* Event Details Card */}
+                    <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
+                        <h2 className='text-3xl font-bold mb-6 text-gray-800 font-[Poppins]'>Event Details</h2>
+                        <div className='grid md:grid-cols-2 gap-6'>
+                            <div className='space-y-4'>
+                                <p className='flex items-center text-lg'>
+                                    <FaCalendarAlt className='mr-3 text-blue-500' />
+                                    <span className='font-medium'>Date:</span>
+                                    <span className='ml-2'>{new Date(post.eventDetails.date).toLocaleDateString()}</span>
+                                </p>
+                                <p className='flex items-center text-lg'>
+                                    <FaMapMarkerAlt className='mr-3 text-blue-500' />
+                                    <span className='font-medium'>Venue:</span>
+                                    <span className='ml-2'>{post.eventDetails.venue}</span>
+                                </p>
+                                <p className='flex items-center text-lg'>
+                                    <FaUserFriends className='mr-3 text-blue-500' />
+                                    <span className='font-medium'>Organizer:</span>
+                                    <span className='ml-2'>{post.eventDetails.organizer}</span>
+                                </p>
+                                
+                            </div>
+                            
                         </div>
                     </div>
 
-                    {/* Contact Information */}
-                    <div className='bg-white rounded-xl p-8 shadow-sm mb-8'>
-                        <h2 className='text-2xl font-bold mb-4'>Contact Information</h2>
-                        <div className='text-gray-800 leading-relaxed text-lg space-y-4'>
-                            <p><FaRegEnvelope className='inline-block mr-2' /> {post.eventDetails.contactEmail}</p>
-                            <p><FaPhone className='inline-block mr-2' /> {post.eventDetails.contactPhone}</p>
-                        </div>
+                    {/* Description */}
+
+                    <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
+                      
+                    <div className='space-y-4'>
+                        <div className='prose max-w-none' dangerouslySetInnerHTML={{ __html: post.content }} />
                     </div>
 
-                    {/* Event Reminders */}
-                    <div className='bg-white rounded-xl p-8 shadow-sm mb-8'>
-                        <h2 className='text-2xl font-bold mb-4'>Event Reminders</h2>
-                        <div className='text-gray-800 leading-relaxed text-lg space-y-4'>
-                            <p>Email/SMS reminders will be sent to registered participants.</p>
-                        </div>
                     </div>
 
-                 
 
                     {/* Registration */}
-                    <div className='bg-white rounded-xl p-8 shadow-sm mb-8'>
-                        <h2 className='text-2xl font-bold mb-4'>Registration</h2>
-                        <div className='text-gray-800 leading-relaxed text-lg space-y-4'>
-                            <p><strong>RSVP:</strong> <Button gradientDuoTone='purpleToBlue' size='sm'>RSVP</Button></p>
-                            <p><strong>Registration Link:</strong> <a href={post.eventDetails.registration.link} className='text-blue-500 hover:underline'>{post.eventDetails.registration.link}</a></p>
-                            <p><strong>Registration Deadline:</strong> {new Date(post.eventDetails.registration.deadline).toLocaleDateString()}</p>
-                            <p><strong>Max Participants:</strong> {post.eventDetails.maxParticipants}</p>
-                            <p><strong>Current Participants:</strong> {post.eventDetails.currentParticipants}</p>
+                    <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
+                        <h2 className='text-3xl font-bold mb-6 text-gray-800 font-[Poppins]'>Registration</h2>
+                        <div className='space-y-6'>
+                            <div className='flex flex-wrap gap-4 items-center'>
+                                <Button gradientDuoTone='purpleToBlue' size='lg'>
+                                    RSVP Now
+                                </Button>
+                                <a href={post.eventDetails.registration.link} 
+                                   className='text-blue-500 hover:underline'>
+                                    Registration Link
+                                </a>
+                            </div>
+                            <div className='space-y-2'>
+                                <p className='text-lg'>
+                                    <span className='font-medium'>Deadline:</span>
+                                    <span className='ml-2'>
+                                        {new Date(post.eventDetails.registration.deadline).toLocaleDateString()}
+                                    </span>
+                                </p>
+                                <div>
+                                    <div className='flex justify-between mb-1'>
+                                        <span className='font-medium'>Participants</span>
+                                        <span>{post.eventDetails.currentParticipants}/{post.eventDetails.maxParticipants}</span>
+                                    </div>
+                                    <div className='w-full bg-gray-200 rounded-full h-2.5'>
+                                        <div className='bg-blue-500 h-2.5 rounded-full' 
+                                             style={{width: `${(post.eventDetails.currentParticipants/post.eventDetails.maxParticipants)*100}%`}}>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-
-
-                      {/* User Interaction */}
-                      <div className='bg-white rounded-xl p-8 shadow-sm mb-8'>
-                        <h2 className='text-2xl font-bold mb-4'>User Interaction</h2>
-                        <div className='flex items-center gap-4'>
-                            <Button gradientDuoTone='purpleToBlue' size='sm' onClick={handleSave}>
-                            <FaBookmark className={`mr-2 ${isSaved ? 'text-yellow-500' : ''}`} />
-                            {isSaved ? 'Unsave' : 'Save'}
+                    {/* User Interaction */}
+                    <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
+                        <h2 className='text-3xl font-bold mb-6 text-gray-800 font-[Poppins]'>User Interaction</h2>
+                        <div className='flex flex-wrap gap-4'>
+                            <Button gradientDuoTone='purpleToBlue' size='lg' onClick={handleSave}>
+                                <FaBookmark className={`mr-2 ${isSaved ? 'text-yellow-500' : ''}`} />
+                                {isSaved ? 'Unsave' : 'Save'}
                             </Button>
-                            <Button gradientDuoTone='purpleToBlue' size='sm'>
+                            <Button gradientDuoTone='purpleToBlue' size='lg'>
                                 <FaShare className='mr-2' /> Share
                             </Button>
-                            <Button gradientDuoTone='purpleToBlue' size='sm'>
+                            <Button gradientDuoTone='purpleToBlue' size='lg'>
                                 <FaCalendarAlt className='mr-2' /> Add to Calendar
                             </Button>
                         </div>
                     </div>
-
-
                 </div>
             )}
+            <CommentSection postId={post._id}/>
+            
+        
         </main>
     );
 }
-
-export default PostPage;
