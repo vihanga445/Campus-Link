@@ -18,6 +18,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InviteFriends from "./components/InviteFriends";
 import CreateClubForm from "./components/CreateClubForm";
+import ScrollToTop from "./components/ScrollToTop";
 import AcademicClubsPage from "./pages/AcademicClubsPage";
 import CreativeClubsPage from "./pages/CreativeClubsPage";
 import SocialClubsPage from "./pages/SocialClubsPage";
@@ -27,6 +28,7 @@ import SportsClubsPage from "./pages/SportsClubsPage";
 const App = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Header />
       <ToastContainer
         position="top-right"

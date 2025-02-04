@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import logo from "../logo.png";
 import { signoutSuccess } from "../redux/user/userSlice";
+import NotificationBell from "./NotificationBell";
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
@@ -60,6 +61,14 @@ export default function Header() {
             menuOpen ? "block" : "hidden"
           } md:block`}
         >
+          <li>
+          {currentUser && (
+           <div className="flex items-center gap-4">
+             <NotificationBell />
+          
+            </div>
+           )}
+          </li>
           <li>
             <Link
               to="/"
@@ -134,6 +143,7 @@ export default function Header() {
           onClick={toggleMenu}
         ></div>
       )}
+
     </nav>
   );
 }

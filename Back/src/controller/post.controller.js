@@ -3,12 +3,15 @@ import User from '../model/user.js';
 
 import { errorHandler } from '../../utils/error.js';
 
+import { createNotification } from './notification.controller.js';
+
+
+
 export const create = async(req,res,next)=>{
 
-    console.log('Request Body:', req.body);
-    console.log('User:', req.user);
   
     if(!req.user){
+        
         return next(errorHandler(401,'You are not authorized to create a post'));
     }
 
@@ -81,6 +84,22 @@ export const moderatePost = async (req, res, next) => {
         };
 
         await post.save();
+        if(status === 'approved'){
+            await createNotification(
+                post.userId,
+                'POST_APPROVED',
+                `Your post "${post.title}" has been approved!`,
+                post._id
+            );
+        }
+        else if(status === 'rejected'){
+            await createNotification(
+                post.userId,
+                'POST_REJECTED',
+                `Your post "${post.title}" has been rejected!`,
+                post._id
+            )
+        }
 
         res.status(200).json({
             message: `Post has been ${status}`,

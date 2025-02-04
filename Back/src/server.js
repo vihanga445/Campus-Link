@@ -13,6 +13,11 @@ import postRoutes from "./routes/post.route.js";
 import eventRoutes from "./routes/event.route.js";
 import inviteRoutes from "./routes/invite.route.js";
 import clubRoutes from "./routes/club.route.js";
+import commentRoutes from "./routes/comment.route.js";
+import notificationRoutes from "./routes/notification.route.js";
+import cookieParser from "cookie-parser";
+import "dotenv/config.js";
+
 
 const app = express();
 
@@ -49,6 +54,9 @@ app.use((req, res, next) => {
 });
 
 // Global Error Handling Middleware
+app.use("/Back/comment", commentRoutes);
+app.use("/Back/notification", notificationRoutes);
+// Error handling middleware
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
