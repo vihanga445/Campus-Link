@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 
 const CreateClubForm = () => {
   const [clubName, setClubName] = useState("");
@@ -24,7 +23,7 @@ const CreateClubForm = () => {
   const [approvalLetter, setApprovalLetter] = useState(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false); // State to track form submission
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -35,35 +34,19 @@ const CreateClubForm = () => {
     }
   };
 
-  const handleClubNameChange = (e) => {
-    setClubName(e.target.value);
-  };
-
-  const handleClubCategoryChange = (e) => {
-    setClubCategory(e.target.value);
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    if (name.startsWith("applicant_")) {
-      // Update applicant details
-      const applicantField = name.replace("applicant_", "");
-      setApplicantDetails((prevDetails) => ({
-        ...prevDetails,
-        [applicantField]: value,
-      }));
-    } else if (name.startsWith("advisor_")) {
-      // Update faculty advisor details
-      const advisorField = name.replace("advisor_", "");
-      setFacultyAdvisorDetails((prevDetails) => ({
-        ...prevDetails,
-        [advisorField]: value,
-      }));
+    if (name in applicantDetails) {
+      setApplicantDetails({ ...applicantDetails, [name]: value });
+    } else if (name in facultyAdvisorDetails) {
+      setFacultyAdvisorDetails({ ...facultyAdvisorDetails, [name]: value });
+    } else {
+      setClubName(value);
     }
   };
 
   const validateForm = () => {
+    // Validate all required fields
     if (
       !clubName ||
       !clubCategory ||
@@ -92,43 +75,17 @@ const CreateClubForm = () => {
     return true;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (validateForm()) {
-      const formData = new FormData();
-      formData.append("clubName", clubName);
-      formData.append("clubCategory", clubCategory);
-      formData.append("applicantDetails", JSON.stringify(applicantDetails));
-      formData.append(
-        "facultyAdvisorDetails",
-        JSON.stringify(facultyAdvisorDetails)
-      );
-      formData.append("clubPolicies", clubPolicies);
-      formData.append("approvalLetter", approvalLetter);
-      formData.append("termsAccepted", termsAccepted);
-
-      try {
-        const response = await axios.post(
-          "http://localhost:5000/Back/clubs/clubs", // Corrected endpoint
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        setFormSubmitted(true);
-      } catch (error) {
-        setErrorMessage(
-          error.response?.data?.error ||
-            "Failed to submit the form. Please try again."
-        );
-      }
+      // After validation, set the form as submitted and show popup
+      setFormSubmitted(true);
     }
   };
 
   const handleClosePopup = () => {
+    // Close the popup after submission
     setFormSubmitted(false);
   };
 
@@ -156,7 +113,7 @@ const CreateClubForm = () => {
             type="text"
             name="clubName"
             value={clubName}
-            onChange={handleClubNameChange}
+            onChange={handleChange}
             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
             required
           />
@@ -170,16 +127,15 @@ const CreateClubForm = () => {
           <select
             name="clubCategory"
             value={clubCategory}
-            onChange={handleClubCategoryChange}
+            onChange={handleChange}
             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
             required
           >
-            <option value="">Select a Category</option>
             <option value="Sports">Sports and Fitness</option>
             <option value="Academic">Academic</option>
             <option value="Cultural">Cultural</option>
             <option value="Social">Social</option>
-            <option value="Spiritual">Spiritual</option>
+            <option value="Social">Spiritual</option>
           </select>
         </div>
 
@@ -191,7 +147,7 @@ const CreateClubForm = () => {
           <div className="space-y-4 mt-4">
             <input
               type="text"
-              name="applicant_name"
+              name="name"
               value={applicantDetails.name}
               onChange={handleChange}
               placeholder="Your Name"
@@ -200,7 +156,7 @@ const CreateClubForm = () => {
             />
             <input
               type="email"
-              name="applicant_email"
+              name="email"
               value={applicantDetails.email}
               onChange={handleChange}
               placeholder="Your Email"
@@ -209,7 +165,7 @@ const CreateClubForm = () => {
             />
             <input
               type="text"
-              name="applicant_studentID"
+              name="studentID"
               value={applicantDetails.studentID}
               onChange={handleChange}
               placeholder="Your Student ID"
@@ -218,7 +174,7 @@ const CreateClubForm = () => {
             />
             <input
               type="text"
-              name="applicant_contactNo"
+              name="contactNo"
               value={applicantDetails.contactNo}
               onChange={handleChange}
               placeholder="Your Contact Number"
@@ -227,7 +183,7 @@ const CreateClubForm = () => {
             />
             <input
               type="text"
-              name="applicant_department"
+              name="department"
               value={applicantDetails.department}
               onChange={handleChange}
               placeholder="Your Department"
@@ -236,22 +192,26 @@ const CreateClubForm = () => {
             />
             <input
               type="text"
-              name="applicant_faculty"
+              name="faculty"
               value={applicantDetails.faculty}
               onChange={handleChange}
               placeholder="Your Faculty"
               className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               required
             />
-            <input
-              type="text"
-              name="applicant_currentRole"
+            <select
+              name="currentRole"
               value={applicantDetails.currentRole}
               onChange={handleChange}
-              placeholder="Your Current Role"
               className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               required
-            />
+            >
+              <option value="President">President</option>
+              <option value="Vice President">Vice President</option>
+              <option value="Secretary">Secretary</option>
+              <option value="Treasurer">Treasurer</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
         </div>
 
@@ -263,119 +223,149 @@ const CreateClubForm = () => {
           <div className="space-y-4 mt-4">
             <input
               type="text"
-              name="advisor_name"
+              name="name"
               value={facultyAdvisorDetails.name}
-              onChange={handleChange}
-              placeholder="Faculty Advisor Name"
+              onChange={(e) =>
+                setFacultyAdvisorDetails({
+                  ...facultyAdvisorDetails,
+                  name: e.target.value,
+                })
+              }
+              placeholder="Advisor Name"
               className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               required
             />
             <input
               type="text"
-              name="advisor_facultyName"
+              name="facultyName"
               value={facultyAdvisorDetails.facultyName}
-              onChange={handleChange}
-              placeholder="Faculty Advisor's Faculty"
+              onChange={(e) =>
+                setFacultyAdvisorDetails({
+                  ...facultyAdvisorDetails,
+                  facultyName: e.target.value,
+                })
+              }
+              placeholder="Faculty Name"
               className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               required
             />
             <input
               type="text"
-              name="advisor_advisorRole"
+              name="advisorRole"
               value={facultyAdvisorDetails.advisorRole}
-              onChange={handleChange}
-              placeholder="Faculty Advisor's Role"
+              onChange={(e) =>
+                setFacultyAdvisorDetails({
+                  ...facultyAdvisorDetails,
+                  advisorRole: e.target.value,
+                })
+              }
+              placeholder="Advisor Role"
               className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               required
             />
             <input
               type="text"
-              name="advisor_phoneNo"
+              name="phoneNo"
               value={facultyAdvisorDetails.phoneNo}
-              onChange={handleChange}
-              placeholder="Faculty Advisor's Phone Number"
+              onChange={(e) =>
+                setFacultyAdvisorDetails({
+                  ...facultyAdvisorDetails,
+                  phoneNo: e.target.value,
+                })
+              }
+              placeholder="Advisor Phone Number"
               className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               required
             />
             <input
               type="email"
-              name="advisor_email"
+              name="email"
               value={facultyAdvisorDetails.email}
-              onChange={handleChange}
-              placeholder="Faculty Advisor's Email"
+              onChange={(e) =>
+                setFacultyAdvisorDetails({
+                  ...facultyAdvisorDetails,
+                  email: e.target.value,
+                })
+              }
+              placeholder="Advisor Email"
               className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               required
             />
           </div>
         </div>
 
-        {/* Club Policies */}
+        {/* Upload Club Policies */}
         <div>
           <label className="block text-lg font-semibold text-gray-800">
-            Club Policies (PNG, JPEG, JPG, PDF files)
+            Upload Club Policies
           </label>
           <input
             type="file"
             name="clubPolicies"
-            accept=".png,.jpeg,.jpg,.pdf"
             onChange={handleFileChange}
             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+            accept="image/png, image/jpeg"
             required
           />
         </div>
 
-        {/* Approval Letter */}
+        {/* Upload Approval Letter */}
         <div>
           <label className="block text-lg font-semibold text-gray-800">
-            Approval Letter (PNG, JPEG, JPG, PDF files)
+            Upload Approval Letter
           </label>
           <input
             type="file"
             name="approvalLetter"
-            accept=".png,.jpeg,.jpg,.pdf"
             onChange={handleFileChange}
             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+            accept="image/png, image/jpeg"
             required
           />
         </div>
 
-        {/* Terms and Conditions */}
-        <div className="flex items-center space-x-2">
+        {/* Terms and Conditions Checkbox */}
+        <div className="flex items-center">
           <input
             type="checkbox"
-            name="termsAccepted"
             checked={termsAccepted}
-            onChange={(e) => setTermsAccepted(e.target.checked)}
-            className="h-6 w-6 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition duration-300"
+            onChange={() => setTermsAccepted(!termsAccepted)}
+            className="h-5 w-5 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 transition duration-300"
             required
           />
-          <label className="text-lg font-semibold text-gray-800">
-            I accept the terms and conditions.
-          </label>
+          <span className="ml-2 text-gray-800">
+            I accept the Terms and Conditions
+          </span>
         </div>
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full py-4 bg-blue-600 text-white text-xl font-bold rounded-lg hover:bg-blue-700 transition duration-300"
-        >
-          Submit
-        </button>
+        <div className="text-center">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-700 transition duration-300"
+          >
+            Submit Club Request
+          </button>
+        </div>
       </form>
 
-      {/* Success Popup */}
+      {/* Popup Confirmation */}
       {formSubmitted && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-10 rounded-lg shadow-lg">
-            <h2 className="text-3xl font-semibold text-green-600 mb-4">
-              Form Submitted Successfully!
-            </h2>
-            <p className="text-lg text-gray-800 mb-6">
-              Your club creation request has been submitted for approval.
+        <div
+          className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50"
+          onClick={handleClosePopup}
+        >
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
+            <h3 className="text-2xl font-semibold text-green-600 mb-4">
+              Club Request Submitted Successfully!
+            </h3>
+            <p className="text-lg text-gray-800 mb-4">
+              Your club creation request has been submitted successfully. Our
+              team will review your request soon.
             </p>
             <button
               onClick={handleClosePopup}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
             >
               Close
             </button>
