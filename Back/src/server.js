@@ -6,7 +6,9 @@ import userRoutes from "./routes/user.route.js";
 import postRoutes from "./routes/post.route.js";
 import eventRoutes from "./routes/event.route.js"; // Import the event routes
 import inviteRoutes from "./routes/invite.route.js";
+import notificationRoutes from "./routes/notification.route.js";
 import cookieParser from "cookie-parser";
+import commentRoutes from "./routes/comment.route.js";
 import "dotenv/config.js";
 
 const app = express();
@@ -44,6 +46,9 @@ app.use("/Back/user", userRoutes);
 app.use("/Back/post", postRoutes);
 app.use("/Back/events", eventRoutes); // Use the event routes
 app.use("/Back/invite", inviteRoutes);
+app.use("/Back/comment", commentRoutes);
+app.use("/Back/notification", notificationRoutes);
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

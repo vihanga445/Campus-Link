@@ -1,5 +1,5 @@
 import { current } from '@reduxjs/toolkit';
-import { Button, Textarea } from 'flowbite-react';
+import { Alert, Button, Textarea } from 'flowbite-react';
 import React, { useState } from 'react'
 import {useEffect} from 'react'
 import { useSelector } from 'react-redux';
@@ -35,6 +35,7 @@ const handleSubmit = async (e)=>{
     }
     catch(error){
         setCommentError(error.message);
+        console.log('Error submitting comment:',error.message);
     }
     
 }
