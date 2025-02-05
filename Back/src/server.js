@@ -15,7 +15,6 @@ import inviteRoutes from "./routes/invite.route.js";
 import clubRoutes from "./routes/club.route.js";
 import commentRoutes from "./routes/comment.route.js";
 import notificationRoutes from "./routes/notification.route.js";
-import cookieParser from "cookie-parser";
 import "dotenv/config.js";
 
 
