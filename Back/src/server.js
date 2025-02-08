@@ -1,12 +1,16 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
+import helmet from "helmet";
+import morgan from "morgan";
+
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
 import postRoutes from "./routes/post.route.js";
 import eventRoutes from "./routes/event.route.js"; // Import the event routes
 import inviteRoutes from "./routes/invite.route.js";
 import notificationRoutes from "./routes/notification.route.js";
+import clubRoutes from "./routes/club.route.js";
 import "dotenv/config.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -17,28 +21,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
-
-// Sample route
-// app.get('/', (req, res) => {
-//   res.send('API is running...');
-// });
+app.use(helmet()); // Adds security headers
+app.use(morgan("dev")); // Logs HTTP requests
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-// Connect to MongoDB
-// mongoose
-//   .connect(
-//     "mongodb+srv://project:114456@finalproject.mfuor.mongodb.net/?retryWrites=true&w=majority&appName=finalProject"
-//   )
-//   .then(() => {
-//     console.log("Connected to MongoDB");
-//   })
-//   .catch((error) => {
-//     console.error("Error connecting to MongoDB:", error);
-//   });
 
 mongoose
   .connect(process.env.MONGO_URL)
@@ -57,13 +46,19 @@ app.use("/Back/events", eventRoutes); // Use the event routes
 app.use("/Back/invite", inviteRoutes);
 app.use("/Back/comment", commentRoutes);
 app.use("/Back/notification", notificationRoutes);
+app.use("/Back/clubs", clubRoutes);
 
 // Error handling middleware
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
-  return res.status(statusCode).json({
+
+  if (process.env.NODE_ENV === "development") {
+    console.error(err.stack); // Log stack trace for development
+  }
+
+  res.status(statusCode).json({
     success: false,
     statusCode,
     message,
