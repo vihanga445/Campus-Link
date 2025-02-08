@@ -1,11 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const StartClubPage = () => {
-  useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
   return (
     <div className="min-h-screen ">
       {/* Top Section with Plain Color Background and Title */}
