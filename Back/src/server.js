@@ -7,7 +7,11 @@ import postRoutes from "./routes/post.route.js";
 import eventRoutes from "./routes/event.route.js"; // Import the event routes
 import inviteRoutes from "./routes/invite.route.js";
 import notificationRoutes from "./routes/notification.route.js";
+import cookieParser from "cookie-parser";
+import commentRoutes from "./routes/comment.route.js";
 import "dotenv/config.js";
+import dotenv from "dotenv";
+
 
 const app = express();
 
@@ -27,16 +31,27 @@ app.listen(PORT, () => {
 });
 
 // Connect to MongoDB
+// mongoose
+//   .connect(
+//     "mongodb+srv://project:114456@finalproject.mfuor.mongodb.net/?retryWrites=true&w=majority&appName=finalProject"
+//   )
+//   .then(() => {
+//     console.log("Connected to MongoDB");
+//   })
+//   .catch((error) => {
+//     console.error("Error connecting to MongoDB:", error);
+//   });
+
 mongoose
-  .connect(
-    "mongodb+srv://project:114456@finalproject.mfuor.mongodb.net/?retryWrites=true&w=majority&appName=finalProject"
-  )
+  .connect(process.env.MONGO_URL)
   .then(() => {
     console.log("Connected to MongoDB");
   })
   .catch((error) => {
-    console.error("Error connecting to MongoDB:", error);
+    console.error("Error connecting to MongoDB:", error.message);
   });
+
+
 
 // Routes
 app.use("/Back/auth", authRoutes);
