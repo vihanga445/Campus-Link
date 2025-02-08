@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(helmet()); // Adds security headers
 app.use(morgan("dev")); // Logs HTTP requests
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
