@@ -2,6 +2,9 @@ import Notification from "../model/notification.model.js";
 import { errorHandler } from "../../utils/error.js";
 
 
+
+
+
 export const createNotification = async (recipientId, type , message, postId=null)=>{
     try{
         const notification = new Notification({
@@ -11,6 +14,7 @@ export const createNotification = async (recipientId, type , message, postId=nul
             postId
         });
         await notification.save();
+        return notification;
      }
      catch(error){
         throw error;

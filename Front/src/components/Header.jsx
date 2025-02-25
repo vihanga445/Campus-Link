@@ -72,7 +72,7 @@ export default function Header() {
           <li>
             <Link
               to="/"
-              className="text-white hover:text-gray-300 text-lg underline"
+              className="text-white hover:text-gray-300 text-lg "
             >
               Home
             </Link>
@@ -80,7 +80,7 @@ export default function Header() {
           <li>
             <Link
               to="/fearures"
-              className="text-white hover:text-gray-300 text-lg underline"
+              className="text-white hover:text-gray-300 text-lg "
             >
               Features
             </Link>
@@ -88,7 +88,7 @@ export default function Header() {
           <li>
             <Link
               to="/about"
-              className="text-white hover:text-gray-300 text-lg underline"
+              className="text-white hover:text-gray-300 text-lg "
             >
               About Us
             </Link>
@@ -96,7 +96,7 @@ export default function Header() {
           <li>
             <Link
               to="/contact"
-              className="text-white hover:text-gray-300 text-lg underline"
+              className="text-white hover:text-gray-300 text-lg "
             >
               Contact Us
             </Link>
