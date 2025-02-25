@@ -15,11 +15,12 @@ const Home = () => {
       {/* Carousel Section */}
       <section className="flex-grow">
         <Carousel />
-        <UpcomingEventsCarousel />
+        {/* <UpcomingEventsCarousel /> */}
+        <Dummy />
         <ClubsAndSocietiesCarousel />
         <AnnouncementsCarousel />
         <LostAndFound />
-        <Dummy />
+        
       </section>
 
       {/* Footer */}

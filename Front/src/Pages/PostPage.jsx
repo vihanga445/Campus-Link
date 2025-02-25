@@ -9,6 +9,7 @@ import CommentSection from '../components/CommentSection';
 export default function PostPage() {
     const { postSlug } = useParams();
     const { currentUser } = useSelector((state) => state.user);
+    
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -192,7 +193,7 @@ export default function PostPage() {
                     </div>
                 </div>
             )}
-            <CommentSection postId={post._id}/>
+            {/* <CommentSection postId={post._id}/> */}
             
         
         </main>

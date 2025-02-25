@@ -220,8 +220,9 @@ export const savePost = async(req,res,next)=>{
     try{
          const user = await User.findById(req.user.id);
          if(!user.savedPosts.includes(req.params.postId)){
-            user.savedPosts.push(req.params.postId);
-            await user.save() ;
+            await User.findByIdAndUpdate(req.user.id, {
+                $push: { savedPosts: req.params.postId }
+            });
         }
          res.status(200).json('Post saved successfully');
     }
@@ -242,11 +243,14 @@ export const getSavedPosts = async(req,res,next)=>{
 
 export const unSavePost = async (req,res,next)=>{
     try{
-        const user = await User.findById(req.user.id);
-        user.savedPosts = user.savedPosts.filter(
-            (postId)=>postId.toString() !== req.params.postId
-        );
-        await user.save();
+        // const user = await User.findById(req.user.id);
+        // user.savedPosts = user.savedPosts.filter(
+        //     (postId)=>postId.toString() !== req.params.postId
+        // );
+        await User.findByIdAndUpdate(req.user.id, {
+            $pull: { savedPosts: req.params.postId }
+        });
+        
         res.status(200).json('Post unsaved successfully');
     }catch(error){
         next(error);

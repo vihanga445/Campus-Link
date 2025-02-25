@@ -56,7 +56,7 @@ export default function Signup() {
         {/* Header */}
         <div className="text-center mb-6">
           <Link to="/" className="font-bold text-3xl text-indigo-600">
-            Ruhuna App
+            Campus Link
           </Link>
           <p className="text-sm text-gray-500 mt-2">
             Sign up to explore events, societies, and announcements for university students.
