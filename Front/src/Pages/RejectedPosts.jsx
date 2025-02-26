@@ -43,10 +43,10 @@ export default function RejectedPosts() {
                                 className="w-full h-48 object-cover rounded-lg my-2"
                             />
                         )}
-                        <div className="mt-2">{post.content}</div>
+                        <div className="mt-2">{parse(post.content)}</div>
                         <div className="mt-4 p-3 bg-red-100 rounded-lg">
                             <p className="font-semibold text-red-600">Rejection Reason:</p>
-                            <p className="text-red-700">{post.moderationDetails.rejectionReason}</p>
+                            <p className="text-red-700">{parse(post.moderationDetails.rejectionReason)}</p>
                         </div>
                     </div>
                 ))}
