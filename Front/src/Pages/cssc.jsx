@@ -11,7 +11,8 @@ const ComputerScienceCommunityPage = () => {
       <div
         className="relative w-full h-[90vh] bg-cover bg-center"
         style={{
-          backgroundImage: 'url("./src/image.png")',
+          backgroundImage: 'url("./src/cssc.png")',
+          backgroundPosition: "center 20px",
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-center p-8">
