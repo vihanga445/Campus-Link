@@ -20,6 +20,7 @@ import InviteFriends from "./components/InviteFriends";
 import CreateClubForm from "./components/CreateClubForm";
 import ScrollToTop from "./components/ScrollToTop";
 import AcademicClubsPage from "./pages/AcademicClubsPage";
+import CSSC from "./Pages/cssc";
 import CreativeClubsPage from "./pages/CreativeClubsPage";
 import SocialClubsPage from "./pages/SocialClubsPage";
 import CulturalClubsPage from "./pages/CulturalClubsPage";
@@ -58,6 +59,7 @@ const App = () => {
         <Route path="/cultural-clubs" element={<CulturalClubsPage />} />
         <Route path="/spiritual-clubs" element={<SpiritualClubsPage />} />
         <Route path="/sports-clubs" element={<SportsClubsPage />} />
+        <Route path="/cssc" element={<CSSC />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
