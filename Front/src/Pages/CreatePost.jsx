@@ -99,7 +99,7 @@ export default function CreatePost() {
           pauseOnHover: true,
           draggable: true,
         });
-        navigate('/dashboard?tab=posts');
+        navigate('/dashboard?tab=profile');
       }
     } catch (error) {
       setPublishError('Something went wrong');
