@@ -1,11 +1,20 @@
 import fs from "fs";
+import path from "path";
 import mailer from "../controller/mail.controller.js";
 import "dotenv/config.js";
 
 // Directly hardcoded path to the HTML template file
-const filePath =
-  "C:/Users/MN/Desktop/New folder/final_project/Back/src/views/inviteEmailTemplate.html";
-
+const filePath = path.join(
+  "C:",
+  "Users",
+  "MN",
+  "Desktop",
+  "New folder",
+  "final_project",
+  "Back",
+  "src",
+  "inviteEmailTemplate.html"
+);
 export const sendInvite = async (req, res) => {
   const { email } = req.body;
 

@@ -89,14 +89,18 @@ const AcademicClubsPage = () => {
                 <p className="text-gray-700 mt-2">{club.description}</p>
 
                 {/* "Find Out More" Link */}
-                <div className="mt-4">
-                  <span
-                    className="text-blue-600 hover:underline cursor-pointer"
-                    onClick={() => navigate(`/clubs/${club.id}`)} // Navigate to club details
-                  >
-                    Find out more &rarr;
-                  </span>
-                </div>
+                <button
+                  className="text-blue-600"
+                  onClick={() => {
+                    if (club.id === 1) {
+                      navigate("/cssc"); // Navigate to the CSSC page
+                    } else {
+                      navigate(`/clubs/${club.id}`); // Default for other clubs
+                    }
+                  }}
+                >
+                  Find out more &rarr;
+                </button>
               </div>
             </motion.div>
           ))}
