@@ -26,6 +26,8 @@ import SocialClubsPage from "./pages/SocialClubsPage";
 import CulturalClubsPage from "./pages/CulturalClubsPage";
 import SpiritualClubsPage from "./pages/SpiritualClubsPage";
 import SportsClubsPage from "./pages/SportsClubsPage";
+import PendingClubApprovals from "./components/PendingClubApprovals";
+
 const App = () => {
   return (
     <BrowserRouter>
