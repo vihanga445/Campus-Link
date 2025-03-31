@@ -112,53 +112,59 @@ export const moderatePost = async (req, res, next) => {
 
 
 export const getposts = async(req,res,next)=>{
-
-    try{
+    try {
         const startIndex = parseInt(req.query.startIndex)||0;
         const limit = parseInt(req.query.limit) || 9;
-        const sortDirection = req.query.order === 'asc' ? 1 : -1 ;
-        const posts = await Post.find({
+        const sortDirection = req.query.order === 'asc' ? 1 : -1;
 
-            status:'approved',
-            ...(req.query.userId && {userId:req.query.userId}),
-            ...(req.query.category && {category:req.query.category}),
-            ...(req.query.slug && {slug:req.query.slug}),
+        // Get current date at start of day
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+
+        const posts = await Post.find({
+            status: 'approved',
+            'eventDetails.date': { $gte: currentDate }, // Only get upcoming events
+            ...(req.query.userId && {userId: req.query.userId}),
+            ...(req.query.category && {category: req.query.category}),
+            ...(req.query.slug && {slug: req.query.slug}),
             ...(req.query.postId && {_id: req.query.postId}),
             ...(req.query.searchTerm && {
                 $or: [
-                  { title: { $regex: req.query.searchTerm, $options: 'i' } },
-                  { content: { $regex: req.query.searchTerm, $options: 'i' } },
+                    { title: { $regex: req.query.searchTerm, $options: 'i' } },
+                    { content: { $regex: req.query.searchTerm, $options: 'i' } },
                 ],
-              }),
-
- })
-        .sort({updatedAt:sortDirection})
+            }),
+        })
+        .sort({ 'eventDetails.date': 1 }) // Sort by closest upcoming date
         .skip(startIndex)
         .limit(limit);
 
-        const totalPosts = await Post.countDocuments();
+        // Update total counts to only include upcoming events
+        const totalPosts = await Post.countDocuments({
+            status: 'approved',
+            'eventDetails.date': { $gte: currentDate }
+        });
 
         const now = new Date();
-
         const oneMonthAgo = new Date(
             now.getFullYear(),
             now.getMonth() - 1,
-            now.getDate(),
+            now.getDate()
         );
 
         const lastMonthPosts = await Post.countDocuments({
             createdAt: { $gte: oneMonthAgo },
-        })
+            'eventDetails.date': { $gte: currentDate }
+        });
 
         res.status(200).json({
             posts,
             totalPosts,
             lastMonthPosts,
         });
-    }catch(error){
+    } catch(error) {
         next(error);
     }
-
 };
 
 export const deletePost = async(req,res,next)=>{
@@ -255,6 +261,6 @@ export const unSavePost = async (req,res,next)=>{
     }catch(error){
         next(error);
     }    
-};  
-        
+};
+
 
