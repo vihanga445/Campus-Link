@@ -28,11 +28,10 @@ const postSchema = new mongoose.Schema({
         required: true,
     },
     eventDetails: {
-        type: {
-          type: String,
-          enum: ['Academic', 'Cultural', 'Sports', 'Workshop', 'Career', 'Club'],
-          required: function() { return this.category === 'Event'; }
-        },
+        types: [{ // Changed from type to types array
+            type: String,
+            enum: ['Academic', 'Cultural', 'Sports', 'Workshop', 'Career', 'Club']
+        }],
         date: {
           type: Date,
           required: function() { return this.category === 'Event'; }

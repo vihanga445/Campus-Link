@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from 'flowbite-react';
 import { useSelector } from 'react-redux';
 import { FaBookmark, FaShare, FaCalendarAlt, FaMapMarkerAlt, 
-         FaRegEnvelope, FaPhone, FaUserFriends } from 'react-icons/fa';
+         FaRegEnvelope, FaPhone, FaUserFriends, FaLayerGroup } from 'react-icons/fa';
 import CommentSection from '../components/CommentSection';
 
 export default function PostPage() {
@@ -108,6 +108,25 @@ export default function PostPage() {
                         <h2 className='text-3xl font-bold mb-6 text-gray-800 font-[Poppins]'>Event Details</h2>
                         <div className='grid md:grid-cols-2 gap-6'>
                             <div className='space-y-4'>
+                                {/* Add Event Types */}
+                                <div className='flex items-start text-lg'>
+                                    <FaLayerGroup className='mr-3 text-blue-500 mt-1' />
+                                    <div>
+                                        <span className='font-medium'>Event Types:</span>
+                                        <div className='flex flex-wrap gap-2 mt-2'>
+                                            {post.eventDetails.types.map((type) => (
+                                                <span
+                                                    key={type}
+                                                    className='bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full'
+                                                >
+                                                    {type}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Existing event details */}
                                 <p className='flex items-center text-lg'>
                                     <FaCalendarAlt className='mr-3 text-blue-500' />
                                     <span className='font-medium'>Date:</span>

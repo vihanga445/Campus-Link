@@ -25,7 +25,7 @@ export default function CreatePost() {
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({
     eventDetails: {
-      type: '',
+      types: [], // Changed from type to types array
       date: '',
       time: '',
       venue: '',
@@ -162,19 +162,34 @@ export default function CreatePost() {
           {formData.category === 'Event' && (
             <>
               <div className='space-y-2'>
-                <label className='text-sm font-medium text-gray-700'>Event Type</label>
-                <Select 
-                  className='w-full'
-                  onChange={(e) => setFormData({ ...formData, eventDetails: { ...formData.eventDetails, type: e.target.value } })}
-                >
-                  <option value=''>Select event type</option>
-                  <option value='Academic'>Academic</option>
-                  <option value='Cultural'>Cultural</option>
-                  <option value='Sports'>Sports</option>
-                  <option value='Workshop'>Workshop</option>
-                  <option value='Career'>Career</option>
-                  <option value='Club'>Club</option>
-                </Select>
+                <label className='text-sm font-medium text-gray-700'>Event Types (Select all that apply)</label>
+                <div className='grid grid-cols-2 gap-4 mt-2'>
+                  {['Academic', 'Cultural', 'Sports', 'Workshop', 'Career', 'Club'].map((type) => (
+                    <div key={type} className='flex items-center'>
+                      <input
+                        type='checkbox'
+                        id={type}
+                        className='w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500'
+                        onChange={(e) => {
+                          const updatedTypes = e.target.checked
+                            ? [...formData.eventDetails.types, type]
+                            : formData.eventDetails.types.filter(t => t !== type);
+                          setFormData({
+                            ...formData,
+                            eventDetails: {
+                              ...formData.eventDetails,
+                              types: updatedTypes
+                            }
+                          });
+                        }}
+                        checked={formData.eventDetails.types.includes(type)}
+                      />
+                      <label htmlFor={type} className='ml-2 text-sm text-gray-700'>
+                        {type}
+                      </label>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className='space-y-2'>
                 <label className='text-sm font-medium text-gray-700'>Event Date</label>
@@ -333,6 +348,14 @@ export default function CreatePost() {
                 className='w-full h-64 object-cover rounded-lg mb-4'
               />
             )}
+
+            <div className='mb-4 flex flex-wrap gap-2'>
+              {formData.eventDetails?.types.map((type) => (
+                <span key={type} className='bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm'>
+                  {type}
+                </span>
+              ))}
+            </div>
 
             <div className='prose max-w-none'>
               {parse(formData.content || '')}

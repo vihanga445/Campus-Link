@@ -263,4 +263,53 @@ export const unSavePost = async (req,res,next)=>{
     }    
 };
 
+export const getEvents = async (req, res, next) => {
+
+ try{
+    const {title,type,date} = req.query;
+    const currentDate = new Date();
+    currentDate.setHours(0,0,0,0);
+
+    let query = {
+        category: 'Event',
+        status: 'approved',
+        'eventDetails.date': { $gte: currentDate } // Only get upcoming events
+    };
+
+    if(title){
+        query.title = { $regex: title, $options: 'i' };
+    }
+    if(type && type !== 'all'){
+        query['eventDetails.types'] = type;
+    }
+    if(date){
+        const searchDate = new Date(date);
+        const nextDay = new Date(searchDate);
+        nextDay.setDate(searchDate.getDate() + 1);
+        query['eventDetails.date']={
+            $gte: searchDate,
+            $lt: nextDay
+        };
+    }
+    const events = await Post.find(query)
+            .sort({ 'eventDetails.date': 1 })
+            .select('title slug image eventDetails.date eventDetails.types eventDetails.organizer ')
+            .lean();
+
+        res.status(200).json({
+            success: true,
+            posts: events
+        });
+
+    } catch (error) {
+        next(error);
+    }
+
+    }
+ 
+
+
+
+
+
 
