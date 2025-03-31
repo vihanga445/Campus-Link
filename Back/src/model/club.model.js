@@ -40,6 +40,11 @@ const ClubSchema = new Schema({
     type: Boolean,
     required: true,
   },
+  status: {
+    type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -47,4 +52,4 @@ const ClubSchema = new Schema({
 });
 
 const Club = mongoose.model("Club", ClubSchema);
-export default Club; // Use ES module export
+export default Club;

@@ -85,6 +85,7 @@ router.post(
         clubPolicies: req.files["clubPolicies"][0].path,
         approvalLetter: req.files["approvalLetter"][0].path,
         termsAccepted,
+        status: "pending",
       });
 
       // Save to the database
@@ -99,5 +100,60 @@ router.post(
     }
   }
 );
+
+// Fetch Pending Club Approvals (Only for Club Moderators)
+router.get("/clubs/pending", async (req, res) => {
+  try {
+    const pendingClubs = await Club.find({ status: "pending" }); // Fetch only pending clubs
+    return res.status(200).json(pendingClubs);
+  } catch (error) {
+    console.error("Error fetching pending clubs:", error);
+    return res.status(500).json({ error: "Server error. Please try again." });
+  }
+});
+
+// Approve a club
+router.put("/clubs/:id/approve", async (req, res) => {
+  try {
+    const club = await Club.findByIdAndUpdate(
+      req.params.id,
+      { status: "approved" },
+      { new: true }
+    );
+
+    if (!club) {
+      return res.status(404).json({ error: "Club not found" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Club approved successfully!", club });
+  } catch (error) {
+    console.error("Error approving club:", error);
+    return res.status(500).json({ error: "Server error. Please try again." });
+  }
+});
+
+// Reject a club
+router.put("/clubs/:id/reject", async (req, res) => {
+  try {
+    const club = await Club.findByIdAndUpdate(
+      req.params.id,
+      { status: "rejected" },
+      { new: true }
+    );
+
+    if (!club) {
+      return res.status(404).json({ error: "Club not found" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Club rejected successfully!", club });
+  } catch (error) {
+    console.error("Error rejecting club:", error);
+    return res.status(500).json({ error: "Server error. Please try again." });
+  }
+});
 
 export default router;
