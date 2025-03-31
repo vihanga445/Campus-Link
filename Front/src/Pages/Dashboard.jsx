@@ -25,7 +25,7 @@ export default function Dashboard() {
         {/* Sidebar */}
         <DashSidebar />
       </div>
-      <div>{tab === "pending-clubs" && <PendingClubApprovals />}</div>
+      {tab === "pending-clubs" && <PendingClubApprovals />}
       {/* profile... */}
       {tab === "profile" && <DashProfile />}
       {/* posts... */}
