@@ -193,7 +193,7 @@ export default function PostPage() {
                     </div>
                 </div>
             )}
-            {/* <CommentSection postId={post._id}/> */}
+            <CommentSection postId={post._id}/>
             
         
         </main>

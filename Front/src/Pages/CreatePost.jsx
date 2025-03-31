@@ -11,6 +11,14 @@ import parse from 'html-react-parser';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+// Add this helper function at the top of your component
+const validateEventDate = (selectedDate) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Reset time to start of day
+  const eventDate = new Date(selectedDate);
+  return eventDate >= today;
+};
+
 export default function CreatePost() {
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
@@ -72,6 +80,13 @@ export default function CreatePost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Add this validation check
+      if (formData.category === 'Event' && !validateEventDate(formData.eventDetails.date)) {
+        setPublishError('Event date cannot be in the past');
+        toast.error('Event date cannot be in the past');
+        return;
+      }
+
       console.log('Form Data before event details:', formData); // Log form data before event details
        
       const eventDetails = formData.category === 'Event' ? formData.eventDetails : undefined;
@@ -166,7 +181,21 @@ export default function CreatePost() {
                 <TextInput
                   type='date'
                   required
-                  onChange={(e) => setFormData({ ...formData, eventDetails: { ...formData.eventDetails, date: e.target.value } })}
+                  min={new Date().toISOString().split('T')[0]} // Set minimum date to today
+                  onChange={(e) => {
+                    const selectedDate = e.target.value;
+                    if (!validateEventDate(selectedDate)) {
+                      toast.error('Event date cannot be in the past');
+                      return;
+                    }
+                    setFormData({ 
+                      ...formData, 
+                      eventDetails: { 
+                        ...formData.eventDetails, 
+                        date: selectedDate 
+                      } 
+                    });
+                  }}
                 />
               </div>
               <div className='space-y-2'>
