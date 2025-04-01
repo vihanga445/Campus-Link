@@ -26,7 +26,7 @@ import SocialClubsPage from "./pages/SocialClubsPage";
 import CulturalClubsPage from "./pages/CulturalClubsPage";
 import SpiritualClubsPage from "./pages/SpiritualClubsPage";
 import SportsClubsPage from "./pages/SportsClubsPage";
-import PendingClubApprovals from "./components/PendingClubApprovals";
+import MembershipForm from "./components/MembershipForm";
 
 const App = () => {
   return (
@@ -62,6 +62,7 @@ const App = () => {
         <Route path="/spiritual-clubs" element={<SpiritualClubsPage />} />
         <Route path="/sports-clubs" element={<SportsClubsPage />} />
         <Route path="/cssc" element={<CSSC />} />
+        <Route path="/membership-form" element={<MembershipForm />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
