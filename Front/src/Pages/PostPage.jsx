@@ -76,6 +76,26 @@ export default function PostPage() {
         }
       };
 
+      const handleContactOwner = async () => {
+        try {
+            const res = await fetch('/Back/message/initiate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    receiverId: post.userId,
+                    postId: post._id,
+                }),
+            });
+            const data = await res.json();
+            navigate(`/dashboard/chat/${data._id}`);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+
     if (loading) return <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
     </div>;
@@ -164,9 +184,7 @@ export default function PostPage() {
                         <h2 className='text-3xl font-bold mb-6 text-gray-800 font-[Poppins]'>Registration</h2>
                         <div className='space-y-6'>
                             <div className='flex flex-wrap gap-4 items-center'>
-                                <Button gradientDuoTone='purpleToBlue' size='lg'>
-                                    RSVP Now
-                                </Button>
+                                
                                 <a href={post.eventDetails.registration.link} 
                                    className='text-blue-500 hover:underline'>
                                     Registration Link
@@ -210,9 +228,29 @@ export default function PostPage() {
                             </Button>
                         </div>
                     </div>
+                    
+                    <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
+ 
+                         {currentUser &&  currentUser._id !== post.userId && (
+                         <Button gradientDuoTone='purpleToBlue' size='lg' onClick={handleContactOwner}>
+                            Contact organizers
+                         </Button>
+
+
+                         )}
+                    
+
+                    </div>
+
+
                 </div>
+
+            
+                
             )}
-            <CommentSection postId={post._id}/>
+
+
+            {/* <CommentSection postId={post._id}/> */}
             
         
         </main>

@@ -9,6 +9,7 @@ import RejectedPosts from "./RejectedPosts";
 import InviteFriends from "../components/InviteFriends";
 import SavedPosts from "./SavedPosts";
 import PendingClubApprovals from "../components/PendingClubApprovals";
+import DashChat from "../components/DashChat.jsx";
 export default function Dashboard() {
   const location = useLocation();
   const [tab, setTab] = useState("");
@@ -38,6 +39,9 @@ export default function Dashboard() {
       {tab === "invite" && <InviteFriends />}
 
       {tab === "saved" && <SavedPosts />}
+
+      {tab === "chat" && <DashChat />}  
+
     </div>
   );
 }
