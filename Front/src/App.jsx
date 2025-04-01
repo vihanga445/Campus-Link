@@ -27,6 +27,8 @@ import CulturalClubsPage from "./pages/CulturalClubsPage";
 import SpiritualClubsPage from "./pages/SpiritualClubsPage";
 import SportsClubsPage from "./pages/SportsClubsPage";
 import MembershipForm from "./components/MembershipForm";
+import DashChat from "./components/DashChat";
+import ChatList from "./components/ChatList";
 
 const App = () => {
   return (
@@ -68,6 +70,8 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/update-post/:postId" element={<UpdatePost />} />
+          <Route path="/dashboard/chat/:conversationId" element={<DashChat />} />
+          <Route path="/dashboard/messages" element={<ChatList />} />
         </Route>
 
         <Route path="/post/:postSlug" element={<PostPage />} />
