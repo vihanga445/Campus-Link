@@ -129,6 +129,12 @@ export default function DashSidebar() {
             </Sidebar.Item>
           </Link>
 
+          <Link to="/dashboard?tab=chat">
+            <Sidebar.Item active={tab === "chat"} icon={HiUser}>
+              Chat
+            </Sidebar.Item>
+          </Link>
+
           <Sidebar.Item
             icon={HiArrowSmRight}
             className="cursor-pointer"
