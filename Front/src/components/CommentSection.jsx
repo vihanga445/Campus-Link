@@ -31,6 +31,7 @@ const handleSubmit = async (e)=>{
         if(res.ok){
             setComment('');
             setCommentError(null);
+            setComments([data,...comments]);
         }
     }
     catch(error){
@@ -45,8 +46,9 @@ useEffect(()=>{
     const fetchComments = async ()=>{
         try{
             const res = await fetch(`/Back/comment/getcomments/${postId}`);
-            const data = await res.json();
+            
             if(res.ok){
+                const data = await res.json();
                 setComments(data);
             }
         }
@@ -83,6 +85,7 @@ useEffect(()=>{
         <form onSubmit={handleSubmit} className='flex gap-2'>
             <Textarea
             placeholder='Write a comment...'
+            rows='3'
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             />

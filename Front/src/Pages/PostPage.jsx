@@ -229,6 +229,7 @@ export default function PostPage() {
                         </div>
                     </div>
                     
+                    
                     <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
  
                          {currentUser &&  currentUser._id !== post.userId && (
@@ -250,7 +251,7 @@ export default function PostPage() {
             )}
 
 
-            {/* <CommentSection postId={post._id}/> */}
+            <CommentSection postId={post._id}/>
             
         
         </main>
