@@ -243,6 +243,15 @@ export default function PostPage() {
 
                     </div>
 
+                    <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
+
+
+                    <CommentSection postId={post._id}/>
+
+
+                    </div>
+
+
 
                 </div>
 
@@ -251,7 +260,6 @@ export default function PostPage() {
             )}
 
 
-            <CommentSection postId={post._id}/>
             
         
         </main>
