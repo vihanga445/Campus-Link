@@ -4,6 +4,15 @@ import axios from "axios";
 const CreateClubForm = () => {
   const [clubName, setClubName] = useState("");
   const [clubCategory, setClubCategory] = useState("");
+  const [clubEmail, setClubEmail] = useState(""); // New state for club email
+  const [clubCoverPhoto, setClubCoverPhoto] = useState(null); // New state for club cover photo
+  const [clubBannerPhoto, setClubBannerPhoto] = useState(null); // New state for club banner photo
+  const [clubDescription, setClubDescription] = useState(""); // New state for club description
+  const [clubTagline, setClubTagline] = useState(""); // New state for club tagline
+  const [clubHistory, setClubHistory] = useState(""); // New state for club history
+  const [clubKeyMembers, setClubKeyMembers] = useState([
+    { name: "", role: "", imageUrl: "" },
+  ]);
   const [applicantDetails, setApplicantDetails] = useState({
     name: "",
     email: "",
@@ -20,6 +29,11 @@ const CreateClubForm = () => {
     phoneNo: "",
     email: "",
   });
+  const [socialMediaLinks, setSocialMediaLinks] = useState({
+    facebook: "",
+    twitter: "",
+    linkedin: "",
+  });
   const [clubPolicies, setClubPolicies] = useState(null);
   const [approvalLetter, setApprovalLetter] = useState(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -28,10 +42,14 @@ const CreateClubForm = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (e.target.name === "clubPolicies") {
-      setClubPolicies(file);
+    if (e.target.name === "clubCoverPhoto") {
+      setClubCoverPhoto(file); // Update clubCoverPhoto state
+    } else if (e.target.name === "clubBannerPhoto") {
+      setClubBannerPhoto(file); // Update clubBannerPhoto state
+    } else if (e.target.name === "clubPolicies") {
+      setClubPolicies(file); // Update clubPolicies state
     } else if (e.target.name === "approvalLetter") {
-      setApprovalLetter(file);
+      setApprovalLetter(file); // Update approvalLetter state
     }
   };
 
@@ -41,6 +59,10 @@ const CreateClubForm = () => {
 
   const handleClubCategoryChange = (e) => {
     setClubCategory(e.target.value);
+  };
+
+  const handleClubEmailChange = (e) => {
+    setClubEmail(e.target.value); // Update club email state
   };
 
   const handleChange = (e) => {
@@ -63,10 +85,58 @@ const CreateClubForm = () => {
     }
   };
 
+  const handleKeyMemberChange = async (index, field, value) => {
+    const updatedMembers = [...clubKeyMembers];
+
+    if (field === "imageUrl" && value instanceof File) {
+      // Upload the file to Cloudinary or another server
+      const uploadedImageUrl = await uploadToCloudinary(
+        value,
+        "key_member_images"
+      );
+      updatedMembers[index][field] = uploadedImageUrl; // Set the uploaded image URL
+    } else {
+      updatedMembers[index][field] = value; // Update other fields
+    }
+
+    setClubKeyMembers(updatedMembers);
+  };
+
+  const addKeyMember = () => {
+    setClubKeyMembers([
+      ...clubKeyMembers,
+      { name: "", role: "", imageUrl: "" },
+    ]);
+  };
+
+  const removeKeyMember = (index) => {
+    const updatedMembers = clubKeyMembers.filter((_, i) => i !== index);
+    setClubKeyMembers(updatedMembers);
+  };
+
   const validateForm = () => {
+    if (
+      !socialMediaLinks.facebook ||
+      !socialMediaLinks.twitter ||
+      !socialMediaLinks.linkedin
+    ) {
+      setErrorMessage("Please fill in all the required social media links.");
+      return false;
+    }
     if (
       !clubName ||
       !clubCategory ||
+      !clubEmail ||
+      !clubDescription ||
+      !clubTagline ||
+      !clubHistory ||
+      !clubCoverPhoto ||
+      clubKeyMembers.some(
+        (member) => !member.name || !member.role || !member.imageUrl
+      ) ||
+      !socialMediaLinks.facebook ||
+      !socialMediaLinks.twitter ||
+      !socialMediaLinks.linkedin ||
       !applicantDetails.name ||
       !applicantDetails.email ||
       !applicantDetails.studentID ||
@@ -81,6 +151,7 @@ const CreateClubForm = () => {
       !facultyAdvisorDetails.email ||
       !clubPolicies ||
       !approvalLetter ||
+      !clubBannerPhoto ||
       !termsAccepted
     ) {
       setErrorMessage(
@@ -92,40 +163,112 @@ const CreateClubForm = () => {
     return true;
   };
 
+  const uploadToCloudinary = async (file, folder) => {
+    const cloudinaryFormData = new FormData();
+    cloudinaryFormData.append("file", file);
+    cloudinaryFormData.append("upload_preset", "campuslink");
+    cloudinaryFormData.append("folder", folder);
+
+    const response = await axios.post(
+      "https://api.cloudinary.com/v1_1/dou5cuqjs/image/upload",
+      cloudinaryFormData
+    );
+
+    return response.data.secure_url;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (validateForm()) {
+    if (!validateForm()) return;
+
+    try {
+      // Upload images to Cloudinary
+      const uploadedCoverPhoto = clubCoverPhoto
+        ? await uploadToCloudinary(clubCoverPhoto, "club_cover_photos")
+        : null;
+
+      const uploadedBannerPhoto = clubBannerPhoto
+        ? await uploadToCloudinary(clubBannerPhoto, "club_banner_photos")
+        : null;
+
+      const uploadedPolicies = clubPolicies
+        ? await uploadToCloudinary(clubPolicies, "club_policies")
+        : null;
+
+      const uploadedApprovalLetter = approvalLetter
+        ? await uploadToCloudinary(approvalLetter, "approval_letters")
+        : null;
+
+      // Upload key member images to Cloudinary
+      const uploadedKeyMembers = await Promise.all(
+        clubKeyMembers.map(async (member) => {
+          if (member.imageUrl instanceof File) {
+            const uploadedImageUrl = await uploadToCloudinary(
+              member.imageUrl,
+              "key_member_images"
+            );
+            return { ...member, imageUrl: uploadedImageUrl };
+          }
+          return member; // If imageUrl is already a URL, keep it as is
+        })
+      );
+
+      // Prepare FormData
       const formData = new FormData();
       formData.append("clubName", clubName);
       formData.append("clubCategory", clubCategory);
+      formData.append("clubEmail", clubEmail);
+      formData.append("clubDescription", clubDescription);
+      formData.append("clubTagline", clubTagline);
+      formData.append("clubHistory", clubHistory);
+      formData.append("clubCoverPhoto", uploadedCoverPhoto);
+      formData.append("clubBannerPhoto", uploadedBannerPhoto);
+      formData.append("clubPolicies", uploadedPolicies);
+      formData.append("approvalLetter", uploadedApprovalLetter);
+      formData.append("termsAccepted", termsAccepted);
+
       for (const key in applicantDetails) {
         formData.append(`a_${key}`, applicantDetails[key]);
       }
       for (const key in facultyAdvisorDetails) {
         formData.append(`f_${key}`, facultyAdvisorDetails[key]);
       }
-      formData.append("clubPolicies", clubPolicies);
-      formData.append("approvalLetter", approvalLetter);
-      formData.append("termsAccepted", termsAccepted);
+      formData.append("clubKeyMembers", JSON.stringify(uploadedKeyMembers));
+      formData.append("socialMediaLinks", JSON.stringify(socialMediaLinks));
 
-      try {
-        const response = await axios.post(
-          "http://localhost:5000/Back/clubs/clubs",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        setFormSubmitted(true);
-      } catch (error) {
-        setErrorMessage(
-          error.response?.data?.error ||
-            "Failed to submit the form. Please try again."
-        );
+      console.log("FormData being sent:");
+      for (let pair of formData.entries()) {
+        console.log(`${pair[0]}: ${pair[1]}`);
       }
+
+      // Submit the form to the backend
+      const response = await axios.post(
+        "http://localhost:5000/Back/clubs/clubs",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        setFormSubmitted(true); // Show success popup
+        console.log("Form successfully submitted:", response.data);
+      } else {
+        setErrorMessage("Failed to submit the form. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting the form:", error);
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+        console.error("Response headers:", error.response.headers);
+      }
+      setErrorMessage(
+        "An error occurred while submitting the form. Please try again."
+      );
     }
   };
 
@@ -182,6 +325,158 @@ const CreateClubForm = () => {
             <option value="Social">Social</option>
             <option value="Spiritual">Spiritual</option>
           </select>
+        </div>
+
+        {/* Club Email */}
+        <div>
+          <label className="block text-lg font-semibold text-gray-800">
+            Club Email
+          </label>
+          <input
+            type="email"
+            name="clubEmail"
+            value={clubEmail}
+            onChange={handleClubEmailChange} // Handle email change
+            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+            required
+          />
+        </div>
+
+        {/* Club Cover Photo */}
+        <div>
+          <label className="block text-lg font-semibold text-gray-800">
+            Club Cover Photo
+          </label>
+          <input
+            type="file"
+            name="clubCoverPhoto"
+            accept="image/*"
+            onChange={handleFileChange} // Handle cover photo change
+            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+          />
+        </div>
+
+        {/* Club Banner Photo */}
+        <div>
+          <label className="block text-lg font-semibold text-gray-800">
+            Club Banner Photo
+          </label>
+          <input
+            type="file"
+            name="clubBannerPhoto"
+            accept="image/*"
+            onChange={handleFileChange} // Handle banner photo change
+            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+            required
+          />
+        </div>
+
+        {/* Club Description */}
+        <div>
+          <label className="block text-lg font-semibold text-gray-800">
+            Club Description
+          </label>
+          <textarea
+            name="clubDescription"
+            value={clubDescription}
+            onChange={(e) => setClubDescription(e.target.value)} // Update club description state
+            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+            rows="4"
+            placeholder="Describe your club's purpose, activities, and goals"
+            required
+          ></textarea>
+        </div>
+
+        {/* Club Tagline */}
+        <div>
+          <label className="block text-lg font-semibold text-gray-800">
+            Club Tagline
+          </label>
+          <input
+            type="text"
+            name="clubTagline"
+            value={clubTagline}
+            onChange={(e) => setClubTagline(e.target.value)} // Update club tagline state
+            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+            placeholder="Enter your club's tagline"
+            required
+          />
+        </div>
+
+        {/* Club History */}
+        <div>
+          <label className="block text-lg font-semibold text-gray-800">
+            Club History
+          </label>
+          <textarea
+            name="clubHistory"
+            value={clubHistory}
+            onChange={(e) => setClubHistory(e.target.value)} // Update club history state
+            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+            rows="4"
+            placeholder="Provide a brief history of your club"
+            required
+          ></textarea>
+        </div>
+
+        {/* Club Key Members */}
+        <div>
+          <h3 className="text-xl font-semibold text-gray-800">
+            Club Key Members
+          </h3>
+          {clubKeyMembers.map((member, index) => (
+            <div key={index} className="space-y-4 mt-4 border p-4 rounded-lg">
+              <input
+                type="text"
+                placeholder="Member Name"
+                value={member.name}
+                onChange={(e) =>
+                  handleKeyMemberChange(index, "name", e.target.value)
+                }
+                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Member Role"
+                value={member.role}
+                onChange={(e) =>
+                  handleKeyMemberChange(index, "role", e.target.value)
+                }
+                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                required
+              />
+              {/* Image URL */}
+              <div>
+                <label className="block text-lg font-semibold text-gray-800">
+                  Member Image
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) =>
+                    handleKeyMemberChange(index, "imageUrl", e.target.files[0])
+                  } // Pass the file
+                  className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                  required
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => removeKeyMember(index)}
+                className="text-red-500 hover:underline"
+              >
+                Remove Member
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={addKeyMember}
+            className="mt-4 p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none"
+          >
+            Add Key Member
+          </button>
         </div>
 
         {/* Applicant Details */}
@@ -276,7 +571,7 @@ const CreateClubForm = () => {
               name="advisor_facultyName"
               value={facultyAdvisorDetails.facultyName}
               onChange={handleChange}
-              placeholder="Faculty Advisor's Faculty"
+              placeholder="Faculty Name"
               className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               required
             />
@@ -285,7 +580,7 @@ const CreateClubForm = () => {
               name="advisor_advisorRole"
               value={facultyAdvisorDetails.advisorRole}
               onChange={handleChange}
-              placeholder="Faculty Advisor's Role"
+              placeholder="Advisor's Role"
               className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               required
             />
@@ -294,7 +589,7 @@ const CreateClubForm = () => {
               name="advisor_phoneNo"
               value={facultyAdvisorDetails.phoneNo}
               onChange={handleChange}
-              placeholder="Faculty Advisor's Phone Number"
+              placeholder="Advisor's Phone Number"
               className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               required
             />
@@ -303,80 +598,150 @@ const CreateClubForm = () => {
               name="advisor_email"
               value={facultyAdvisorDetails.email}
               onChange={handleChange}
-              placeholder="Faculty Advisor's Email"
+              placeholder="Advisor's Email"
               className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               required
             />
           </div>
         </div>
 
-        {/* Club Policies */}
+        {/* Club Policies and Approval Letter */}
         <div>
           <label className="block text-lg font-semibold text-gray-800">
-            Club Policies (PNG, JPEG, JPG, PDF files)
+            Club Policies (PDF)
           </label>
           <input
             type="file"
             name="clubPolicies"
-            accept=".png,.jpeg,.jpg,.pdf"
+            accept="image/*"
             onChange={handleFileChange}
             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
             required
           />
         </div>
 
-        {/* Approval Letter */}
         <div>
           <label className="block text-lg font-semibold text-gray-800">
-            Approval Letter (PNG, JPEG, JPG, PDF files)
+            Approval Letter (PDF)
           </label>
           <input
             type="file"
             name="approvalLetter"
-            accept=".png,.jpeg,.jpg,.pdf"
+            accept="image/*"
             onChange={handleFileChange}
             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
             required
           />
         </div>
 
+        {/* Social Media Links */}
+        <div className="container mx-auto p-8">
+          <h2 className="text-3xl font-bold mb-4 text-center">
+            Social Media Links
+          </h2>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-lg font-semibold text-gray-800">
+                Facebook Link
+              </label>
+              <input
+                type="url"
+                name="facebook"
+                value={socialMediaLinks.facebook}
+                onChange={(e) =>
+                  setSocialMediaLinks({
+                    ...socialMediaLinks,
+                    facebook: e.target.value,
+                  })
+                }
+                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                placeholder="Enter Facebook profile or page link"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-lg font-semibold text-gray-800">
+                Twitter Link
+              </label>
+              <input
+                type="url"
+                name="twitter"
+                value={socialMediaLinks.twitter}
+                onChange={(e) =>
+                  setSocialMediaLinks({
+                    ...socialMediaLinks,
+                    twitter: e.target.value,
+                  })
+                }
+                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                placeholder="Enter Twitter profile link"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-lg font-semibold text-gray-800">
+                LinkedIn Link
+              </label>
+              <input
+                type="url"
+                name="linkedin"
+                value={socialMediaLinks.linkedin}
+                onChange={(e) =>
+                  setSocialMediaLinks({
+                    ...socialMediaLinks,
+                    linkedin: e.target.value,
+                  })
+                }
+                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                placeholder="Enter LinkedIn profile or page link"
+                required
+              />
+            </div>
+          </div>
+        </div>
+
         {/* Terms and Conditions */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center">
           <input
             type="checkbox"
             name="termsAccepted"
             checked={termsAccepted}
-            onChange={(e) => setTermsAccepted(e.target.checked)}
-            className="h-6 w-6 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition duration-300"
-            required
+            onChange={() => setTermsAccepted(!termsAccepted)}
+            className="mr-2"
           />
-          <label className="text-lg font-semibold text-gray-800">
-            I accept the terms and conditions.
-          </label>
+          <span className="text-lg">I accept the club's guidelines.</span>
         </div>
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full py-4 bg-blue-600 text-white text-xl font-bold rounded-lg hover:bg-blue-700 transition duration-300"
-        >
-          Submit
-        </button>
+        <div>
+          <button
+            type="submit"
+            className="w-full p-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+          >
+            Submit Form
+          </button>
+        </div>
       </form>
 
-      {/* Success Popup */}
+      {/* Form Submission Success Popup */}
       {formSubmitted && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-10 rounded-lg shadow-lg">
-            <h2 className="text-3xl font-semibold text-green-600 mb-4">
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50"
+          onClick={handleClosePopup}
+        >
+          <div
+            className="bg-white p-8 rounded-lg shadow-lg w-96"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-2xl font-semibold text-center text-green-500">
               Form Submitted Successfully!
-            </h2>
-            <p className="text-lg text-gray-800 mb-6">
-              Your club creation request has been submitted for approval.
+            </h3>
+            <p className="text-lg text-center mt-4">
+              Your club creation request is under review.
             </p>
             <button
               onClick={handleClosePopup}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none"
             >
               Close
             </button>

@@ -45,7 +45,7 @@ const StartClubPage = () => {
               </li>
               <li>
                 <strong>Finalize Your Club:</strong> Once approved, you'll
-                receive the website access to officially start your club.
+                receive the official website to your club.
               </li>
             </ol>
           </div>
