@@ -16,6 +16,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import commentRoutes from "./routes/comment.route.js";
 import messageRoutes from "./routes/message.route.js";
+import membershipRoutes from "./routes/membership.route.js";
 const app = express();
 
 // Middleware
@@ -49,6 +50,7 @@ app.use("/Back/comment", commentRoutes);
 app.use("/Back/notification", notificationRoutes);
 app.use("/Back/clubs", clubRoutes);
 app.use("/Back/message", messageRoutes); // Use the message routes
+app.use("/Back/membership", membershipRoutes);
 
 // Error handling middleware
 

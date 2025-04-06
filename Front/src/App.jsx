@@ -19,8 +19,8 @@ import "react-toastify/dist/ReactToastify.css";
 import InviteFriends from "./components/InviteFriends";
 import CreateClubForm from "./components/CreateClubForm";
 import ScrollToTop from "./components/ScrollToTop";
-import AcademicClubsPage from "./pages/AcademicClubsPage";
-import CSSC from "./Pages/cssc";
+import AcademicClubsPage from "./Pages/AcademicClubsPage";
+
 import CreativeClubsPage from "./pages/CreativeClubsPage";
 import SocialClubsPage from "./pages/SocialClubsPage";
 import CulturalClubsPage from "./pages/CulturalClubsPage";
@@ -29,6 +29,7 @@ import SportsClubsPage from "./pages/SportsClubsPage";
 import MembershipForm from "./components/MembershipForm";
 import DashChat from "./components/DashChat";
 import ChatList from "./components/ChatList";
+import SingleClubPage from "./Pages/SingleClubPage";
 
 const App = () => {
   return (
@@ -55,6 +56,7 @@ const App = () => {
         <Route path="/events" element={<Event />} />
 
         <Route path="/clubs" element={<Clubs />} />
+        <Route path="/one-club/:id" element={<SingleClubPage />} />
         <Route path="/start-club" element={<StartClubPage />} />
         <Route path="/create-club" element={<CreateClubForm />} />
         <Route path="/academic-clubs" element={<AcademicClubsPage />} />
@@ -63,14 +65,17 @@ const App = () => {
         <Route path="/cultural-clubs" element={<CulturalClubsPage />} />
         <Route path="/spiritual-clubs" element={<SpiritualClubsPage />} />
         <Route path="/sports-clubs" element={<SportsClubsPage />} />
-        <Route path="/cssc" element={<CSSC />} />
+
         <Route path="/membership-form" element={<MembershipForm />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/update-post/:postId" element={<UpdatePost />} />
-          <Route path="/dashboard/chat/:conversationId" element={<DashChat />} />
+          <Route
+            path="/dashboard/chat/:conversationId"
+            element={<DashChat />}
+          />
           <Route path="/dashboard/messages" element={<ChatList />} />
         </Route>
 
