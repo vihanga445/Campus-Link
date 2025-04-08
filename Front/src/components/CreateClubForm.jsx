@@ -39,6 +39,7 @@ const CreateClubForm = () => {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -181,7 +182,7 @@ const CreateClubForm = () => {
     e.preventDefault();
 
     if (!validateForm()) return;
-
+    setLoading(true);
     try {
       // Upload images to Cloudinary
       const uploadedCoverPhoto = clubCoverPhoto
@@ -269,6 +270,8 @@ const CreateClubForm = () => {
       setErrorMessage(
         "An error occurred while submitting the form. Please try again."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -324,6 +327,7 @@ const CreateClubForm = () => {
             <option value="Cultural">Cultural</option>
             <option value="Social">Social</option>
             <option value="Spiritual">Spiritual</option>
+            <option value="Creative">Creative</option>
           </select>
         </div>
 
@@ -716,9 +720,14 @@ const CreateClubForm = () => {
         <div>
           <button
             type="submit"
-            className="w-full p-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+            disabled={loading} // Disable button while loading
+            className={`w-full p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ${
+              loading
+                ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                : "bg-blue-600 text-white hover:bg-blue-700"
+            }`}
           >
-            Submit Form
+            {loading ? "Processing..." : "Submit Form"}
           </button>
         </div>
       </form>

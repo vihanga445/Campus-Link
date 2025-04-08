@@ -1,35 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
-// Sample social clubs data
-const socialClubs = [
-  {
-    id: 1,
-    name: "LEO Club- University of Ruhuna",
-    description:
-      "Get involved in social causes and make a difference in the community.",
-    image: "./src/cl16.jpg", // Update with actual image path
-  },
-  {
-    id: 2,
-    name: "AIESEC- University of Ruhuna",
-    description:
-      "Connect with students from around the world and learn about different cultures.",
-    image: "./src/cl14.jpg", // Update with actual image path
-  },
-  {
-    id: 3,
-    name: "Gavel Club- University of Ruhuna",
-    description:
-      "Organize events and activities that support local communities.",
-    image: "./src/cl15.jpg", // Update with actual image path
-  },
-  // Add more clubs as needed
-];
+import axios from "axios";
 
 const SocialClubsPage = () => {
-  const navigate = useNavigate(); // Hook to enable navigation
+  const [socialClubs, setSocialClubs] = useState([]); // State to store social clubs
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch social clubs from the backend
+    axios
+      .get("http://localhost:5000/Back/clubs/clubs/Social") // Update endpoint for social clubs
+      .then((res) => {
+        setSocialClubs(res.data);
+      })
+      .catch((e) => {
+        console.error("Error fetching social clubs:", e);
+      });
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -50,7 +38,7 @@ const SocialClubsPage = () => {
         </div>
       </div>
 
-      {/* Exploration Section Below Image */}
+      {/* Introduction Section */}
       <div className="container mx-auto p-8 text-center">
         <h2 className="text-3xl font-bold text-gray-800 mb-4">
           Explore Our Social Clubs
@@ -70,39 +58,47 @@ const SocialClubsPage = () => {
       {/* Clubs Section */}
       <div className="container mx-auto p-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {socialClubs.map((club) => (
+          {socialClubs.map((club, index) => (
             <motion.div
-              key={club.id}
+              key={club._id || index}
               className="group relative rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-white"
               whileHover={{ scale: 1.05 }}
             >
               {/* Club Image */}
               <img
-                src={club.image}
-                alt={club.name}
+                src={club.clubCoverPhoto || "./src/default-club.jpg"} // Fallback image
+                alt={club.clubName}
                 className="w-full h-60 object-cover"
               />
 
-              {/* Club Description */}
+              {/* Club Info */}
               <div className="p-4">
                 <h3 className="text-2xl font-bold text-gray-800">
-                  {club.name}
+                  {club.clubName}
                 </h3>
-                <p className="text-gray-700 mt-2">{club.description}</p>
+                <p className="text-gray-700 mt-2">
+                  {club.clubDescription?.substring(0, 100) ||
+                    "No description provided."}
+                </p>
 
-                {/* "Find Out More" Link */}
-                <div className="mt-4">
-                  <span
-                    className="text-blue-600 hover:underline cursor-pointer"
-                    onClick={() => navigate(`/clubs/${club.id}`)} // Navigate to club details
-                  >
-                    Find out more &rarr;
-                  </span>
-                </div>
+                {/* "Find Out More" Button */}
+                <button
+                  className="text-blue-600 mt-2"
+                  onClick={() => navigate(`/one-club/${club._id}`)} // Use club._id here
+                >
+                  Find out more &rarr;
+                </button>
               </div>
             </motion.div>
           ))}
         </div>
+
+        {/* No Clubs Message */}
+        {socialClubs.length === 0 && (
+          <div className="text-center text-gray-500 mt-12">
+            No social clubs available at the moment.
+          </div>
+        )}
       </div>
     </div>
   );

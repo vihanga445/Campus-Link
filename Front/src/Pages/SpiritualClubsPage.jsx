@@ -1,33 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
-// Sample spiritual clubs data
-const spiritualClubs = [
-  {
-    id: 1,
-    name: "Catholic Student Society",
-    description: "Find inner peace through guided meditation and mindfulness.",
-    image: "./src/cl19.jpg", // Update with actual image path
-  },
-  {
-    id: 2,
-    name: "Buddhist Society",
-    description: "Focus on physical and mental wellness with Bavana practice.",
-    image: "./src/cl20.jpg", // Update with actual image path
-  },
-  {
-    id: 3,
-    name: "Islam Student Society",
-    description:
-      "Explore spiritual teachings and engage in thought-provoking discussions.",
-    image: "./src/cl21.jpg", // Update with actual image path
-  },
-  // Add more clubs as needed
-];
+import axios from "axios";
 
 const SpiritualClubsPage = () => {
-  const navigate = useNavigate(); // Hook to enable navigation
+  const [spiritualClubs, setSpiritualClubs] = useState([]); // State to store spiritual clubs
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch spiritual clubs from the backend
+    axios
+      .get("http://localhost:5000/Back/clubs/clubs/Spiritual") // Update endpoint for spiritual clubs
+      .then((res) => {
+        setSpiritualClubs(res.data);
+      })
+      .catch((e) => {
+        console.error("Error fetching spiritual clubs:", e);
+      });
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -68,29 +58,32 @@ const SpiritualClubsPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {spiritualClubs.map((club) => (
             <motion.div
-              key={club.id}
+              key={club._id} // Use unique identifier from the backend
               className="group relative rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-white"
               whileHover={{ scale: 1.05 }}
             >
               {/* Club Image */}
               <img
-                src={club.image}
-                alt={club.name}
+                src={club.clubCoverPhoto || "./src/default-club.jpg"} // Fallback image
+                alt={club.clubName}
                 className="w-full h-60 object-cover"
               />
 
               {/* Club Description */}
               <div className="p-4">
                 <h3 className="text-2xl font-bold text-gray-800">
-                  {club.name}
+                  {club.clubName}
                 </h3>
-                <p className="text-gray-700 mt-2">{club.description}</p>
+                <p className="text-gray-700 mt-2">
+                  {club.clubDescription?.substring(0, 100) ||
+                    "No description provided."}
+                </p>
 
                 {/* "Find Out More" Link */}
                 <div className="mt-4">
                   <span
                     className="text-blue-600 hover:underline cursor-pointer"
-                    onClick={() => navigate(`/clubs/${club.id}`)} // Navigate to club details
+                    onClick={() => navigate(`/one-club/${club._id}`)} // Navigate to club details
                   >
                     Find out more &rarr;
                   </span>
@@ -99,6 +92,13 @@ const SpiritualClubsPage = () => {
             </motion.div>
           ))}
         </div>
+
+        {/* No Clubs Message */}
+        {spiritualClubs.length === 0 && (
+          <div className="text-center text-gray-500 mt-12">
+            No spiritual clubs available at the moment.
+          </div>
+        )}
       </div>
     </div>
   );
