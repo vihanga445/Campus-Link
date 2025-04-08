@@ -10,7 +10,7 @@ const ClubSchema = new Schema({
   clubCategory: {
     type: String,
     required: true,
-    enum: ["Sports", "Academic", "Cultural", "Social", "Spiritual"],
+    enum: ["Sports", "Academic", "Cultural", "Social", "Spiritual", "Creative"],
   },
   clubEmail: {
     type: String,
