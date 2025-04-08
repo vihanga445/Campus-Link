@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
+import { Avatar, Dropdown } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { FaSearch } from "react-icons/fa"; // Import the search icon
 import logo from "../logo.png";
 import { signoutSuccess } from "../redux/user/userSlice";
 import NotificationBell from "./NotificationBell";
+
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [featuresOpen, setFeaturesOpen] = useState(false); // State to toggle the Features dropdown
+  const [searchQuery, setSearchQuery] = useState(""); // State for search input
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -14,6 +18,19 @@ export default function Header() {
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  const toggleFeatures = () => {
+    setFeaturesOpen(!featuresOpen); // Toggle the Features dropdown
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?query=${searchQuery}`); // Navigate to the search results page
+      setSearchQuery(""); // Clear the search input
+    }
+  };
+
   const handleSignout = async () => {
     try {
       const res = await fetch("/Back/user/signout", {
@@ -35,7 +52,7 @@ export default function Header() {
       <div className="container mx-auto flex justify-between items-center px-4 md:px-8">
         {/* Logo */}
         <div className="flex items-center">
-          <Link to="#home" className="flex items-center">
+          <Link to="/" className="flex items-center">
             <img
               src={logo}
               alt="University of Ruhuna Logo"
@@ -46,6 +63,26 @@ export default function Header() {
             </span>
           </Link>
         </div>
+
+        {/* Search Bar */}
+        <form
+          onSubmit={handleSearch}
+          className="hidden md:flex items-center bg-dark-blue rounded-xl px-2 py-2 w-1/5 h-10 mx-6 ml-auto"
+        >
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-xl text-gray-200 bg-transparent placeholder-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+          <button
+            type="submit"
+            className="text-blue-600 hover:text-blue-800 font-bold ml-2"
+          >
+            <FaSearch className="text-lg" /> {/* Search Icon */}
+          </button>
+        </form>
 
         {/* Hamburger Menu Button */}
         <button
@@ -62,28 +99,64 @@ export default function Header() {
           } md:block`}
         >
           <li>
-          {currentUser && (
-           <div className="flex items-center gap-4">
-             <NotificationBell />
-          
-            </div>
-           )}
+            {currentUser && (
+              <div className="flex items-center gap-4">
+                <NotificationBell />
+              </div>
+            )}
           </li>
           <li>
-            <Link
-              to="/"
-              className="text-white hover:text-gray-300 text-lg "
-            >
+            <Link to="/" className="text-white hover:text-gray-300 text-lg ">
               Home
             </Link>
           </li>
-          <li>
-            <Link
-              to="/fearures"
-              className="text-white hover:text-gray-300 text-lg "
+          <li className="relative">
+            <button
+              onClick={toggleFeatures}
+              className="text-white hover:text-gray-300 text-lg focus:outline-none"
             >
               Features
-            </Link>
+            </button>
+            {featuresOpen && (
+              <ul className="absolute left-0 mt-2 bg-white text-black shadow-lg rounded-lg w-48">
+                <li>
+                  <Link
+                    to="/events"
+                    className="block px-4 py-2 hover:bg-gray-200"
+                    onClick={() => setFeaturesOpen(false)} // Close the dropdown
+                  >
+                    Events
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/clubs"
+                    className="block px-4 py-2 hover:bg-gray-200"
+                    onClick={() => setFeaturesOpen(false)} // Close the dropdown
+                  >
+                    Clubs and Societies
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/announcements"
+                    className="block px-4 py-2 hover:bg-gray-200"
+                    onClick={() => setFeaturesOpen(false)} // Close the dropdown
+                  >
+                    Announcements
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/lost-and-founds"
+                    className="block px-4 py-2 hover:bg-gray-200"
+                    onClick={() => setFeaturesOpen(false)} // Close the dropdown
+                  >
+                    Lost and Founds
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
           <li>
             <Link
@@ -143,7 +216,6 @@ export default function Header() {
           onClick={toggleMenu}
         ></div>
       )}
-
     </nav>
   );
 }

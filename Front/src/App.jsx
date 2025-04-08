@@ -20,12 +20,12 @@ import InviteFriends from "./components/InviteFriends";
 import CreateClubForm from "./components/CreateClubForm";
 import ScrollToTop from "./components/ScrollToTop";
 import AcademicClubsPage from "./Pages/AcademicClubsPage";
-
-import CreativeClubsPage from "./pages/CreativeClubsPage";
-import SocialClubsPage from "./pages/SocialClubsPage";
-import CulturalClubsPage from "./pages/CulturalClubsPage";
-import SpiritualClubsPage from "./pages/SpiritualClubsPage";
-import SportsClubsPage from "./pages/SportsClubsPage";
+import SearchResultsPage from "./Pages/SearchResultsPage";
+import CreativeClubsPage from "./Pages/CreativeClubsPage";
+import SocialClubsPage from "./Pages/SocialClubsPage";
+import CulturalClubsPage from "./Pages/CulturalClubsPage";
+import SpiritualClubsPage from "./Pages/SpiritualClubsPage";
+import SportsClubsPage from "./Pages/SportsClubsPage";
 import MembershipForm from "./components/MembershipForm";
 import DashChat from "./components/DashChat";
 import ChatList from "./components/ChatList";
@@ -54,7 +54,7 @@ const App = () => {
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/contact" element={<Conatact />} />
         <Route path="/events" element={<Event />} />
-
+        <Route path="/search" element={<SearchResultsPage />} />
         <Route path="/clubs" element={<Clubs />} />
         <Route path="/one-club/:id" element={<SingleClubPage />} />
         <Route path="/start-club" element={<StartClubPage />} />
