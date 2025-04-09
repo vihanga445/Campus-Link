@@ -19,16 +19,17 @@ import "react-toastify/dist/ReactToastify.css";
 import InviteFriends from "./components/InviteFriends";
 import CreateClubForm from "./components/CreateClubForm";
 import ScrollToTop from "./components/ScrollToTop";
-import AcademicClubsPage from "./pages/AcademicClubsPage";
-import CSSC from "./Pages/cssc";
-import CreativeClubsPage from "./pages/CreativeClubsPage";
-import SocialClubsPage from "./pages/SocialClubsPage";
-import CulturalClubsPage from "./pages/CulturalClubsPage";
-import SpiritualClubsPage from "./pages/SpiritualClubsPage";
-import SportsClubsPage from "./pages/SportsClubsPage";
+import AcademicClubsPage from "./Pages/AcademicClubsPage";
+import SearchResultsPage from "./Pages/SearchResultsPage";
+import CreativeClubsPage from "./Pages/CreativeClubsPage";
+import SocialClubsPage from "./Pages/SocialClubsPage";
+import CulturalClubsPage from "./Pages/CulturalClubsPage";
+import SpiritualClubsPage from "./Pages/SpiritualClubsPage";
+import SportsClubsPage from "./Pages/SportsClubsPage";
 import MembershipForm from "./components/MembershipForm";
 import DashChat from "./components/DashChat";
 import ChatList from "./components/ChatList";
+import SingleClubPage from "./Pages/SingleClubPage";
 
 const App = () => {
   return (
@@ -53,8 +54,9 @@ const App = () => {
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/contact" element={<Conatact />} />
         <Route path="/events" element={<Event />} />
-
+        <Route path="/search" element={<SearchResultsPage />} />
         <Route path="/clubs" element={<Clubs />} />
+        <Route path="/one-club/:id" element={<SingleClubPage />} />
         <Route path="/start-club" element={<StartClubPage />} />
         <Route path="/create-club" element={<CreateClubForm />} />
         <Route path="/academic-clubs" element={<AcademicClubsPage />} />
@@ -63,14 +65,17 @@ const App = () => {
         <Route path="/cultural-clubs" element={<CulturalClubsPage />} />
         <Route path="/spiritual-clubs" element={<SpiritualClubsPage />} />
         <Route path="/sports-clubs" element={<SportsClubsPage />} />
-        <Route path="/cssc" element={<CSSC />} />
+
         <Route path="/membership-form" element={<MembershipForm />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/update-post/:postId" element={<UpdatePost />} />
-          <Route path="/dashboard/chat/:conversationId" element={<DashChat />} />
+          <Route
+            path="/dashboard/chat/:conversationId"
+            element={<DashChat />}
+          />
           <Route path="/dashboard/messages" element={<ChatList />} />
         </Route>
 

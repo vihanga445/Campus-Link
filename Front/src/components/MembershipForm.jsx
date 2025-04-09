@@ -29,7 +29,7 @@ const GuidelinesModal = ({ isOpen, onClose }) => {
   );
 };
 
-const MembershipForm = () => {
+const MembershipForm = ({ clubEmail, onClose }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -56,10 +56,37 @@ const MembershipForm = () => {
     e.preventDefault();
     setLoading(true);
 
-    // Add form submission logic here (e.g., sending data to an API)
+    try {
+      const response = await fetch(
+        "http://localhost:5000/Back/clubs/register-mail-send",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...formData,
+            clubEmail,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess(true);
+        console.log("Email sent successfully:", data); // Set success state to show success message
+      } else {
+        // Handle failure
+        console.error("Failed to send email:", data);
+        alert("Failed to send email. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      alert("An error occurred while sending the email. Please try again.");
+    }
 
     setLoading(false);
-    setSuccess(true);
   };
 
   const openModal = () => setIsModalOpen(true);
@@ -205,18 +232,30 @@ const MembershipForm = () => {
         </div>
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition"
-        >
-          {loading ? "Submitting..." : "Submit"}
-        </button>
+        {!success && (
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition"
+          >
+            {loading ? "Submitting..." : "Submit"}
+          </button>
+        )}
 
+        {/* Success Message and Close Button */}
         {success && (
-          <p className="mt-4 text-green-500 text-center">
-            Membership submitted successfully!
-          </p>
+          <div className="mt-4 text-center">
+            <p className="text-green-500 mb-4">
+              Membership submitted successfully!
+            </p>
+            <button
+              type="button"
+              onClick={onClose}
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+            >
+              Close
+            </button>
+          </div>
         )}
       </form>
 

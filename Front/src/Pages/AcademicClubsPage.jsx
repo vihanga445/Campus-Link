@@ -1,32 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
-// Sample academic clubs data
-const academicClubs = [
-  {
-    id: 1,
-    name: "Computer Science Students Community",
-    description: "Enhance your coding skills and explore new technologies.",
-    image: "./src/cl2.jpg", // Update with actual image path
-  },
-  {
-    id: 2,
-    name: "Mathematics and Statistics Society",
-    description: "Solve interesting problems and compete in math challenges.",
-    image: "./src/cl3.jpeg", // Update with actual image path
-  },
-  {
-    id: 3,
-    name: "Physics Society-University of Ruhuna",
-    description: "Dive into the world of physics with experiments and talks.",
-    image: "./src/cl4.jpeg", // Update with actual image path
-  },
-  // Add more clubs as needed
-];
+import axios from "axios";
 
 const AcademicClubsPage = () => {
-  const navigate = useNavigate(); // Hook to enable navigation
+  const [aClubs, setAClubs] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/Back/clubs/clubs/Academic")
+      .then((res) => {
+        setAClubs(res.data);
+      })
+      .catch((e) => {
+        console.error("Error fetching academic clubs:", e);
+      });
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -47,7 +37,7 @@ const AcademicClubsPage = () => {
         </div>
       </div>
 
-      {/* Exploration Section Below Image */}
+      {/* Introduction Section */}
       <div className="container mx-auto p-8 text-center">
         <h2 className="text-3xl font-bold text-gray-800 mb-4">
           Explore Our Academic Clubs
@@ -65,39 +55,36 @@ const AcademicClubsPage = () => {
         </p>
       </div>
 
-      {/* Clubs Section */}
+      {/* Clubs Display Section */}
       <div className="container mx-auto p-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {academicClubs.map((club) => (
+          {aClubs.map((club, index) => (
             <motion.div
-              key={club.id}
+              key={club._id || index}
               className="group relative rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-white"
               whileHover={{ scale: 1.05 }}
             >
               {/* Club Image */}
               <img
-                src={club.image}
-                alt={club.name}
+                src={club.clubCoverPhoto || "./src/default-club.jpg"} // fallback image
+                alt={club.clubName}
                 className="w-full h-60 object-cover"
               />
 
-              {/* Club Description */}
+              {/* Club Info */}
               <div className="p-4">
                 <h3 className="text-2xl font-bold text-gray-800">
-                  {club.name}
+                  {club.clubName}
                 </h3>
-                <p className="text-gray-700 mt-2">{club.description}</p>
+                <p className="text-gray-700 mt-2">
+                  {club.clubDescription?.substring(0, 100) ||
+                    "No description provided."}
+                </p>
 
-                {/* "Find Out More" Link */}
+                {/* "Find Out More" Button */}
                 <button
-                  className="text-blue-600"
-                  onClick={() => {
-                    if (club.id === 1) {
-                      navigate("/cssc"); // Navigate to the CSSC page
-                    } else {
-                      navigate(`/clubs/${club.id}`); // Default for other clubs
-                    }
-                  }}
+                  className="text-blue-600 mt-2"
+                  onClick={() => navigate(`/one-club/${club._id}`)} // Use club._id here
                 >
                   Find out more &rarr;
                 </button>
@@ -105,6 +92,13 @@ const AcademicClubsPage = () => {
             </motion.div>
           ))}
         </div>
+
+        {/* No Clubs Message */}
+        {aClubs.length === 0 && (
+          <div className="text-center text-gray-500 mt-12">
+            No academic clubs available at the moment.
+          </div>
+        )}
       </div>
     </div>
   );
