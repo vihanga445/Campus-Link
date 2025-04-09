@@ -128,12 +128,21 @@ export default function DashSidebar() {
               Invite Friends
             </Sidebar.Item>
           </Link>
-
+                                 
           <Link to="/dashboard/messages">
             <Sidebar.Item active={tab === "chat"} icon={HiUser}>
               Chat
             </Sidebar.Item>
           </Link>
+          {currentUser.isAdmin && (
+            <Link to="/dashboard?tab=users">
+              <Sidebar.Item active={tab === "users"} icon={HiUser}>
+                Users
+              </Sidebar.Item>
+            </Link>
+          )}
+
+          {/* New Club Moderators button */}
            
           <Sidebar.Item
             icon={HiArrowSmRight}
