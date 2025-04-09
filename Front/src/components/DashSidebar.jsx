@@ -141,7 +141,7 @@ export default function DashSidebar() {
               </Sidebar.Item>
             </Link>
           )}
-
+           
           {/* New Club Moderators button */}
            
           <Sidebar.Item
