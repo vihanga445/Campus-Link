@@ -276,15 +276,7 @@ export default function DashProfile() {
           Update
         </Button>
 
-        <Link to={'/create-post'}>
-          <Button
-            type="button"
-            gradientDuoTone="purpleToPink"
-            className="w-full h-2xl transition duration-300 transform hover:scale-105"
-          >
-            Create a post
-          </Button>
-        </Link>
+
       </form>
 
       {/* Delete and Signout */}
