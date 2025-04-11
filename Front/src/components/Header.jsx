@@ -148,7 +148,7 @@ export default function Header() {
                 </li>
                 <li>
                   <Link
-                    to="/lost-and-founds"
+                    to="/lostfound"
                     className="block px-4 py-2 hover:bg-gray-200"
                     onClick={() => setFeaturesOpen(false)} // Close the dropdown
                   >
