@@ -17,6 +17,7 @@ import cookieParser from "cookie-parser";
 import commentRoutes from "./routes/comment.route.js";
 import messageRoutes from "./routes/message.route.js";
 import membershipRoutes from "./routes/membership.route.js";
+import lostFoundRoutes from "./routes/lostfound.route.js"; // Import the lost/found routes
 const app = express();
 
 // Middleware
@@ -51,6 +52,7 @@ app.use("/Back/notification", notificationRoutes);
 app.use("/Back/clubs", clubRoutes);
 app.use("/Back/message", messageRoutes); // Use the message routes
 app.use("/Back/membership", membershipRoutes);
+app.use("/Back/lostfound", lostFoundRoutes); // Use the lost/found routes
 
 // Error handling middleware
 
