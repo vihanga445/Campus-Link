@@ -30,6 +30,7 @@ import MembershipForm from "./components/MembershipForm";
 import DashChat from "./components/DashChat";
 import ChatList from "./components/ChatList";
 import SingleClubPage from "./Pages/SingleClubPage";
+import LostFoundPage from "./Pages/Lostfoundpage";
 
 const App = () => {
   return (
@@ -56,6 +57,7 @@ const App = () => {
         <Route path="/events" element={<Event />} />
         <Route path="/search" element={<SearchResultsPage />} />
         <Route path="/clubs" element={<Clubs />} />
+        <Route path="/lostfound" element={<LostFoundPage />} />
         <Route path="/one-club/:id" element={<SingleClubPage />} />
         <Route path="/start-club" element={<StartClubPage />} />
         <Route path="/create-club" element={<CreateClubForm />} />
