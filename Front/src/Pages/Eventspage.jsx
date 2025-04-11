@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaSearch, FaFilter, FaCalendarAlt, FaLayerGroup } from 'react-icons/fa';
 import { Button, TextInput, Select } from 'flowbite-react';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 export default function Events() {
   const [events, setEvents] = useState([]);
@@ -13,6 +14,7 @@ export default function Events() {
     date: ''
   });
   const [filteredEvents, setFilteredEvents] = useState([]);
+  const { currentUser, error } = useSelector((state) => state.user);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -162,6 +164,20 @@ export default function Events() {
                   >
                     Reset Filters
                   </Button>
+                  {currentUser && (
+                                      <div>
+                                      <Link to={'/create-post'}>
+                                      <Button
+                                        type="button"
+                                        gradientDuoTone="purpleToPink"
+                                        className="w-full h-2xl transition duration-300 transform hover:scale-105"
+                                      >
+                                      Create Event
+                                      </Button>
+                                    </Link>
+                                    </div>
+                  )}
+
                 </div>
               </div>
             </div>

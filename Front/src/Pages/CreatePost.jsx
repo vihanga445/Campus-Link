@@ -1,8 +1,6 @@
-import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
+import { Alert, Button, FileInput, TextInput } from 'flowbite-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { FaUpload, FaEdit, FaLayerGroup, FaTimes } from 'react-icons/fa';
-import { HiX } from 'react-icons/hi';
 import { useState } from 'react';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
@@ -24,8 +22,9 @@ export default function CreatePost() {
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({
+    category: 'Event',
     eventDetails: {
-      types: [], // Changed from type to types array
+      types: [],
       date: '',
       time: '',
       venue: '',
@@ -41,7 +40,7 @@ export default function CreatePost() {
   });
   const [publishError, setPublishError] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
-  
+
   const navigate = useNavigate();
 
   const handleUploadImage = async () => {
@@ -80,15 +79,12 @@ export default function CreatePost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Add this validation check
       if (formData.category === 'Event' && !validateEventDate(formData.eventDetails.date)) {
         setPublishError('Event date cannot be in the past');
         toast.error('Event date cannot be in the past');
         return;
       }
 
-      console.log('Form Data before event details:', formData); // Log form data before event details
-       
       const eventDetails = formData.category === 'Event' ? formData.eventDetails : undefined;
 
       const res = await fetch('/Back/post/create', {
@@ -121,264 +117,253 @@ export default function CreatePost() {
     }
   };
 
-  return (
-    <div className='min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8 px-4 sm:px-6 lg:px-8'>
-      <div className='max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden'>
-        {/* Header */}
-        <div className='bg-gradient-to-r from-blue-600 to-blue-400 p-6'>
-          <h1 className='text-center text-3xl md:text-4xl font-bold text-white flex items-center justify-center gap-3'>
-            <FaEdit className='text-white/90' /> Create a Post
-          </h1>
-        </div>
+   return (
+    <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-md p-8">
+        {/* Page Title */}
+        <h1 className="text-2xl font-semibold text-gray-800 text-center mb-6">
+          Create a New Event
+        </h1>
 
-        <form className='p-6 space-y-6' onSubmit={handleSubmit}>
-          {/* Title and Category Selection */}
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-            <div className='space-y-2'>
+        {/* Form with 3-column grid */}
+        <form className="grid grid-cols-1 md:grid-cols-3 gap-8" onSubmit={handleSubmit}>
+          {/* Column 1: General Details */}
+          <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Title
+              </label>
               <TextInput
-                type='text'
-                placeholder='Title'
-                className='w-full'
+                type="text"
+                placeholder="Enter the event title"
+                className="w-full"
                 required
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               />
             </div>
-            <div className='flex items-center gap-2'>
-              <FaLayerGroup className='text-blue-500' />
-              <Select 
-                className='w-full'
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              >
-                <option value='uncategorized'>Select a category</option>
-                <option value='Event'>Event</option>
-                <option value='Lost-Found'>Lost & Found</option>
-                <option value='Clubs and Societies'>Clubs & Societies</option>
-                <option value='Announcements'>Announcements</option>
-              </Select>
-            </div>
-          </div>
 
-          {/* Event Details */}
-          {formData.category === 'Event' && (
-            <>
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-gray-700'>Event Types (Select all that apply)</label>
-                <div className='grid grid-cols-2 gap-4 mt-2'>
-                  {['Academic', 'Cultural', 'Sports', 'Workshop', 'Career', 'Club'].map((type) => (
-                    <div key={type} className='flex items-center'>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Event Types
+              </label>
+              <div className="grid grid-cols-2 gap-4">
+                {["Academic", "Cultural", "Sports", "Workshop", "Career", "Club"].map(
+                  (type) => (
+                    <div key={type} className="flex items-center">
                       <input
-                        type='checkbox'
+                        type="checkbox"
                         id={type}
-                        className='w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500'
+                        className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
                         onChange={(e) => {
                           const updatedTypes = e.target.checked
                             ? [...formData.eventDetails.types, type]
-                            : formData.eventDetails.types.filter(t => t !== type);
+                            : formData.eventDetails.types.filter((t) => t !== type);
                           setFormData({
                             ...formData,
                             eventDetails: {
                               ...formData.eventDetails,
-                              types: updatedTypes
-                            }
+                              types: updatedTypes,
+                            },
                           });
                         }}
                         checked={formData.eventDetails.types.includes(type)}
                       />
-                      <label htmlFor={type} className='ml-2 text-sm text-gray-700'>
+                      <label htmlFor={type} className="ml-2 text-sm text-gray-700">
                         {type}
                       </label>
                     </div>
-                  ))}
-                </div>
+                  )
+                )}
               </div>
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-gray-700'>Event Date</label>
-                <TextInput
-                  type='date'
-                  required
-                  min={new Date().toISOString().split('T')[0]} // Set minimum date to today
-                  onChange={(e) => {
-                    const selectedDate = e.target.value;
-                    if (!validateEventDate(selectedDate)) {
-                      toast.error('Event date cannot be in the past');
-                      return;
-                    }
-                    setFormData({ 
-                      ...formData, 
-                      eventDetails: { 
-                        ...formData.eventDetails, 
-                        date: selectedDate 
-                      } 
-                    });
-                  }}
-                />
-              </div>
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-gray-700'>Event Time</label>
-                <TextInput
-                  type='time'
-                  required
-                  onChange={(e) => setFormData({ ...formData, eventDetails: { ...formData.eventDetails, time: e.target.value } })}
-                />
-              </div>
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-gray-700'>Venue</label>
-                <TextInput
-                  type='text'
-                  placeholder='Enter event venue'
-                  required
-                  onChange={(e) => setFormData({ ...formData, eventDetails: { ...formData.eventDetails, venue: e.target.value } })}
-                />
-              </div>
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-gray-700'>Organizer</label>
-                <TextInput
-                  type='text'
-                  placeholder='Enter organizer name'
-                  onChange={(e) => setFormData({ ...formData, eventDetails: { ...formData.eventDetails, organizer: e.target.value } })}
-                />
-              </div>
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-gray-700'>Registration Link</label>
-                <TextInput
-                  type='url'
-                  placeholder='Enter registration link'
-                  onChange={(e) => setFormData({ ...formData, eventDetails: { ...formData.eventDetails, registration: { ...formData.eventDetails.registration, link: e.target.value } } })}
-                />
-              </div>
-            </>
-          )}
+            </div>
 
-          {/* Image Upload Section */}
-          <div className='flex items-center gap-4'>
-            <FileInput
-              type='file'
-              accept='image/*'
-              onChange={(e) => setFile(e.target.files[0])}
-            />
-            <Button
-              type='button'
-              size='sm'
-              gradientDuoTone='purpleToBlue'
-              outline
-              onClick={handleUploadImage}
-              disabled={!file || imageUploadProgress}
-            >
-              {imageUploadProgress ? (
-                <div className='w-8 h-8'>
-                  <CircularProgressbar
-                    value={imageUploadProgress}
-                    text={`${imageUploadProgress}%`}
-                  />
-                </div>
-              ) : (
-                'Upload'
-              )}
-            </Button>
-          </div>
-
-          {/* Image Preview */}
-          {formData.image && (
-            <div className='relative'>
-              <img
-                src={formData.image}
-                alt='upload'
-                className='w-full h-72 object-cover rounded-lg'
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Event Date
+              </label>
+              <TextInput
+                type="date"
+                required
+                min={new Date().toISOString().split("T")[0]}
+                onChange={(e) => {
+                  const selectedDate = e.target.value;
+                  if (!validateEventDate(selectedDate)) {
+                    toast.error("Event date cannot be in the past");
+                    return;
+                  }
+                  setFormData({
+                    ...formData,
+                    eventDetails: {
+                      ...formData.eventDetails,
+                      date: selectedDate,
+                    },
+                  });
+                }}
               />
             </div>
-          )}
 
-          {/* Text Editor */}
-          <ReactQuill
-            theme='snow'
-            placeholder='Write something amazing...'
-            className='h-64 mb-20'
-            required
-            onChange={(value) => setFormData({ ...formData, content: value })}
-          />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Event Time
+              </label>
+              <TextInput
+                type="time"
+                required
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    eventDetails: { ...formData.eventDetails, time: e.target.value },
+                  })
+                }
+              />
+            </div>
 
-          {/* Error Display */}
-          {publishError && (
-            <Alert color='failure'>
-              {publishError}
-            </Alert>
-          )}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Venue
+              </label>
+              <TextInput
+                type="text"
+                placeholder="Enter event venue"
+                required
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    eventDetails: { ...formData.eventDetails, venue: e.target.value },
+                  })
+                }
+              />
+            </div>
 
-          {/* Action Buttons */}
-          <div className='flex gap-4 justify-end pt-8 mt-8 relative z-10 '>
-            <Button
-              type='button'
-              onClick={() => setShowPreview(true)}
-              gradientDuoTone='purpleToBlue'
-              outline
-            >
-              Preview
-            </Button>
-            <Button type='submit' gradientDuoTone='purpleToBlue'>
-              Publish
-            </Button>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Organizer
+              </label>
+              <TextInput
+                type="text"
+                placeholder="Enter organizer name"
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    eventDetails: { ...formData.eventDetails, organizer: e.target.value },
+                  })
+                }
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Registration Link
+              </label>
+              <TextInput
+                type="url"
+                placeholder="Enter registration link"
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    eventDetails: {
+                      ...formData.eventDetails,
+                      registration: {
+                        ...formData.eventDetails.registration,
+                        link: e.target.value,
+                      },
+                    },
+                  })
+                }
+              />
+            </div>
           </div>
+
+          {/* Column 2: Image Upload */}
+          <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Upload Image
+              </label>
+              <div className="flex items-center gap-4">
+                <FileInput
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setFile(e.target.files[0])}
+                />
+                <Button
+                  type="button"
+                  size="sm"
+                  gradientDuoTone="purpleToBlue"
+                  outline
+                  onClick={handleUploadImage}
+                  disabled={!file || imageUploadProgress}
+                >
+                  {imageUploadProgress ? `${imageUploadProgress}%` : "Upload"}
+                </Button>
+              </div>
+              {formData.image && (
+                <div className="mt-4">
+                  <img
+                    src={formData.image}
+                    alt="Uploaded"
+                    className="w-full h-64 object-cover rounded-lg"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Column 3: Content Editor */}
+          <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Content
+              </label>
+              <ReactQuill
+                theme="snow"
+                placeholder="Write something amazing..."
+                className="h-64"
+                required
+                onChange={(value) => setFormData({ ...formData, content: value })}
+              />
+            </div>
+          </div>
+        
+
+        {/* Action Buttons */}
+        <div className="flex justify-end gap-4 mt-8">
+          <Button
+            type="button"
+            onClick={() => setShowPreview(true)}
+            gradientDuoTone="purpleToBlue"
+            outline
+          >
+            Preview
+          </Button>
+          <Button type="submit" gradientDuoTone="purpleToBlue">
+            Publish
+          </Button>
+        </div>
         </form>
       </div>
 
       {/* Preview Modal */}
       {showPreview && (
-        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
-          <div className='bg-white p-6 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto'>
-            <div className='mb-4 flex justify-between items-center'>
-              <h2 className='text-2xl font-bold'>{formData.title || 'Untitled'}</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+            <div className="mb-4">
+              <h2 className="text-xl font-bold">{formData.title || "Untitled"}</h2>
               <button
                 onClick={() => setShowPreview(false)}
-                className='text-gray-500 hover:text-gray-700'
+                className="text-gray-500 hover:text-gray-700 absolute top-4 right-4"
               >
                 ✕
               </button>
             </div>
-            
-            <div className='mb-4'>
-              <span className='bg-blue-100 text-blue-800 px-2 py-1 rounded'>
-                {formData.category || 'Uncategorized'}
-              </span>
-            </div>
-
             {formData.image && (
               <img
                 src={formData.image}
-                alt='Post preview'
-                className='w-full h-64 object-cover rounded-lg mb-4'
+                alt="Preview"
+                className="w-full h-64 object-cover rounded-lg mb-4"
               />
             )}
-
-            <div className='mb-4 flex flex-wrap gap-2'>
-              {formData.eventDetails?.types.map((type) => (
-                <span key={type} className='bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm'>
-                  {type}
-                </span>
-              ))}
-            </div>
-
-            <div className='prose max-w-none'>
-              {parse(formData.content || '')}
-            </div>
-
-            <div className='mt-6 flex justify-end gap-4'>
-              <Button
-                onClick={() => setShowPreview(false)}
-                outline
-                gradientDuoTone='purpleToBlue'
-              >
-                Edit
-              </Button>
-              <Button
-                onClick={() => {
-                  setShowPreview(false);
-                  handleSubmit(new Event('submit'));
-                }}
-                gradientDuoTone='purpleToBlue'
-              >
-                Publish
-              </Button>
-            </div>
+            <div className="prose max-w-none">{parse(formData.content || "")}</div>
           </div>
         </div>
       )}

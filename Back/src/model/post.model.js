@@ -23,7 +23,7 @@ const postSchema = new mongoose.Schema({
     },
     category:{
         type:String,
-        default:'uncategorized',
+        default:'Event',
         enum: ['Event', 'Lost-Found', 'Clubs and Societies', 'Announcements'],
         required: true,
     },

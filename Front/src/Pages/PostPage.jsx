@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from 'flowbite-react';
 import { useSelector } from 'react-redux';
-import { FaBookmark, FaShare, FaCalendarAlt, FaMapMarkerAlt, 
-         FaRegEnvelope, FaPhone, FaUserFriends, FaLayerGroup } from 'react-icons/fa';
+import { 
+  BiBookmark, BiShareAlt, BiCalendar, BiMap, 
+  BiEnvelope, BiPhone, BiGroup, BiLayer, BiPlus
+} from 'react-icons/bi';
 import CommentSection from '../components/CommentSection';
 
 export default function PostPage() {
@@ -97,171 +99,154 @@ export default function PostPage() {
 
 
     if (loading) return <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
     </div>;
 
     if (error) return <div className="text-red-500 text-center p-8">{error}</div>;
 
     return (
-        <main className='min-h-screen bg-gray-50'>
+        <main className='min-h-screen bg-gray-50 py-8'>
             {post && (
-                <div className='max-w-6xl mx-auto p-4'>
-                    {/* Hero Section */}
-                    <div className='relative h-[400px] rounded-2xl overflow-hidden shadow-xl mb-8'>
-                        {post.image && (
-                            <img
-                                src={post.image}
-                                alt={post.title}
-                                className='w-full h-full object-cover'
-                            />
-                        )}
-                        <div className='absolute inset-0 bg-gradient-to-t from-black/70 to-transparent'></div>
-                        <div className='absolute bottom-0 p-8'>
-                            <h1 className='text-4xl font-bold text-white mb-4 font-[Poppins]'>
-                                {post.title}
-                            </h1>
-                        </div>
-                    </div>
+                <div className='max-w-7xl mx-auto px-4'>
+                    {/* Title Bar */}
+                    <h1 className='text-3xl font-bold text-gray-800 mb-6 font-[Poppins]'>
+                        {post.title}
+                    </h1>
 
-                    {/* Event Details Card */}
-                    <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
-                        <h2 className='text-3xl font-bold mb-6 text-gray-800 font-[Poppins]'>Event Details</h2>
-                        <div className='grid md:grid-cols-2 gap-6'>
-                            <div className='space-y-4'>
-                                {/* Add Event Types */}
-                                <div className='flex items-start text-lg'>
-                                    <FaLayerGroup className='mr-3 text-blue-500 mt-1' />
-                                    <div>
-                                        <span className='font-medium'>Event Types:</span>
-                                        <div className='flex flex-wrap gap-2 mt-2'>
-                                            {post.eventDetails.types.map((type) => (
-                                                <span
-                                                    key={type}
-                                                    className='bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full'
-                                                >
-                                                    {type}
-                                                </span>
-                                            ))}
+                    {/* Main Content - Flexbox Layout */}
+                    <div className='flex flex-col lg:flex-row gap-6'>
+                        {/* Left Column - Main Content (60%) */}
+                        <div className='lg:w-7/12 space-y-6'>
+                            {/* Image */}
+                            {post.image && (
+                                <div className='rounded-lg overflow-hidden shadow-md'>
+                                    <img
+                                        src={post.image}
+                                        alt={post.title}
+                                        className='w-full h-64 object-cover'
+                                    />
+                                </div>
+                            )}
+
+                            {/* Content */}
+                            <div className='bg-white rounded-lg p-6 shadow-sm'>
+                                <h2 className='text-xl font-semibold mb-4'>Description</h2>
+                                <div className='prose max-w-none' dangerouslySetInnerHTML={{ __html: post.content }} />
+                            </div>
+
+                            {/* Comments */}
+                            <div className='bg-white rounded-lg p-6 shadow-sm'>
+                                <h2 className='text-xl font-semibold mb-4'>Comments</h2>
+                                <CommentSection postId={post._id}/>
+                            </div>
+                        </div>
+
+                        {/* Right Column - Event Details & Actions (40%) */}
+                        <div className='lg:w-5/12 space-y-6'>
+                            {/* Event Details Card */}
+                            <div className='bg-white rounded-lg p-6 shadow-sm'>
+                                <h2 className='text-xl font-semibold mb-4'>Event Details</h2>
+                                
+                                <div className='space-y-3'>
+                                    {/* Event Types */}
+                                    <div className='flex items-start'>
+                                        <BiLayer className='text-blue-500 mt-1 mr-2' />
+                                        <div>
+                                            <span className='text-sm font-medium'>Event Types</span>
+                                            <div className='flex flex-wrap gap-2 mt-1'>
+                                                {post.eventDetails.types.map((type) => (
+                                                    <span key={type} className='bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full'>
+                                                        {type}
+                                                    </span>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* Existing event details */}
-                                <p className='flex items-center text-lg'>
-                                    <FaCalendarAlt className='mr-3 text-blue-500' />
-                                    <span className='font-medium'>Date:</span>
-                                    <span className='ml-2'>{new Date(post.eventDetails.date).toLocaleDateString()}</span>
-                                </p>
-                                <p className='flex items-center text-lg'>
-                                    <FaMapMarkerAlt className='mr-3 text-blue-500' />
-                                    <span className='font-medium'>Venue:</span>
-                                    <span className='ml-2'>{post.eventDetails.venue}</span>
-                                </p>
-                                <p className='flex items-center text-lg'>
-                                    <FaUserFriends className='mr-3 text-blue-500' />
-                                    <span className='font-medium'>Organizer:</span>
-                                    <span className='ml-2'>{post.eventDetails.organizer}</span>
-                                </p>
-                                
-                            </div>
-                            
-                        </div>
-                    </div>
-
-                    {/* Description */}
-
-                    <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
-                      
-                    <div className='space-y-4'>
-                        <div className='prose max-w-none' dangerouslySetInnerHTML={{ __html: post.content }} />
-                    </div>
-
-                    </div>
-
-
-                    {/* Registration */}
-                    <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
-                        <h2 className='text-3xl font-bold mb-6 text-gray-800 font-[Poppins]'>Registration</h2>
-                        <div className='space-y-6'>
-                            <div className='flex flex-wrap gap-4 items-center'>
-                                
-                                <a href={post.eventDetails.registration.link} 
-                                   className='text-blue-500 hover:underline'>
-                                    Registration Link
-                                </a>
-                            </div>
-                            <div className='space-y-2'>
-                                <p className='text-lg'>
-                                    <span className='font-medium'>Deadline:</span>
-                                    <span className='ml-2'>
-                                        {new Date(post.eventDetails.registration.deadline).toLocaleDateString()}
-                                    </span>
-                                </p>
-                                <div>
-                                    <div className='flex justify-between mb-1'>
-                                        <span className='font-medium'>Participants</span>
-                                        <span>{post.eventDetails.currentParticipants}/{post.eventDetails.maxParticipants}</span>
+                                    {/* Date */}
+                                    <div className='flex items-center'>
+                                        <BiCalendar className='text-blue-500 mr-2' />
+                                        <div>
+                                            <span className='text-sm font-medium'>Date</span>
+                                            <p className='text-gray-600'>{new Date(post.eventDetails.date).toLocaleDateString()}</p>
+                                        </div>
                                     </div>
-                                    <div className='w-full bg-gray-200 rounded-full h-2.5'>
-                                        <div className='bg-blue-500 h-2.5 rounded-full' 
-                                             style={{width: `${(post.eventDetails.currentParticipants/post.eventDetails.maxParticipants)*100}%`}}>
+
+                                    {/* Venue */}
+                                    <div className='flex items-center'>
+                                        <BiMap className='text-blue-500 mr-2' />
+                                        <div>
+                                            <span className='text-sm font-medium'>Venue</span>
+                                            <p className='text-gray-600'>{post.eventDetails.venue}</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Organizer */}
+                                    <div className='flex items-center'>
+                                        <BiGroup className='text-blue-500 mr-2' />
+                                        <div>
+                                            <span className='text-sm font-medium'>Organizer</span>
+                                            <p className='text-gray-600'>{post.eventDetails.organizer}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            {/* User Actions Card */}
+                            <div className='bg-white rounded-lg p-6 shadow-sm'>
+                                <h2 className='text-xl font-semibold mb-4'>Actions</h2>
+                                
+                                <div className='flex flex-wrap gap-2'>
+                                    <Button 
+                                        size='sm'
+                                        color={isSaved ? 'light' : 'dark'}
+                                        onClick={handleSave}
+                                        className='flex items-center'
+                                    >
+                                        <BiBookmark className={`mr-1 ${isSaved ? 'text-blue-500' : ''}`} />
+                                        {isSaved ? 'Saved' : 'Save'}
+                                    </Button>
+
+                                    <Button size='sm' color='light' className='flex items-center'>
+                                        <BiShareAlt className='mr-1' /> Share
+                                    </Button>
+
+                                    <Button size='sm' color='light' className='flex items-center'>
+                                        <BiCalendar className='mr-1' /> Add to Calendar
+                                    </Button>
+                                </div>
+                                
+                                {/* Contact Organizer */}
+                                {currentUser && currentUser._id !== post.userId && (
+                                    <Button 
+                                        gradientDuoTone='purpleToBlue' 
+                                        size='sm' 
+                                        onClick={handleContactOwner}
+                                        className='mt-4 w-full'
+                                    >
+                                        <BiEnvelope className='mr-1' /> Contact Organizer
+                                    </Button>
+                                )}
+                            </div>
+
+                            {/* Registration Info Card (if available) */}
+                            {post.eventDetails.registration && post.eventDetails.registration.link && (
+                                <div className='bg-white rounded-lg p-6 shadow-sm'>
+                                    <h2 className='text-xl font-semibold mb-4'>Registration</h2>
+                                    <a 
+                                        href={post.eventDetails.registration.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className='text-blue-500 flex items-center hover:underline'
+                                    >
+                                        <BiPlus className='mr-1' /> Register for this event
+                                    </a>
+                                </div>
+                            )}
                         </div>
                     </div>
-
-                    {/* User Interaction */}
-                    <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
-                        <h2 className='text-3xl font-bold mb-6 text-gray-800 font-[Poppins]'>User Interaction</h2>
-                        <div className='flex flex-wrap gap-4'>
-                            <Button gradientDuoTone='purpleToBlue' size='lg' onClick={handleSave}>
-                                <FaBookmark className={`mr-2 ${isSaved ? 'text-yellow-500' : ''}`} />
-                                {isSaved ? 'Unsave' : 'Save'}
-                            </Button>
-                            <Button gradientDuoTone='purpleToBlue' size='lg'>
-                                <FaShare className='mr-2' /> Share
-                            </Button>
-                            <Button gradientDuoTone='purpleToBlue' size='lg'>
-                                <FaCalendarAlt className='mr-2' /> Add to Calendar
-                            </Button>
-                        </div>
-                    </div>
-                    
-                    
-                    <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
- 
-                         {currentUser &&  currentUser._id !== post.userId && (
-                         <Button gradientDuoTone='purpleToBlue' size='lg' onClick={handleContactOwner}>
-                            Contact organizers
-                         </Button>
-
-
-                         )}
-                    
-
-                    </div>
-
-                    <div className='bg-white rounded-2xl p-8 shadow-lg mb-8 hover:shadow-xl transition-shadow'>
-
-
-                    <CommentSection postId={post._id}/>
-
-
-                    </div>
-
-
-
                 </div>
-
-            
-                
             )}
-
-
-            
-        
         </main>
     );
 }
