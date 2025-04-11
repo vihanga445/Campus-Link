@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Sun, Moon, ClipboardList, ShieldCheck, Handshake } from "lucide-react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 export default function LostFoundHeroSection() {
   const [darkMode, setDarkMode] = useState(false);
+  const navigate = useNavigate();
 
   const steps = [
     {
@@ -57,9 +59,9 @@ export default function LostFoundHeroSection() {
           viewport={{ once: true, amount: 0.3 }}
         >
           <h2 className="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
-            WHEN RECOVERING <br />
-            YOUR ITEMS BECOMES <br />
-            CHILD'S PLAY!
+            BECAUSE YOUR <br />
+            LOST THING DESERVE <br />
+            A SECOND CHANCE <br />
           </h2>
           <p className="text-lg mb-6 text-green-700 font-semibold">
             Lost or found something?
@@ -68,10 +70,16 @@ export default function LostFoundHeroSection() {
           </p>
 
           <div className="flex flex-wrap items-center gap-4">
-            <button className="bg-green-600 text-white px-6 py-3 rounded-full font-semibold shadow-md hover:bg-green-700 transition">
+            <button
+              onClick={() => navigate("/lostfoundform?status=Lost")}
+              className="bg-green-600 text-white px-6 py-3 rounded-full font-semibold shadow-md hover:bg-green-700 transition"
+            >
               I HAVE LOST
             </button>
-            <button className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+            <button
+              onClick={() => navigate("/lostfoundform?status=Found")}
+              className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+            >
               I HAVE FOUND
             </button>
           </div>
