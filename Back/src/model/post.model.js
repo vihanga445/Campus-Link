@@ -51,6 +51,10 @@ const postSchema = new mongoose.Schema({
         currentParticipants: {
           type: Number,
           default: 0
+        },
+        approvalDocument: {
+            type: String,
+            default: null
         }
       },     
     slug:{
