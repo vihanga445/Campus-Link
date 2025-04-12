@@ -1,4 +1,4 @@
-import { Alert, Button, FileInput, TextInput } from 'flowbite-react';
+import { Alert, Button, FileInput, TextInput, Label } from 'flowbite-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useState } from 'react';
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaFilePdf, FaFileAlt, FaFileUpload } from 'react-icons/fa';
 
 // Add this helper function at the top of your component
 const validateEventDate = (selectedDate) => {
@@ -21,6 +22,12 @@ export default function CreatePost() {
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
+  
+  // New state for approval document
+  const [approvalDoc, setApprovalDoc] = useState(null);
+  const [approvalDocUploadProgress, setApprovalDocUploadProgress] = useState(null);
+  const [approvalDocError, setApprovalDocError] = useState(null);
+  
   const [formData, setFormData] = useState({
     category: 'Event',
     eventDetails: {
@@ -35,7 +42,8 @@ export default function CreatePost() {
         link: ''
       },
       maxParticipants: 0,
-      currentParticipants: 0
+      currentParticipants: 0,
+      approvalDocument: '' // New field for storing approval document URL
     }
   });
   const [publishError, setPublishError] = useState(null);
@@ -57,10 +65,6 @@ export default function CreatePost() {
       const response = await fetch('https://api.cloudinary.com/v1_1/dfu1zqt5s/image/upload', {
         method: 'POST',
         body: formDataUpload,
-        onUploadProgress: (progressEvent) => {
-          const progress = Math.round(progressEvent.loaded / progressEvent.total * 100);
-          setImageUploadProgress(progress);
-        }
       });
       if (!response.ok) {
         throw new Error('Failed to upload image');
@@ -76,12 +80,70 @@ export default function CreatePost() {
     }
   };
 
+  // New function to handle approval document upload
+  const handleUploadApprovalDoc = async () => {
+    try {
+      if (!approvalDoc) {
+        setApprovalDocError('Please select a document to upload');
+        return;
+      }
+      setApprovalDocError(null);
+      const formDataUpload = new FormData();
+      formDataUpload.append('file', approvalDoc);
+      formDataUpload.append('upload_preset', 'final_project');
+      
+      // Set upload progress to 0 to start
+      setApprovalDocUploadProgress(0);
+
+      const response = await fetch('https://api.cloudinary.com/v1_1/dfu1zqt5s/upload', {
+        method: 'POST',
+        body: formDataUpload,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to upload document');
+      }
+      
+      const data = await response.json();
+      
+      setFormData({
+        ...formData,
+        eventDetails: {
+          ...formData.eventDetails,
+          approvalDocument: data.secure_url
+        }
+      });
+      
+      setApprovalDocUploadProgress(100);
+      
+      // Reset progress after 2 seconds
+      setTimeout(() => {
+        setApprovalDocUploadProgress(null);
+        toast.success('Approval document uploaded successfully');
+      }, 2000);
+      
+      setApprovalDocError(null);
+    } catch (error) {
+      setApprovalDocError("Document upload failed");
+      setApprovalDocUploadProgress(null);
+      console.log(error);
+      toast.error('Failed to upload approval document');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (formData.category === 'Event' && !validateEventDate(formData.eventDetails.date)) {
         setPublishError('Event date cannot be in the past');
         toast.error('Event date cannot be in the past');
+        return;
+      }
+
+      // Check if approval document is uploaded
+      if (!formData.eventDetails.approvalDocument) {
+        setPublishError('Please upload an approval document');
+        toast.error('Approval document is required for event submission');
         return;
       }
 
@@ -92,7 +154,11 @@ export default function CreatePost() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...formData, eventDetails }),
+        body: JSON.stringify({ 
+          ...formData, 
+          eventDetails,
+          status: 'pending', // Set initial status to pending for approval
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -102,7 +168,7 @@ export default function CreatePost() {
       }
       if (res.ok) {
         setPublishError(null);
-        toast.success('Post submitted for admin review!', {
+        toast.success('Event submitted for approval! A moderator will review your submission.', {
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: false,
@@ -117,10 +183,16 @@ export default function CreatePost() {
     }
   };
 
-   return (
+  const getApprovalDocName = () => {
+    if (approvalDoc) {
+      return approvalDoc.name;
+    }
+    return "No file selected";
+  };
+
+  return (
     <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-md p-8">
-        {/* Page Title */}
         <h1 className="text-2xl font-semibold text-gray-800 text-center mb-6">
           Create a New Event
         </h1>
@@ -272,6 +344,71 @@ export default function CreatePost() {
                 }
               />
             </div>
+            
+            {/* NEW: Approval Document Upload */}
+            <div className="pt-4 border-t border-gray-200">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Approval Document <span className="text-red-500">*</span>
+              </label>
+              <div className="text-xs text-gray-500 mb-2">
+                Upload a document from your department/organization approving this event
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="flex-grow">
+                  <FileInput
+                    id="approval-doc"
+                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                    onChange={(e) => setApprovalDoc(e.target.files[0])}
+                    className="w-full"
+                  />
+                </div>
+                <Button
+                  type="button"
+                  size="sm"
+                  gradientDuoTone="purpleToBlue"
+                  outline
+                  onClick={handleUploadApprovalDoc}
+                  disabled={!approvalDoc || approvalDocUploadProgress}
+                  className="whitespace-nowrap"
+                >
+                  <FaFileUpload className="mr-1" />
+                  {approvalDocUploadProgress ? `${approvalDocUploadProgress}%` : "Upload"}
+                </Button>
+              </div>
+              
+              {/* Show document info when uploaded */}
+              {formData.eventDetails.approvalDocument && (
+                <div className="mt-3 p-3 bg-blue-50 rounded-lg flex items-center">
+                  <div className="text-blue-600 mr-2">
+                    {approvalDoc && approvalDoc.name.match(/\.(pdf)$/i) ? (
+                      <FaFilePdf size={24} />
+                    ) : (
+                      <FaFileAlt size={24} />
+                    )}
+                  </div>
+                  <div className="flex-grow">
+                    <div className="text-sm font-medium text-gray-700 truncate">
+                      {getApprovalDocName()}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      Document uploaded successfully
+                    </div>
+                  </div>
+                  <a 
+                    href={formData.eventDetails.approvalDocument} 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-blue-600 hover:underline"
+                  >
+                    View
+                  </a>
+                </div>
+              )}
+              
+              {approvalDocError && (
+                <div className="mt-2 text-sm text-red-600">{approvalDocError}</div>
+              )}
+            </div>
           </div>
 
           {/* Column 2: Image Upload */}
@@ -324,22 +461,21 @@ export default function CreatePost() {
               />
             </div>
           </div>
-        
 
-        {/* Action Buttons */}
-        <div className="flex justify-end gap-4 mt-8">
-          <Button
-            type="button"
-            onClick={() => setShowPreview(true)}
-            gradientDuoTone="purpleToBlue"
-            outline
-          >
-            Preview
-          </Button>
-          <Button type="submit" gradientDuoTone="purpleToBlue">
-            Publish
-          </Button>
-        </div>
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-4 mt-8">
+            <Button
+              type="button"
+              onClick={() => setShowPreview(true)}
+              gradientDuoTone="purpleToBlue"
+              outline
+            >
+              Preview
+            </Button>
+            <Button type="submit" gradientDuoTone="purpleToBlue">
+              Submit for Approval
+            </Button>
+          </div>
         </form>
       </div>
 
@@ -363,7 +499,27 @@ export default function CreatePost() {
                 className="w-full h-64 object-cover rounded-lg mb-4"
               />
             )}
-            <div className="prose max-w-none">{parse(formData.content || "")}</div>
+            <div className="prose max-w-none mb-4">{parse(formData.content || "")}</div>
+            
+            {/* Show approval document status */}
+            <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <h3 className="text-lg font-medium mb-2">Submission Status</h3>
+              <div className="flex items-center">
+                <div className="mr-2 w-3 h-3 rounded-full bg-yellow-500"></div>
+                <span className="text-sm">Pending Approval</span>
+              </div>
+              
+              {formData.eventDetails.approvalDocument ? (
+                <div className="mt-3 flex items-center">
+                  <FaFileAlt className="text-blue-500 mr-2" />
+                  <span className="text-sm">Approval document attached</span>
+                </div>
+              ) : (
+                <div className="mt-3 text-sm text-red-500">
+                  Required: Please upload an approval document before submitting
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
