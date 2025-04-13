@@ -263,6 +263,35 @@ export const unSavePost = async (req,res,next)=>{
     }    
 };
 
+export const getpostById = async(req,res,next)=>{
+
+    try {
+        const post = await Post.findById(req.params.id);
+        if (!post) return res.status(404).json({ message: 'Post not found' });
+        res.json(post);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+
+}
+
+export const editPost = async(req,res)=>{
+
+    try {
+        const { title, content, image } = req.body;
+        const post = await Post.findByIdAndUpdate(
+            req.params.id,
+            { title, content, image, status: 'Pending' }, // Set status to 'Pending' for admin review
+            { new: true }
+        );
+        if (!post) return res.status(404).json({ message: 'Post not found' });
+        res.json(post);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+
+}
+
 export const getEvents = async (req, res, next) => {
 
  try{

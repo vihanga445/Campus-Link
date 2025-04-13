@@ -1,12 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Button, Tooltip } from 'flowbite-react';
+import { Button, Tooltip, Badge, TextInput, Textarea } from 'flowbite-react';
 import { useSelector } from 'react-redux';
 import { 
   BiBookmark, BiShareAlt, BiCalendar, BiMap, 
   BiEnvelope, BiGroup, BiLayer, BiPlus,
   BiLink, BiLogoFacebook, BiLogoTwitter, BiLogoWhatsapp, BiLogoLinkedin,
-  BiLogoGoogle, BiLogoApple, BiWindows, BiCalendarPlus
+  BiLogoGoogle, BiLogoApple, BiWindows, BiCalendarPlus,
+  BiGlobe, BiBuildings, BiDevices
 } from 'react-icons/bi';
 import CommentSection from '../components/CommentSection';
 import { toast } from 'react-toastify';
@@ -24,6 +25,11 @@ export default function PostPage() {
     const [showCalendarOptions, setShowCalendarOptions] = useState(false);
     const calendarMenuRef = useRef(null);
     const navigate = useNavigate();
+
+    const [discussions, setDiscussions] = useState([]);
+    const [newDiscussion, setNewDiscussion] = useState({ title: '', content: '' });
+    const [newComment, setNewComment] = useState('');
+    const [loadingDiscussions, setLoadingDiscussions] = useState(true);
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -275,6 +281,10 @@ export default function PostPage() {
         setShowCalendarOptions(false);
     };
 
+  
+    
+    
+
     if (loading) return <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
     </div>;
@@ -340,12 +350,55 @@ export default function PostPage() {
                                     </div>
 
                                     <div className='flex items-center'>
-                                        <BiMap className='text-blue-500 mr-2' />
+                                        {post.eventDetails.eventMode === 'physical' ? (
+                                            <BiBuildings className='text-blue-500 mr-2' />
+                                        ) : post.eventDetails.eventMode === 'online' ? (
+                                            <BiGlobe className='text-blue-500 mr-2' />
+                                        ) : (
+                                            <BiDevices className='text-blue-500 mr-2' />
+                                        )}
                                         <div>
-                                            <span className='text-sm font-medium'>Venue</span>
-                                            <p className='text-gray-600'>{post.eventDetails.venue}</p>
+                                            <span className='text-sm font-medium'>Event Mode</span>
+                                            <div className='flex items-center'>
+                                                <p className='text-gray-600 capitalize'>{post.eventDetails.eventMode}</p>
+                                                <Badge color={post.eventDetails.eventMode === 'physical' ? 'indigo' : post.eventDetails.eventMode === 'online' ? 'purple' : 'info'} 
+                                                      className="ml-2">
+                                                    {post.eventDetails.eventMode === 'physical' ? 'In-person' : 
+                                                     post.eventDetails.eventMode === 'online' ? 'Virtual' : 'Both'}
+                                                </Badge>
+                                            </div>
                                         </div>
                                     </div>
+
+                                    {(post.eventDetails.eventMode === 'physical' || post.eventDetails.eventMode === 'hybrid') && (
+                                        <div className='flex items-center'>
+                                            <BiMap className='text-blue-500 mr-2' />
+                                            <div>
+                                                <span className='text-sm font-medium'>Venue</span>
+                                                <p className='text-gray-600'>{post.eventDetails.venue}</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                    
+                                    {(post.eventDetails.eventMode === 'online' || post.eventDetails.eventMode === 'hybrid') && 
+                                     post.eventDetails.onlineLink && (
+                                        <div className='flex items-center'>
+                                            <BiGlobe className='text-blue-500 mr-2' />
+                                            <div>
+                                                <span className='text-sm font-medium'>Online Meeting</span>
+                                                <p className='text-gray-600'>
+                                                    <a 
+                                                        href={post.eventDetails.onlineLink} 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer"
+                                                        className="text-blue-600 hover:underline inline-flex items-center"
+                                                    >
+                                                        Join Meeting <BiLink className="ml-1" />
+                                                    </a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )}
 
                                     <div className='flex items-center'>
                                         <BiGroup className='text-blue-500 mr-2' />
@@ -485,6 +538,8 @@ export default function PostPage() {
                             )}
                         </div>
                     </div>
+
+
                 </div>
             )}
         </main>

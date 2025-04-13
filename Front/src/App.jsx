@@ -32,7 +32,7 @@ import ChatList from "./components/ChatList";
 import SingleClubPage from "./Pages/SingleClubPage";
 import LostFoundPage from "./Pages/Lostfoundpage";
 import LostFoundForm from "./components/LostFoundForm";
-
+import EditPost from "./Pages/EditPost";
 const App = () => {
   return (
     <BrowserRouter>
@@ -79,6 +79,7 @@ const App = () => {
             element={<DashChat />}
           />
           <Route path="/dashboard/messages" element={<ChatList />} />
+          <Route path="/edit-post/:id" element={<EditPost />} />
         </Route>
         <Route path="/post/:postSlug" element={<PostPage />} />
         <Route path="/dashboard?tab=invite" element={<InviteFriends />} />
