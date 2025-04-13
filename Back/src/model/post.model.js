@@ -28,7 +28,7 @@ const postSchema = new mongoose.Schema({
         required: true,
     },
     eventDetails: {
-        types: [{ // Changed from type to types array
+        types: [{ 
             type: String,
             enum: ['Academic', 'Cultural', 'Sports', 'Workshop', 'Career', 'Club']
         }],
@@ -37,9 +37,27 @@ const postSchema = new mongoose.Schema({
           required: function() { return this.category === 'Event'; }
         },
         time: String,
+        eventMode: {
+            type: String,
+            enum: ['physical', 'online', 'hybrid'],
+            default: 'physical',
+            required: function() { return this.category === 'Event'; }
+        },
         venue: {
           type: String,
-          required: function() { return this.category === 'Event'; }
+          required: function() { 
+              return this.category === 'Event' && 
+                    (this.eventDetails.eventMode === 'physical' || 
+                     this.eventDetails.eventMode === 'hybrid'); 
+          }
+        },
+        onlineLink: {
+            type: String,
+            required: function() { 
+                return this.category === 'Event' && 
+                      (this.eventDetails.eventMode === 'online' || 
+                       this.eventDetails.eventMode === 'hybrid');
+            }
         },
         organizer: String,
         registration: {
@@ -56,7 +74,7 @@ const postSchema = new mongoose.Schema({
             type: String,
             default: null
         }
-      },     
+    },
     slug:{
         type:String,
         required:true,
