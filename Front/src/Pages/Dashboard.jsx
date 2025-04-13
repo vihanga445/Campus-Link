@@ -9,6 +9,7 @@ import RejectedPosts from "./RejectedPosts";
 import InviteFriends from "../components/InviteFriends";
 import SavedPosts from "./SavedPosts";
 import PendingClubApprovals from "../components/PendingClubApprovals";
+import PendingReports from "../components/PendingReports.jsx";
 import DashChat from "../components/DashChat.jsx";
 import DashUsers from "../components/DashUsers.jsx";
 export default function Dashboard() {
@@ -28,6 +29,7 @@ export default function Dashboard() {
         <DashSidebar />
       </div>
       {tab === "pending-clubs" && <PendingClubApprovals />}
+      {tab === "pending-lostfound" && <PendingReports />}
       {/* profile... */}
       {tab === "profile" && <DashProfile />}
       {/* posts... */}
@@ -41,9 +43,7 @@ export default function Dashboard() {
 
       {tab === "saved" && <SavedPosts />}
 
-      {tab === 'users' && <DashUsers/>}
-
-
+      {tab === "users" && <DashUsers />}
     </div>
   );
 }
