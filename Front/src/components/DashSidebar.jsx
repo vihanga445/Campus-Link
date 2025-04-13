@@ -102,6 +102,18 @@ export default function DashSidebar() {
             </Link>
           )}
 
+          {/* Pending Lost & Found Approvals (Only for Lost & Found Moderators) */}
+          {currentUser.moderatorRole?.category === "Lost-Found" && (
+            <Link to="/dashboard?tab=pending-lostfound">
+              <Sidebar.Item
+                active={tab === "pending-lostfound"}
+                icon={HiDocumentText}
+              >
+                Pending Approvals
+              </Sidebar.Item>
+            </Link>
+          )}
+
           <Link to="/dashboard?tab=posts">
             <Sidebar.Item active={tab === "posts"} icon={HiDocumentText}>
               My Posts
@@ -128,7 +140,7 @@ export default function DashSidebar() {
               Invite Friends
             </Sidebar.Item>
           </Link>
-                                 
+
           <Link to="/dashboard/messages">
             <Sidebar.Item active={tab === "chat"} icon={HiUser}>
               Chat
@@ -141,9 +153,9 @@ export default function DashSidebar() {
               </Sidebar.Item>
             </Link>
           )}
-           
+
           {/* New Club Moderators button */}
-           
+
           <Sidebar.Item
             icon={HiArrowSmRight}
             className="cursor-pointer"

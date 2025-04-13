@@ -32,6 +32,7 @@ import ChatList from "./components/ChatList";
 import SingleClubPage from "./Pages/SingleClubPage";
 import LostFoundPage from "./Pages/Lostfoundpage";
 import LostFoundForm from "./components/LostFoundForm";
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -68,9 +69,7 @@ const App = () => {
         <Route path="/cultural-clubs" element={<CulturalClubsPage />} />
         <Route path="/spiritual-clubs" element={<SpiritualClubsPage />} />
         <Route path="/sports-clubs" element={<SportsClubsPage />} />
-
         <Route path="/membership-form" element={<MembershipForm />} />
-
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/create-post" element={<CreatePost />} />
@@ -81,7 +80,6 @@ const App = () => {
           />
           <Route path="/dashboard/messages" element={<ChatList />} />
         </Route>
-
         <Route path="/post/:postSlug" element={<PostPage />} />
         <Route path="/dashboard?tab=invite" element={<InviteFriends />} />
       </Routes>

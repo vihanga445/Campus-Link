@@ -144,6 +144,44 @@ export default function LostFoundHeroSection() {
         </div>
       </motion.div>
 
+      {/* Popular Categories */}
+      <motion.section
+        className="bg-white dark:bg-gray-950 py-16 px-6 text-center"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9 }}
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <h3 className="text-3xl md:text-4xl font-bold mb-6 text-[#03396c] dark:text-cyan-100">
+          Popular Lost & Found Categories
+        </h3>
+        <div className="flex flex-wrap justify-center gap-6 mt-6">
+          {[
+            "📱 Phones",
+            "👛 Wallets",
+            "📚 Books",
+            "🆔 ID Cards",
+            "🎧 Accessories",
+            "📦 Other",
+          ].map((item, i) => {
+            const [emoji, label] = item.split(" ");
+            return (
+              <motion.div
+                key={i}
+                className="bg-[#e0f7fa] dark:bg-cyan-900 text-cyan-800 dark:text-cyan-100 w-40 h-40 flex flex-col items-center justify-center rounded-xl shadow-md"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: i * 0.2 }}
+                viewport={{ once: true, amount: 0.3 }}
+              >
+                <div className="text-4xl mb-2">{emoji}</div>
+                <div className="text-lg font-semibold">{label}</div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </motion.section>
+
       {/* Why Use CampusLink */}
       <motion.section
         className="bg-gray-100 dark:bg-gray-900 py-16 px-6 text-center"
@@ -182,44 +220,6 @@ export default function LostFoundHeroSection() {
               </motion.div>
             )
           )}
-        </div>
-      </motion.section>
-
-      {/* Popular Categories */}
-      <motion.section
-        className="bg-white dark:bg-gray-950 py-16 px-6 text-center"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <h3 className="text-3xl md:text-4xl font-bold mb-6 text-[#03396c] dark:text-cyan-100">
-          Popular Lost & Found Categories
-        </h3>
-        <div className="flex flex-wrap justify-center gap-6 mt-6">
-          {[
-            "📱 Phones",
-            "👛 Wallets",
-            "📚 Books",
-            "🆔 ID Cards",
-            "🎧 Accessories",
-            "📦 Other",
-          ].map((item, i) => {
-            const [emoji, label] = item.split(" ");
-            return (
-              <motion.div
-                key={i}
-                className="bg-[#e0f7fa] dark:bg-cyan-900 text-cyan-800 dark:text-cyan-100 w-40 h-40 flex flex-col items-center justify-center rounded-xl shadow-md"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, delay: i * 0.2 }}
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                <div className="text-4xl mb-2">{emoji}</div>
-                <div className="text-lg font-semibold">{label}</div>
-              </motion.div>
-            );
-          })}
         </div>
       </motion.section>
 

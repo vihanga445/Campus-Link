@@ -32,6 +32,18 @@ const LostFoundSchema = new mongoose.Schema(
       default: "Pending",
       enum: ["Pending", "Approved", "Rejected"],
     },
+    itemName: {
+      type: String,
+      required: true,
+    },
+    reporterName: {
+      type: String,
+      required: true,
+    },
+    reporterEmail: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

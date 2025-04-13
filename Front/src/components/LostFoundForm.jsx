@@ -11,6 +11,9 @@ const LostFoundForm = () => {
   const initialStatus = queryParams.get("status") || "Lost";
 
   const [status, setStatus] = useState(initialStatus);
+  const [itemName, setItemName] = useState(""); // New field for item name
+  const [reporterName, setReporterName] = useState(""); // New field for reporter name
+  const [reporterEmail, setReporterEmail] = useState(""); // New field for reporter email
   const [locationInput, setLocationInput] = useState("");
   const [date, setDate] = useState("");
   const [category, setCategory] = useState("");
@@ -53,7 +56,15 @@ const LostFoundForm = () => {
 
   const handleSubmit = async () => {
     // Validate all fields
-    if (!locationInput || !category || !date || !description) {
+    if (
+      !itemName ||
+      !reporterName ||
+      !reporterEmail ||
+      !locationInput ||
+      !category ||
+      !date ||
+      !description
+    ) {
       toast.error("Please fill in all required fields.");
       return;
     }
@@ -70,6 +81,9 @@ const LostFoundForm = () => {
     // Prepare form data
     const formData = {
       status, // Lost or Found
+      itemName, // Name of the item
+      reporterName, // Name of the reporter
+      reporterEmail, // Email of the reporter
       location: locationInput,
       date,
       category,
@@ -129,6 +143,42 @@ const LostFoundForm = () => {
             I have {type.toLowerCase()}
           </button>
         ))}
+      </div>
+      {/* Item Name */}
+      <div className="mb-4">
+        <label className="block mb-2 font-medium">Item Name *</label>
+        <input
+          type="text"
+          value={itemName}
+          onChange={(e) => setItemName(e.target.value)}
+          placeholder="Enter the name of the item"
+          className="w-full p-2 border rounded-md"
+          required
+        />
+      </div>
+      {/* Reporter Name */}
+      <div className="mb-4">
+        <label className="block mb-2 font-medium">Your Name *</label>
+        <input
+          type="text"
+          value={reporterName}
+          onChange={(e) => setReporterName(e.target.value)}
+          placeholder="Enter your name"
+          className="w-full p-2 border rounded-md"
+          required
+        />
+      </div>
+      {/* Reporter Email */}
+      <div className="mb-4">
+        <label className="block mb-2 font-medium">Your Email *</label>
+        <input
+          type="email"
+          value={reporterEmail}
+          onChange={(e) => setReporterEmail(e.target.value)}
+          placeholder="Enter your email"
+          className="w-full p-2 border rounded-md"
+          required
+        />
       </div>
       {/* Location */}
       <div className="mb-4">
