@@ -63,4 +63,19 @@ router.patch("/:id/reject", async (req, res) => {
   }
 });
 
+// Route to fetch approved lost/found reports
+router.get("/approved", async (req, res) => {
+  try {
+    // Fetch all reports with moderationStatus set to "Approved"
+    const approvedReports = await LostFound.find({
+      moderationStatus: "Approved",
+    });
+
+    res.status(200).json(approvedReports);
+  } catch (error) {
+    console.error("Error fetching approved reports:", error);
+    res.status(500).json({ message: "Failed to fetch approved reports." });
+  }
+});
+
 export default router;

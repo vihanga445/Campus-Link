@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Sun, Moon, ClipboardList, ShieldCheck, Handshake } from "lucide-react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function LostFoundHeroSection() {
   const [darkMode, setDarkMode] = useState(false);
+  const [lostItems, setLostItems] = useState([]); // State for lost items
+  const [foundItems, setFoundItems] = useState([]); // State for found items
   const navigate = useNavigate();
 
   const steps = [
@@ -27,6 +30,26 @@ export default function LostFoundHeroSection() {
         "As soon as you are authenticated, you receive the information to pick it up or have it delivered. Remember to communicate the reference’s number found.",
     },
   ];
+
+  // Fetch approved items from the backend
+  useEffect(() => {
+    const fetchApprovedItems = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/Back/lostfound/approved" // Replace with your backend API endpoint
+        );
+        const approvedItems = response.data;
+
+        // Filter items based on their status
+        setLostItems(approvedItems.filter((item) => item.status === "Lost"));
+        setFoundItems(approvedItems.filter((item) => item.status === "Found"));
+      } catch (error) {
+        console.error("Error fetching approved items:", error);
+      }
+    };
+
+    fetchApprovedItems();
+  }, []);
 
   return (
     <div
@@ -179,6 +202,98 @@ export default function LostFoundHeroSection() {
               </motion.div>
             );
           })}
+        </div>
+      </motion.section>
+
+      {/* Lost Items Section */}
+      <motion.section
+        className="bg-gray-100 dark:bg-gray-900 py-16 px-6 text-center"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9 }}
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-3xl text-center flex-1 md:text-4xl font-bold text-[#03396c] dark:text-cyan-100">
+            Recently Lost Items
+          </h3>
+          <button
+            onClick={() => navigate("/lostitems")} // Replace with the route for all lost items
+            className="text-sm font-semibold text-blue-600 hover:underline ml-4 "
+          >
+            See All Lost Items
+          </button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {lostItems.map((item) => (
+            <div
+              key={item._id}
+              className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md cursor-pointer"
+              onClick={() => navigate(`/lostitems/${item._id}`)} // Navigate to the detailed page
+            >
+              <img
+                src={item.imageUrl || "https://via.placeholder.com/150"}
+                alt={item.itemName}
+                className="w-full h-40 object-cover rounded-md mb-4"
+              />
+              <h4 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-2">
+                {item.itemName}
+              </h4>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                <strong>Location:</strong> {item.location}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                <strong>Date:</strong>{" "}
+                {new Date(item.date).toLocaleDateString()}
+              </p>
+            </div>
+          ))}
+        </div>
+      </motion.section>
+
+      {/* Found Items Section */}
+      <motion.section
+        className="bg-white dark:bg-gray-950 py-16 px-6 text-center"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9 }}
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-3xl md:text-4xl font-bold text-[#03396c] dark:text-cyan-100 text-center flex-1">
+            Recently Found Items
+          </h3>
+          <button
+            onClick={() => navigate("/founditems")} // Replace with the route for all found items
+            className="text-sm font-semibold text-blue-600 hover:underline ml-4"
+          >
+            See All Found Items
+          </button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {foundItems.map((item) => (
+            <div
+              key={item._id}
+              className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md cursor-pointer"
+              onClick={() => navigate(`/founditems/${item._id}`)} // Navigate to the detailed page
+            >
+              <img
+                src={item.imageUrl || "https://via.placeholder.com/150"}
+                alt={item.itemName}
+                className="w-full h-40 object-cover rounded-md mb-4"
+              />
+              <h4 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-2">
+                {item.itemName}
+              </h4>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                <strong>Location:</strong> {item.location}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                <strong>Date:</strong>{" "}
+                {new Date(item.date).toLocaleDateString()}
+              </p>
+            </div>
+          ))}
         </div>
       </motion.section>
 
