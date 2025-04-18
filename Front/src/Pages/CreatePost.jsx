@@ -1,7 +1,7 @@
-import { Alert, Button, FileInput, TextInput, Label } from 'flowbite-react';
+import { Alert, Button, FileInput, TextInput, Label, Select } from 'flowbite-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate } from 'react-router-dom';
@@ -29,11 +29,16 @@ export default function CreatePost() {
   const [approvalDocError, setApprovalDocError] = useState(null);
   
   const [formData, setFormData] = useState({
+    title: '',
+    content: '',
+    image: '',
     category: 'Event',
     eventDetails: {
       types: [],
       date: '',
       time: '',
+      eventMode: 'physical',
+      onlineLink: '',
       venue: '',
       organizer: '',
       registration: {
@@ -43,7 +48,7 @@ export default function CreatePost() {
       },
       maxParticipants: 0,
       currentParticipants: 0,
-      approvalDocument: '' // New field for storing approval document URL
+      approvalDocument: ''
     }
   });
   const [publishError, setPublishError] = useState(null);
@@ -95,7 +100,7 @@ export default function CreatePost() {
       // Set upload progress to 0 to start
       setApprovalDocUploadProgress(0);
 
-      const response = await fetch('https://api.cloudinary.com/v1_1/dfu1zqt5s/upload', {
+      const response = await fetch('https://api.cloudinary.com/v1_1/dfu1zqt5s/image/upload', {
         method: 'POST',
         body: formDataUpload,
       });
@@ -292,20 +297,69 @@ export default function CreatePost() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Venue
+                Event Mode
               </label>
-              <TextInput
-                type="text"
-                placeholder="Enter event venue"
+              <Select
+                id="eventMode"
                 required
-                onChange={(e) =>
+                className="w-full"
+                onChange={(e) => 
                   setFormData({
                     ...formData,
-                    eventDetails: { ...formData.eventDetails, venue: e.target.value },
+                    eventDetails: {
+                      ...formData.eventDetails,
+                      eventMode: e.target.value
+                    }
                   })
                 }
-              />
+                value={formData.eventDetails.eventMode}
+              >
+                <option value="physical">Physical (In-person)</option>
+                <option value="online">Online (Virtual)</option>
+                <option value="hybrid">Hybrid (Both)</option>
+              </Select>
             </div>
+
+            {(formData.eventDetails.eventMode === 'physical' || formData.eventDetails.eventMode === 'hybrid') && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Venue
+                </label>
+                <TextInput
+                  type="text"
+                  placeholder="Enter event venue"
+                  required
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      eventDetails: { ...formData.eventDetails, venue: e.target.value },
+                    })
+                  }
+                />
+              </div>
+            )}
+
+            {(formData.eventDetails.eventMode === 'online' || formData.eventDetails.eventMode === 'hybrid') && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Online Meeting Link
+                </label>
+                <TextInput
+                  type="url"
+                  placeholder="Enter Zoom, Google Meet, or other meeting link"
+                  required
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      eventDetails: { ...formData.eventDetails, onlineLink: e.target.value },
+                    })
+                  }
+                />
+                <p className="mt-1 text-xs text-gray-500">
+                  Include a link to your virtual meeting platform (Zoom, Google Meet, Microsoft Teams, etc.)
+                </p>
+              </div>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -500,6 +554,40 @@ export default function CreatePost() {
               />
             )}
             <div className="prose max-w-none mb-4">{parse(formData.content || "")}</div>
+            
+            {/* Event Details */}
+            <div className="mb-4 grid grid-cols-2 gap-4">
+              <div>
+                <h3 className="text-sm font-bold">Date & Time</h3>
+                <p className="text-sm">{formData.eventDetails.date ? new Date(formData.eventDetails.date).toLocaleDateString() : 'TBD'} {formData.eventDetails.time || ''}</p>
+              </div>
+              <div>
+                <h3 className="text-sm font-bold">Event Mode</h3>
+                <p className="text-sm capitalize">{formData.eventDetails.eventMode}</p>
+              </div>
+              {(formData.eventDetails.eventMode === 'physical' || formData.eventDetails.eventMode === 'hybrid') && (
+                <div>
+                  <h3 className="text-sm font-bold">Venue</h3>
+                  <p className="text-sm">{formData.eventDetails.venue || 'TBD'}</p>
+                </div>
+              )}
+              {(formData.eventDetails.eventMode === 'online' || formData.eventDetails.eventMode === 'hybrid') && (
+                <div>
+                  <h3 className="text-sm font-bold">Online Link</h3>
+                  {formData.eventDetails.onlineLink ? (
+                    <a href={formData.eventDetails.onlineLink} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline">
+                      Join Online Meeting
+                    </a>
+                  ) : (
+                    <p className="text-sm">Link not provided</p>
+                  )}
+                </div>
+              )}
+              <div>
+                <h3 className="text-sm font-bold">Organizer</h3>
+                <p className="text-sm">{formData.eventDetails.organizer || 'Not specified'}</p>
+              </div>
+            </div>
             
             {/* Show approval document status */}
             <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">

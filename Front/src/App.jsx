@@ -34,6 +34,11 @@ import LostFoundPage from "./Pages/Lostfoundpage";
 import LostFoundForm from "./components/LostFoundForm";
 import LostItemsPage from "./Pages/LostItemsPage";
 import FoundItemsPage from "./Pages/FoundItemsPage";
+import EditPost from "./Pages/EditPost";
+import CreateAnnouncementForm from "./Pages/CreateAnnouncementForm";
+import Announcement from "../../Back/src/model/announcement";
+import Announcements from "./Pages/Announcements";
+
 
 const App = () => {
   return (
@@ -83,6 +88,9 @@ const App = () => {
             element={<DashChat />}
           />
           <Route path="/dashboard/messages" element={<ChatList />} />
+          <Route path="/edit-post/:id" element={<EditPost />} />
+          <Route path="/create-announcement" element={<CreateAnnouncementForm />} />
+          <Route path="/announcements" element={<Announcements/>}/>
         </Route>
         <Route path="/post/:postSlug" element={<PostPage />} />
         <Route path="/dashboard?tab=invite" element={<InviteFriends />} />
