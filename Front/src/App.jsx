@@ -32,6 +32,8 @@ import ChatList from "./components/ChatList";
 import SingleClubPage from "./Pages/SingleClubPage";
 import LostFoundPage from "./Pages/Lostfoundpage";
 import LostFoundForm from "./components/LostFoundForm";
+import LostItemsPage from "./Pages/LostItemsPage";
+import FoundItemsPage from "./Pages/FoundItemsPage";
 
 const App = () => {
   return (
@@ -60,6 +62,8 @@ const App = () => {
         <Route path="/clubs" element={<Clubs />} />
         <Route path="/lostfound" element={<LostFoundPage />} />
         <Route path="/lostfoundform" element={<LostFoundForm />} />
+        <Route path="/lostitems" element={<LostItemsPage />} />
+        <Route path="/founditems" element={<FoundItemsPage />} />
         <Route path="/one-club/:id" element={<SingleClubPage />} />
         <Route path="/start-club" element={<StartClubPage />} />
         <Route path="/create-club" element={<CreateClubForm />} />
