@@ -29,4 +29,6 @@ router.get('/events',getEvents);
 router.delete('/save/:postId',verifyToken,unSavePost);
 router.get('/:id',verifyToken,getpostById);
 router.put('/edit/:id',verifyToken,editPost);
+
+
 export default router;
