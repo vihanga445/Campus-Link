@@ -2,10 +2,12 @@ import { Button, TextInput, Select } from "flowbite-react";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch, FaCalendarAlt } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 function Announcements() {
   const [announcements, setAnnouncements] = useState([]);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+  const { currentUser } = useSelector((state) => state.user);
   const [filters, setFilters] = useState({
     keyword: "",
     category: "all",
@@ -90,6 +92,7 @@ function Announcements() {
                     <option value="Administrative">Administrative</option>
                   </Select>
                 </div>
+                
 
                 {/* Date Filter */}
                 <div>
@@ -117,7 +120,7 @@ function Announcements() {
                   >
                     Reset Filters
                   </Button>
-                  <Link to="/create-announcement">
+                  {currentUser && currentUser.moderatorRole?.category==="Announcements" && (                  <Link to="/create-announcement">
                     <Button
                       type="button"
                       gradientDuoTone="purpleToPink"
@@ -125,7 +128,7 @@ function Announcements() {
                     >
                       Create Announcement
                     </Button>
-                  </Link>
+                  </Link>)}
                 </div>
               </div>
             </div>
@@ -148,9 +151,31 @@ function Announcements() {
                     />
                   )}
                   <div className="p-4">
-                    <h2 className="text-xl font-semibold mb-2">
-                      {announcement.title}
-                    </h2>
+                    <h2 className="text-xl font-semibold mb-2">{announcement.title}</h2>
+
+                    {/* Category */}
+                    <div className="flex items-center gap-2 text-gray-600 mb-2">
+                      <span className="px-2 py-1 text-sm font-medium rounded-md bg-blue-100 text-blue-800">
+                        {announcement.category}
+                      </span>
+                    </div>
+
+                    {/* Priority */}
+                    <div className="flex items-center gap-2 mb-2">
+                      <span
+                        className={`px-2 py-1 text-sm font-medium rounded-md ${
+                          announcement.priority === "Important"
+                            ? "bg-red-100 text-red-800"
+                            : announcement.priority === "Medium"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-green-100 text-green-800"
+                        }`}
+                      >
+                        {announcement.priority}
+                      </span>
+                    </div>
+
+                    {/* Created Date */}
                     <div className="flex items-center gap-2 text-gray-600 mb-2">
                       <FaCalendarAlt />
                       <span>
@@ -160,6 +185,8 @@ function Announcements() {
                           : "Creation date not available"}
                       </span>
                     </div>
+
+                    {/* Message Preview */}
                     <p className="text-gray-600 line-clamp-2">
                       {announcement.message.substring(0, 100)}...
                     </p>
@@ -176,28 +203,63 @@ function Announcements() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
             <h2 className="text-2xl font-bold mb-4">{selectedAnnouncement.title}</h2>
-            <p className="mb-4">{selectedAnnouncement.message}</p>
-            <p className="text-sm text-gray-500 mb-4">
-              Category: {selectedAnnouncement.category}
-            </p>
-            <p className="text-sm text-gray-500 mb-4">
-              Priority: {selectedAnnouncement.priority}
-            </p>
-            <div className="mb-4">
-              <h3 className="font-bold mb-2">Attachments:</h3>
-              {selectedAnnouncement.attachments.map((file, index) => (
-                <div key={index}>
-                  <a
-                    href={`http://localhost:5000/${file.fileUrl}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 underline"
-                  >
-                    {file.filename}
-                  </a>
-                </div>
-              ))}
+
+            {/* Category */}
+            <div className="flex items-center gap-2 text-gray-600 mb-4">
+              <span className="px-2 py-1 text-sm font-medium rounded-md bg-blue-100 text-blue-800">
+                {selectedAnnouncement.category}
+              </span>
             </div>
+
+            {/* Priority */}
+            <div className="flex items-center gap-2 mb-4">
+              <span
+                className={`px-2 py-1 text-sm font-medium rounded-md ${
+                  selectedAnnouncement.priority === "Important"
+                    ? "bg-red-100 text-red-800"
+                    : selectedAnnouncement.priority === "Medium"
+                    ? "bg-yellow-100 text-yellow-800"
+                    : "bg-green-100 text-green-800"
+                }`}
+              >
+                {selectedAnnouncement.priority}
+              </span>
+            </div>
+
+            {/* Message */}
+            <p className="mb-4">{selectedAnnouncement.message}</p>
+
+            {/* Attachments */}
+            {selectedAnnouncement.attachments && selectedAnnouncement.attachments.length > 0 && (
+              <div className="mb-4">
+                <h3 className="font-bold mb-2">Attachments:</h3>
+                {selectedAnnouncement.attachments.map((file, index) => (
+                  <div key={index}>
+                    <a
+                      href={`http://localhost:5000/${file.fileUrl}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 underline"
+                    >
+                      {file.filename}
+                    </a>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Created Date */}
+            <div className="flex items-center gap-2 text-gray-600 mb-4">
+              <FaCalendarAlt />
+              <span>
+                Created on:{" "}
+                {selectedAnnouncement.createdAt
+                  ? new Date(selectedAnnouncement.createdAt).toLocaleDateString()
+                  : "Creation date not available"}
+              </span>
+            </div>
+
+            {/* Close Button */}
             <button
               onClick={handleCloseModal}
               className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
