@@ -18,4 +18,5 @@ router.get("/get-announcements", verifyToken, getAnnouncements);
 // Mark an announcement as seen
 router.put("/:id/seen", verifyToken, markAsSeen);
 
+
 export default router;
