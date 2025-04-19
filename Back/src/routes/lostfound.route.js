@@ -3,6 +3,7 @@ import {
   createLostFound,
   getPendingReports,
   updateModerationStatus,
+  sendEmailNotification,
 } from "../controller/lostfound.controller.js";
 import LostFound from "../model/lostfound.model.js"; // Import the LostFound model
 
@@ -77,5 +78,8 @@ router.get("/approved", async (req, res) => {
     res.status(500).json({ message: "Failed to fetch approved reports." });
   }
 });
+
+// Route to send an email notification
+router.post("/:id/send-email", sendEmailNotification);
 
 export default router;
