@@ -20,6 +20,12 @@ const FoundItemsPage = () => {
           (item) => item.status === "Found"
         );
         setFoundItems(approvedFoundItems);
+
+        // Log when all data is fetched
+        console.log(
+          "All found items fetched successfully:",
+          approvedFoundItems
+        );
       } catch (error) {
         console.error("Error fetching found items:", error);
       } finally {
@@ -40,6 +46,34 @@ const FoundItemsPage = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedItem(null);
+  };
+
+  // Handle sending email
+  const handleSendEmail = async (item, message) => {
+    const subject = `Inquiry about the found item: ${item.itemName}`;
+    console.log("Sending email with data:", {
+      reporterEmail: item.reporterEmail,
+      subject: subject,
+      message: message,
+    });
+
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/Back/lostfound/${item._id}/send-email`,
+        {
+          reporterEmail: item.reporterEmail,
+          subject: subject,
+          message: message,
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Email sent successfully to the reporter!");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      alert("Failed to send email. Please try again later.");
+    }
   };
 
   if (loading) {
@@ -108,6 +142,7 @@ const FoundItemsPage = () => {
           onClose={handleCloseModal}
           item={selectedItem}
           reporterEmail={selectedItem.reporterEmail} // Pass the reporter's email
+          onSend={(message) => handleSendEmail(selectedItem, message)} // Pass the message to handleSendEmail
         />
       )}
     </div>
