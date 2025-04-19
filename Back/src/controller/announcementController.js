@@ -32,18 +32,62 @@ export const createAnnouncement = async (req, res) => {
   }
 };
 
-// Get all announcements
+
 export const getAnnouncements = async (req, res) => {
   try {
-    const announcements = await Announcement.find()
+    const { keyword, category, date } = req.query;
+
+    let query = {};
+
+    // Search by keyword in title or message
+    if (keyword) {
+      query.$or = [
+        { title: { $regex: keyword, $options: "i" } },
+        { message: { $regex: keyword, $options: "i" } },
+      ];
+    }
+
+    // Filter by category
+    if (category && category !== "all") {
+      query.category = category;
+    }
+
+    // Filter by date
+    if (date) {
+      const searchDate = new Date(date);
+      const nextDay = new Date(searchDate);
+      nextDay.setDate(searchDate.getDate() + 1);
+      query.createdAt = {
+        $gte: searchDate,
+        $lt: nextDay,
+      };
+    }
+
+    const announcements = await Announcement.find(query)
       .sort({ pinned: -1, createdAt: -1 }) // Pinned items first
       .populate("createdBy", "username"); // Populate creator info
 
-    res.status(200).json(announcements);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching announcements", error });
-  }
-};
+      res.status(200).json(announcements);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching announcements", error });
+    }
+  };
+
+
+
+
+// Get all announcements
+// export const getAnnouncements = async (req, res) => {
+//   try {
+//     const announcements = await Announcement.find()
+//       .sort({ pinned: -1, createdAt: -1 }) // Pinned items first
+//       .populate("createdBy", "username"); // Populate creator info
+
+//     res.status(200).json(announcements);
+//   } catch (error) {
+//     res.status(500).json({ message: "Error fetching announcements", error });
+//   }
+// };
 
 // Mark announcement as seen
 export const markAsSeen = async (req, res) => {
