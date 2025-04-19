@@ -51,7 +51,7 @@ const announcementSchema = new mongoose.Schema({
     ],
 },{timestamps : true});
 
-announcementSchema.index({pinnde: -1 , createdAt: -1});
+announcementSchema.index({ createdAt: -1});
 
 const Announcement = mongoose.model("Announcement", announcementSchema);
 

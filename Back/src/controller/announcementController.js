@@ -51,6 +51,8 @@ export const getAnnouncements = async (req, res) => {
     if (category && category !== "all") {
       query.category = category;
     }
+    
+   
 
     // Filter by date
     if (date) {
@@ -64,7 +66,7 @@ export const getAnnouncements = async (req, res) => {
     }
 
     const announcements = await Announcement.find(query)
-      .sort({ pinned: -1, createdAt: -1 }) // Pinned items first
+      .sort({  createdAt: -1 }) // Pinned items first
       .populate("createdBy", "username"); // Populate creator info
 
       res.status(200).json(announcements);
