@@ -19,6 +19,7 @@ export const createAnnouncement = async (req, res) => {
       category,
       priority,
       pinned,
+      referenceLink,
       expirationDate,
       attachments,
       createdBy: req.user.id, // Assuming user is authenticated
