@@ -38,9 +38,6 @@ const announcementSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    referenceLink: {
-        type: String, // Add the reference link field
-    },
     createdBy:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
