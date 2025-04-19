@@ -3,6 +3,8 @@ import cors from "cors";
 import mongoose from "mongoose";
 import helmet from "helmet";
 import morgan from "morgan";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
@@ -17,9 +19,16 @@ import cookieParser from "cookie-parser";
 import commentRoutes from "./routes/comment.route.js";
 import messageRoutes from "./routes/message.route.js";
 import membershipRoutes from "./routes/membership.route.js";
-import lostFoundRoutes from "./routes/lostfound.route.js"; // Import the lost/found routes
+import lostFoundRoutes from "./routes/lostfound.route.js";
+import announcementRoutes from "./routes/announcement.route.js";
+// Import the announcement routes
+ // Import the lost/found routes
+
+
 const app = express();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -53,7 +62,12 @@ app.use("/Back/clubs", clubRoutes);
 app.use("/Back/message", messageRoutes); // Use the message routes
 app.use("/Back/membership", membershipRoutes);
 app.use("/Back/lostfound", lostFoundRoutes); // Use the lost/found routes
+app.use("/Back/announcement", announcementRoutes);
 
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
+ // Serve static files from the uploads directory
+// Use the announcement routes
 // Error handling middleware
 
 app.use((err, req, res, next) => {

@@ -1,6 +1,6 @@
 import express from 'express';
 import { verifyToken } from '../../utils/verifyUser.js';
-import { create,getposts,deletePost,updatePost,moderatePost,getPendingPosts,getRejectedPosts,savePost,getSavedPosts, unSavePost, getEvents} from '../controller/post.controller.js';
+import { create,getposts,deletePost,updatePost,moderatePost,getPendingPosts,getRejectedPosts,savePost,getSavedPosts, unSavePost, getEvents, getpostById, editPost} from '../controller/post.controller.js';
 
 
 const router = express.Router();
@@ -14,6 +14,7 @@ router.put('/moderate/:postId',verifyToken,moderatePost);
 
 router.get('/pending-posts',verifyToken,getPendingPosts);
 
+
 router.get('/rejected-posts',verifyToken,getRejectedPosts);
 
 
@@ -26,5 +27,8 @@ router.get('/saved-posts',verifyToken,getSavedPosts);
 router.get('/events',getEvents);
 
 router.delete('/save/:postId',verifyToken,unSavePost);
+router.get('/:id',verifyToken,getpostById);
+router.put('/edit/:id',verifyToken,editPost);
+
 
 export default router;
