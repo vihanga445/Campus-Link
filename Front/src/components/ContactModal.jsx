@@ -1,38 +1,45 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const ContactModal = ({ isOpen, onClose, item, reporterEmail }) => {
-  const [message, setMessage] = useState("");
-  const navigate = useNavigate();
+  const [message, setMessage] = useState(""); // State to store the user's message
+  const [loading, setLoading] = useState(false); // State to handle loading
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Send message to backend to contact reporter (example API)
+    setLoading(true); // Show loading state
+
     try {
-      const response = await fetch("http://localhost:5000/contact-reporter", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message, reporterEmail }),
-      });
+      // Send email to the reporter via backend API
+      const response = await fetch(
+        `http://localhost:5000/Back/lostfound/${item._id}/send-email`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            customMessage: message,
+          }),
+        }
+      );
 
       if (response.ok) {
-        alert("Message sent to the reporter successfully!");
+        alert("Email sent to the reporter successfully!");
         onClose(); // Close the modal
-        navigate("/thank-you"); // Optional: navigate to a thank you page
       } else {
-        alert("Failed to send message. Try again.");
+        alert("Failed to send email. Please try again.");
       }
     } catch (error) {
-      console.error("Error sending message:", error);
-      alert("Failed to send message.");
+      console.error("Error sending email:", error);
+      alert("An error occurred while sending the email.");
+    } finally {
+      setLoading(false); // Hide loading state
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) return null; // Do not render the modal if it's not open
 
   return (
     <motion.div
@@ -46,21 +53,22 @@ const ContactModal = ({ isOpen, onClose, item, reporterEmail }) => {
           Contact the Reporter
         </h2>
         <p className="text-gray-600 dark:text-gray-300 mb-4">
-          Regarding: {item.itemName}
+          Regarding: <strong>{item.itemName}</strong>
         </p>
         <form onSubmit={handleSubmit}>
           <textarea
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) => setMessage(e.target.value)} // Update the message state
             placeholder="Type your message here..."
             className="w-full p-2 border rounded-md mb-4"
             required
           />
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white px-4 py-2 rounded-md font-semibold"
+            className="w-full bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700 transition"
+            disabled={loading} // Disable the button while loading
           >
-            Send Message
+            {loading ? "Sending..." : "Send Message"}
           </button>
         </form>
         <button

@@ -39,7 +39,6 @@ import CreateAnnouncementForm from "./Pages/CreateAnnouncementForm";
 import Announcement from "../../Back/src/model/announcement";
 import Announcements from "./Pages/Announcements";
 
-
 const App = () => {
   return (
     <BrowserRouter>
@@ -89,8 +88,11 @@ const App = () => {
           />
           <Route path="/dashboard/messages" element={<ChatList />} />
           <Route path="/edit-post/:id" element={<EditPost />} />
-          <Route path="/create-announcement" element={<CreateAnnouncementForm />} />
-          <Route path="/announcements" element={<Announcements/>}/>
+          <Route
+            path="/create-announcement"
+            element={<CreateAnnouncementForm />}
+          />
+          <Route path="/announcements" element={<Announcements />} />
         </Route>
         <Route path="/post/:postSlug" element={<PostPage />} />
         <Route path="/dashboard?tab=invite" element={<InviteFriends />} />
