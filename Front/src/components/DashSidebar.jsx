@@ -6,6 +6,8 @@ import {
   HiX,
   HiSun,
   HiMoon,
+  HiViewBoards,
+  HiOutlineViewGrid
 } from "react-icons/hi";
 import { FaStar, FaUserPlus } from "react-icons/fa"; // New icons
 import { useEffect, useState } from "react";
@@ -82,6 +84,16 @@ export default function DashSidebar() {
               Profile
             </Sidebar.Item>
           </Link>
+
+          {currentUser.isAdmin && (
+            <Link to="/dashboard?tab=admin-home">            
+              <Sidebar.Item active={tab === "announcements"} icon={HiOutlineViewGrid}>
+                Dashboard
+              </Sidebar.Item>            
+            </Link>
+          )}
+
+
           {currentUser.moderatorRole?.isModerator && (
             <Link to="/dashboard?tab=pending">
               <Sidebar.Item active={tab === "pending"} icon={HiDocumentText}>
