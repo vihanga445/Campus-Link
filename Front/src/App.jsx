@@ -1,3 +1,4 @@
+
 import React from "react";
 import Home from "./Pages/Home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -38,6 +39,9 @@ import EditPost from "./Pages/EditPost";
 import CreateAnnouncementForm from "./Pages/CreateAnnouncementForm";
 import Announcement from "../../Back/src/model/announcement";
 import Announcements from "./Pages/Announcements";
+import AllAnnouncements from "./Pages/AllAnnouncements";
+import AllEvents from "./Pages/AllEvents";
+import AllUsers from "./Pages/AllUsers";
 
 const App = () => {
   return (
@@ -93,6 +97,9 @@ const App = () => {
             element={<CreateAnnouncementForm />}
           />
           <Route path="/announcements" element={<Announcements />} />
+          <Route path="/all-announcements" element={<AllAnnouncements />} />
+          <Route path= "/all-events" element={<AllEvents />} />
+          <Route path="/all-users" element={<AllUsers />} />
         </Route>
         <Route path="/post/:postSlug" element={<PostPage />} />
         <Route path="/dashboard?tab=invite" element={<InviteFriends />} />

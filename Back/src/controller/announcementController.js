@@ -74,7 +74,30 @@ export const getAnnouncements = async (req, res) => {
       res.status(500).json({ message: "Error fetching announcements", error });
     }
   };
+  export const getAllAnnouncements = async (req, res) => {
+    try {
+      const announcements = await Announcement.find()
+        .populate("createdBy", "name email") // Populate creator details
+        .sort({ createdAt: -1 }); // Sort by newest first
+      res.status(200).json(announcements);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch announcements", error });
+    }
+  };
 
+
+  export const deleteAnnouncement = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const announcement = await Announcement.findByIdAndDelete(id);
+      if (!announcement) {
+        return res.status(404).json({ message: "Announcement not found" });
+      }
+      res.status(200).json({ message: "Announcement deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete announcement", error });
+    }
+  };
 
 
 

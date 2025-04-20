@@ -12,6 +12,7 @@ import PendingClubApprovals from "../components/PendingClubApprovals";
 import PendingReports from "../components/PendingReports.jsx";
 import DashChat from "../components/DashChat.jsx";
 import DashUsers from "../components/DashUsers.jsx";
+import AdminHome from "../components/AdminHome.jsx";
 export default function Dashboard() {
   const location = useLocation();
   const [tab, setTab] = useState("");
@@ -44,6 +45,8 @@ export default function Dashboard() {
       {tab === "saved" && <SavedPosts />}
 
       {tab === "users" && <DashUsers />}
+
+      {tab === "admin-home" && <AdminHome />} 
     </div>
   );
 }
