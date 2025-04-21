@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import parse from 'html-react-parser';
 import PostCard from './PostCard';
+import { Link } from 'react-router-dom'
 
 
 function Dummy() {
@@ -42,9 +43,11 @@ function Dummy() {
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="mx-8 text-3xl font-bold">Events</h2>
-        <button className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-blue-700 opacity-70 transition ml-auto mr-10">
+        <Link to="/events">
+        <button className="bg-blue-800 text-white py-2 px-4 rounded-lg shadow-lg transition ml-auto mr-10">
           All Events
         </button>
+        </Link>
       </div>
 
       {/* Carousel Section */}

@@ -1,43 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules";
+import { Link } from "react-router-dom";
 
 const AnnouncementsCarousel = () => {
-  const announcements = [
-    {
-      title: "Annual Sports Day - Registration Open!",
-      description: "Register now for the upcoming Annual Sports Day happening on Nov 15th.",
-    },
-    {
-      title: "Tech Talk Series - AI and the Future",
-      description: "Join our guest speakers to discuss AI advancements in industry and research.",
-    },
-    {
-      title: "Blood Donation Camp by Rotaract Club",
-      description: "Participate in the blood donation camp on Oct 28th at the Faculty Hall.",
-    },
-    {
-      title: "New Yoga Classes Available",
-      description: "Weekly yoga classes for students. Register soon, slots limited!",
-    },
-    {
-      title: "Hackathon 2024 - Early Bird Registration",
-      description: "Gear up for Hackathon 2024 and showcase your coding skills.",
-    },
-  ];
+  const [announcements, setAnnouncements] = useState([]);
+
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      try {
+        const response = await fetch("/Back/announcement/latest");
+        if (!response.ok) {
+          throw new Error("Failed to fetch announcements");
+        }
+        const data = await response.json();
+        setAnnouncements(data);
+      } catch (error) {
+        console.error("Error fetching announcements:", error);
+      }
+    };
+    fetchAnnouncements();
+  }, []);
 
   return (
     <div className="my-10">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="mx-8 text-3xl font-bold">Latest Announcements</h2>
-        <button className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-blue-700 opacity-70 transition ml-auto mr-10">
+        <Link to="/announcements">
+        <button className="bg-blue-800 text-white py-2 px-4 rounded-lg shadow-lg transition ml-auto mr-10">
           See All Announcements
         </button>
+        </Link>
       </div>
 
       {/* Swiper Carousel */}
@@ -71,7 +69,7 @@ const AnnouncementsCarousel = () => {
               }}
             >
               <h3 className="text-2xl font-bold mb-2">{announcement.title}</h3>
-              <p className="text-md">{announcement.description}</p>
+              <p className="text-md">{announcement.message}</p>
             </div>
           </SwiperSlide>
         ))}
