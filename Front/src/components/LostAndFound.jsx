@@ -94,7 +94,7 @@ const LostAndFoundSection = () => {
                   <div
                     key={lost._id}
                     className="flex-none w-[300px] bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md cursor-pointer"
-                    onClick={() => navigate(`/lostitems/${lost._id}`)} // Navigate to the lost item's page
+                    onClick={() => navigate(`/lostitems`)} // Navigate to the lost item's page
                   >
                     <img
                       src={lost.imageUrl || "https://via.placeholder.com/150"}
@@ -158,7 +158,7 @@ const LostAndFoundSection = () => {
                   <div
                     key={found._id}
                     className="flex-none w-[300px] bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md cursor-pointer"
-                    onClick={() => navigate(`/founditems/${found._id}`)} // Navigate to the found item's page
+                    onClick={() => navigate(`/founditems`)} // Navigate to the found item's page
                   >
                     <img
                       src={found.imageUrl || "https://via.placeholder.com/150"}
