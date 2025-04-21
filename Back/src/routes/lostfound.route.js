@@ -119,15 +119,37 @@ router.post("/:id/mark-found", async (req, res) => {
       return res.status(404).json({ message: "Item not found" });
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Item marked as found successfully.",
-        item: updatedItem,
-      });
+    res.status(200).json({
+      message: "Item marked as found successfully.",
+      item: updatedItem,
+    });
   } catch (error) {
     console.error("Error marking item as found:", error);
     res.status(500).json({ message: "Failed to mark item as found." });
+  }
+});
+
+// Route to mark item as returned
+router.post("/:id/mark-returned", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updatedItem = await LostFound.findByIdAndUpdate(
+      id,
+      { isReturned: true },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedItem) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
+    res.status(200).json({
+      message: "Item marked as returned successfully.",
+      item: updatedItem,
+    });
+  } catch (error) {
+    console.error("Error marking item as returned:", error);
+    res.status(500).json({ error: "Failed to mark item as returned" });
   }
 });
 

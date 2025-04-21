@@ -88,6 +88,33 @@ export default function CategoryPage() {
     }
   };
 
+  const handleMarkAsReturned = async (item, email) => {
+    if (email === item.reporterEmail) {
+      try {
+        const response = await axios.post(
+          `http://localhost:5000/Back/lostfound/${item._id}/mark-returned`
+        );
+
+        if (response.status === 200) {
+          // Update the item in state: set isReturned to true
+          setItems((prevItems) =>
+            prevItems.map((i) =>
+              i._id === item._id ? { ...i, isReturned: true } : i
+            )
+          );
+          setIsEmailModalOpen(false);
+          setSelectedItem(null);
+          setError(null); // Clear any previous error
+        }
+      } catch (error) {
+        console.error("Error marking item as returned:", error);
+        alert("Failed to mark item as returned. Please try again later.");
+      }
+    } else {
+      setError("The email doesn't match the reporter's email.");
+    }
+  };
+
   if (loading) {
     return <p className="text-center text-lg">Loading items...</p>;
   }
@@ -205,13 +232,32 @@ export default function CategoryPage() {
                   <strong>Description:</strong> {item.description}
                 </p>
 
+                {/* Mark as Returned Button */}
+                {!item.isReturned && (
+                  <button
+                    onClick={() => handleEmailModalOpen(item)} // Open the email modal
+                    className="bg-green-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-green-700 transition mb-4"
+                  >
+                    Mark as Returned
+                  </button>
+                )}
+
                 {/* Contact the Reporter Button */}
-                <button
-                  onClick={() => handleContactClick(item)}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700 transition"
-                >
-                  Contact the Reporter
-                </button>
+                {!item.isReturned && (
+                  <button
+                    onClick={() => handleContactClick(item)}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700 transition"
+                  >
+                    Contact the Reporter
+                  </button>
+                )}
+
+                {/* Item Returned Message */}
+                {item.isReturned && (
+                  <p className="text-green-600 font-semibold mt-4">
+                    ✅ Item marked as returned!
+                  </p>
+                )}
               </div>
             ))}
           </div>
@@ -234,9 +280,23 @@ export default function CategoryPage() {
           isOpen={isEmailModalOpen}
           onClose={handleEmailModalClose}
           item={selectedItem}
-          onSubmit={(email) => handleMarkAsFound(selectedItem, email)}
+          onSubmit={(email) =>
+            selectedItem.status === "Lost"
+              ? handleMarkAsFound(selectedItem, email)
+              : handleMarkAsReturned(selectedItem, email)
+          }
           setError={setError}
           error={error}
+          title={
+            selectedItem.status === "Lost"
+              ? "Mark Item as Found"
+              : "Mark Item as Returned"
+          }
+          description={
+            selectedItem.status === "Lost"
+              ? "Please enter your email to mark this item as found."
+              : "Please enter your email to mark this item as returned."
+          }
         />
       )}
     </div>

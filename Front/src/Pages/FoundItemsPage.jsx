@@ -1,31 +1,27 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import ContactModal from "../components/ContactModal"; // Import the ContactModal component
+import ContactModal from "../components/ContactModal";
+import EmailModal from "../components/EmailModal"; // Import EmailModal
 
 const FoundItemsPage = () => {
   const [foundItems, setFoundItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [error, setError] = useState(null);
 
-  // Fetch all accepted found items from the backend
   useEffect(() => {
     const fetchFoundItems = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/Back/lostfound/approved" // Replace with your backend API endpoint
+          "http://localhost:5000/Back/lostfound/approved"
         );
         const approvedFoundItems = response.data.filter(
           (item) => item.status === "Found"
         );
         setFoundItems(approvedFoundItems);
-
-        // Log when all data is fetched
-        console.log(
-          "All found items fetched successfully:",
-          approvedFoundItems
-        );
       } catch (error) {
         console.error("Error fetching found items:", error);
       } finally {
@@ -36,19 +32,53 @@ const FoundItemsPage = () => {
     fetchFoundItems();
   }, []);
 
-  // Open the modal and set the selected item
   const handleContactClick = (item) => {
     setSelectedItem(item);
     setIsModalOpen(true);
   };
 
-  // Close the modal
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedItem(null);
   };
 
-  // Handle sending email
+  const handleEmailModalOpen = (item) => {
+    setSelectedItem(item);
+    setIsEmailModalOpen(true);
+  };
+
+  const handleEmailModalClose = () => {
+    setIsEmailModalOpen(false);
+    setSelectedItem(null);
+    setError(null);
+  };
+
+  const handleMarkAsReturned = async (item, email) => {
+    if (email === item.reporterEmail) {
+      try {
+        const response = await axios.post(
+          `http://localhost:5000/Back/lostfound/${item._id}/mark-returned`
+        );
+
+        if (response.status === 200) {
+          setFoundItems((prevItems) =>
+            prevItems.map((i) =>
+              i._id === item._id ? { ...i, isReturned: true } : i
+            )
+          );
+          setIsEmailModalOpen(false);
+          setSelectedItem(null);
+          setError(null);
+        }
+      } catch (error) {
+        console.error("Error marking item as returned:", error);
+        alert("Failed to mark item as returned. Please try again later.");
+      }
+    } else {
+      setError("The email doesn't match the reporter's email.");
+    }
+  };
+
   const handleSendEmail = async (item, message) => {
     const subject = `Inquiry about the found item: ${item.itemName}`;
     console.log("Sending email with data:", {
@@ -125,12 +155,29 @@ const FoundItemsPage = () => {
             <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
               <strong>Description:</strong> {item.description}
             </p>
-            <button
-              onClick={() => handleContactClick(item)} // Open the modal with the selected item
-              className="bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700 transition"
-            >
-              Contact the Reporter
-            </button>
+            {!item.isReturned && (
+              <button
+                onClick={() => handleContactClick(item)}
+                className="bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700 transition"
+              >
+                Contact the Reporter
+              </button>
+            )}
+
+            {!item.isReturned && (
+              <button
+                onClick={() => handleEmailModalOpen(item)}
+                className="bg-green-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-green-700 transition mt-4"
+              >
+                Mark as Returned
+              </button>
+            )}
+
+            {item.isReturned && (
+              <p className="text-green-600 font-semibold mt-4">
+                ✅ Item marked as returned!
+              </p>
+            )}
           </motion.div>
         ))}
       </div>
@@ -141,8 +188,22 @@ const FoundItemsPage = () => {
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           item={selectedItem}
-          reporterEmail={selectedItem.reporterEmail} // Pass the reporter's email
-          onSend={(message) => handleSendEmail(selectedItem, message)} // Pass the message to handleSendEmail
+          reporterEmail={selectedItem.reporterEmail}
+          onSend={(message) => handleSendEmail(selectedItem, message)}
+        />
+      )}
+
+      {selectedItem && isEmailModalOpen && (
+        <EmailModal
+          isOpen={isEmailModalOpen}
+          onClose={handleEmailModalClose}
+          item={selectedItem}
+          onSubmit={(email) => handleMarkAsReturned(selectedItem, email)}
+          setError={setError}
+          error={error}
+          title="Mark Item as Returned"
+          description="Please enter your email to mark this item as returned."
+          placeholder="Enter your email to confirm"
         />
       )}
     </div>
