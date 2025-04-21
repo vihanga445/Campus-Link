@@ -6,7 +6,10 @@ const EmailModal = ({
   onSubmit = () => {},
   item,
   setError,
-  error, // Accept error as a prop
+  error,
+  title = "Mark Item as Found", // Default title
+  description = "Please enter your email to mark this item as found.", // Default description
+  placeholder = "Enter your email", // Default placeholder
 }) => {
   const [email, setEmail] = useState("");
 
@@ -28,16 +31,16 @@ const EmailModal = ({
     <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-50">
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md w-80">
         <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">
-          Mark Item as Found
+          {title}
         </h3>
         <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-          Please enter your email to mark this item as found.
+          {description}
         </p>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
+          placeholder={placeholder}
           className="border border-gray-300 dark:border-gray-700 p-2 rounded-md w-full mb-4"
         />
         {error && <p className="text-red-500 text-sm">{error}</p>}

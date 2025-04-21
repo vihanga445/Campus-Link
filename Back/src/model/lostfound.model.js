@@ -48,6 +48,10 @@ const LostFoundSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isReturned: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
