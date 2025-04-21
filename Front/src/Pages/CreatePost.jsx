@@ -405,7 +405,7 @@ export default function CreatePost() {
                 Approval Document <span className="text-red-500">*</span>
               </label>
               <div className="text-xs text-gray-500 mb-2">
-                Upload a document from your department/organization approving this event
+                Upload an image of the document from your department/organization approving this event
               </div>
               <div className="flex items-center gap-4">
                 <div className="flex-grow">
@@ -518,14 +518,7 @@ export default function CreatePost() {
 
           {/* Action Buttons */}
           <div className="flex justify-end gap-4 mt-8">
-            <Button
-              type="button"
-              onClick={() => setShowPreview(true)}
-              gradientDuoTone="purpleToBlue"
-              outline
-            >
-              Preview
-            </Button>
+
             <Button type="submit" gradientDuoTone="purpleToBlue">
               Submit for Approval
             </Button>

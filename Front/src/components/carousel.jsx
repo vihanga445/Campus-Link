@@ -5,12 +5,15 @@ import eventsImage from "../events.jpg";
 import clubsImage from "../clubs.jpg";
 import announcementsImage from "../announcements.jpg";
 import lostFoundImage from "../lostfound.jpg";
+import { useSelector } from "react-redux";
 
 const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { currentUser } = useSelector((state) => state.user); // Get the current user from Redux store  
   const images = [
     {
       text: "Welcome to CampusLink!",
+      
       button: "Sign In",
       bgImage: bgImage,
       link: "/sign-in", // Add a link for each slide
