@@ -81,7 +81,7 @@ export default function DashProfile() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-dark-blue via-blue-900 to-blue-700 text-white p-6">
+    <div className="min-h-screen bg-white text-white p-6">
       <div className="max-w-7xl mx-auto">
         {/* Cover Photo */}
         <input

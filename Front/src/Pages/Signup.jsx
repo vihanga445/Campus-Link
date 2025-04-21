@@ -50,12 +50,12 @@ export default function Signup() {
     }
   };
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-dark-blue via-blue-900 to-blue-800">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
         {/* Header */}
         <div className="text-center mb-6">
-          <Link to="/" className="font-bold text-3xl text-dark-blue">
-            CampusLink
+          <Link to="/" className="font-bold text-3xl text-indigo-600">
+            Campus Link
           </Link>
           <p className="text-sm text-gray-500 mt-2">
             Sign up to explore events, societies, and announcements for
