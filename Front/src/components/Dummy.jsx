@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import parse from "html-react-parser";
 import PostCard from "./PostCard";
+import { Link } from "react-router-dom";
 
 function Dummy() {
   const carouselRef = useRef(null);
