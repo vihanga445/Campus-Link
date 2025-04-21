@@ -42,6 +42,7 @@ import Announcements from "./Pages/Announcements";
 import AllAnnouncements from "./Pages/AllAnnouncements";
 import AllEvents from "./Pages/AllEvents";
 import AllUsers from "./Pages/AllUsers";
+import AllModerators from "./Pages/AllModerators";
 
 const App = () => {
   return (
@@ -101,6 +102,7 @@ const App = () => {
           <Route path="/all-announcements" element={<AllAnnouncements />} />
           <Route path="/all-events" element={<AllEvents />} />
           <Route path="/all-users" element={<AllUsers />} />
+          <Route path="/all-moderators" element={<AllModerators />} />
         </Route>
         <Route path="/post/:postSlug" element={<PostPage />} />
         <Route path="/dashboard?tab=invite" element={<InviteFriends />} />
