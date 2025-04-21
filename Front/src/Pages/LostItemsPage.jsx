@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import ContactModal from "../components/ContactModal"; // Import Modal
+import ContactModal from "../components/ContactModal";
+import EmailModal from "../components/EmailModal"; // Import the EmailModal component
 
 const LostItemsPage = () => {
   const [lostItems, setLostItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false); // Track the email modal state
   const [selectedItem, setSelectedItem] = useState(null);
+  const [emailInput, setEmailInput] = useState(""); // Store entered email for comparison
+  const [error, setError] = useState(null);
 
   // Fetch all accepted lost items from the backend
   useEffect(() => {
@@ -43,6 +47,16 @@ const LostItemsPage = () => {
     setSelectedItem(null); // Reset selected item when closing the modal
   };
 
+  const handleEmailModalOpen = (item) => {
+    setSelectedItem(item);
+    setIsEmailModalOpen(true); // Open the email modal
+  };
+
+  const handleEmailModalClose = () => {
+    setIsEmailModalOpen(false); // Close the email modal
+    setSelectedItem(null); // Reset selected item when closing the modal
+  };
+
   const handleSendEmail = async (item, message) => {
     const subject = `Inquiry about the lost item: ${item.itemName}`;
     console.log("Sending email with data:", {
@@ -67,6 +81,35 @@ const LostItemsPage = () => {
     } catch (error) {
       console.error("Error sending email:", error);
       alert("Failed to send email. Please try again later.");
+    }
+  };
+
+  const handleMarkAsFound = async (item, email) => {
+    if (email === item.reporterEmail) {
+      try {
+        const response = await axios.post(
+          `http://localhost:5000/Back/lostfound/${item._id}/mark-found`
+        );
+
+        if (response.status === 200) {
+          // Update the item in state: set isFound to true
+          setLostItems((prevItems) =>
+            prevItems.map((i) =>
+              i._id === item._id ? { ...i, isFound: true } : i
+            )
+          );
+          setIsEmailModalOpen(false);
+          setSelectedItem(null);
+          setError(null); // Clear any previous error
+        }
+      } catch (error) {
+        console.error("Error marking item as found:", error);
+        alert("Failed to mark item as found. Please try again later.");
+      }
+    } else {
+      setError(
+        "The email doesn't match the reporter's email. Please try again."
+      );
     }
   };
 
@@ -119,12 +162,33 @@ const LostItemsPage = () => {
             <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
               <strong>Description:</strong> {item.description}
             </p>
-            <button
-              onClick={() => handleContactClick(item)}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700 transition"
-            >
-              Contact the Reporter
-            </button>
+
+            {item.status === "Lost" && !item.isFound ? (
+              <div>
+                <button
+                  onClick={() => handleEmailModalOpen(item)}
+                  className="bg-green-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-green-700 transition mb-4"
+                >
+                  Mark as Found
+                </button>
+              </div>
+            ) : (
+              item.isFound && (
+                <p className="text-green-600 font-semibold mb-4">
+                  ✅ Item marked as found!
+                </p>
+              )
+            )}
+
+            {/* Hide the "Contact the Reporter" button if the item is found */}
+            {!item.isFound && (
+              <button
+                onClick={() => handleContactClick(item)}
+                className="bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700 transition"
+              >
+                Contact the Reporter
+              </button>
+            )}
           </motion.div>
         ))}
       </div>
@@ -137,6 +201,18 @@ const LostItemsPage = () => {
           item={selectedItem}
           reporterEmail={selectedItem.reporterEmail} // Assuming this is stored
           onSend={(message) => handleSendEmail(selectedItem, message)} // Pass the message to handleSendEmail
+        />
+      )}
+
+      {/* Modal for Email Input */}
+      {selectedItem && isEmailModalOpen && (
+        <EmailModal
+          isOpen={isEmailModalOpen}
+          onClose={handleEmailModalClose} // Close email modal
+          item={selectedItem}
+          onSubmit={(email) => handleMarkAsFound(selectedItem, email)} // Trigger mark as found with email validation
+          setError={setError}
+          error={error} // Pass setError to EmailModal
         />
       )}
     </div>
