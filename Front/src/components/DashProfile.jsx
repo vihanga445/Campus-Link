@@ -6,9 +6,9 @@ import {
   ModalBody,
   ModalFooter,
   Spinner,
-} from 'flowbite-react';
-import { useEffect, useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+} from "flowbite-react";
+import { useEffect, useRef, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   updateStart,
   updateSuccess,
@@ -17,47 +17,39 @@ import {
   deleteUserSuccess,
   deleteUserFailure,
   signoutSuccess,
-} from '../redux/user/userSlice';
-import { useNavigate } from 'react-router-dom';
-import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
-import { HiOutlineExclamationCircle } from 'react-icons/hi';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify'; 
-import { checkPasswordStrength } from './utils';
-import image1 from '../default-profile-picture.jpg';
-import image2 from '../defaultcover.jpg';
+} from "../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { checkPasswordStrength } from "./utils";
+import image1 from "../default-profile-picture.jpg";
+import newDefaultCover from "../defaultcover.jpg";
 
 export default function DashProfile() {
-  const { currentUser, error } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [coverFile, setCoverFile] = useState(null);
   const [coverFileUrl, setCoverFileUrl] = useState(null);
-  const [isUploadingImage, setIsUploadingImage] = useState(false);
-  const [isUploadingCover, setIsUploadingCover] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
-  const [updateUserError, setUpdateUserError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     username: currentUser.username || "",
     email: currentUser.email || "",
-    password: ""
+    password: "",
   });
-  const [passwordStrength, setPasswordStrength] = useState("");
 
   const filePickerRef = useRef();
   const coverPickerRef = useRef();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
       setImageFileUrl(URL.createObjectURL(file));
-      uploadImage(file);
     }
   };
 
@@ -66,59 +58,6 @@ export default function DashProfile() {
     if (file) {
       setCoverFile(file);
       setCoverFileUrl(URL.createObjectURL(file));
-      uploadCover(file);
-    }
-  };
-
-  const uploadImage = async (file) => {
-    setIsUploadingImage(true);
-    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/dfu1zqt5s/image/upload`;
-    const formDataUpload = new FormData();
-    formDataUpload.append('file', file);
-    formDataUpload.append('upload_preset', 'final_project');
-
-    try {
-      const response = await fetch(cloudinaryUrl, {
-        method: 'POST',
-        body: formDataUpload,
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to upload image. Please try again.');
-      }
-
-      const data = await response.json();
-      setImageFileUrl(data.secure_url);
-    } catch (error) {
-      console.error(error.message);
-    } finally {
-      setIsUploadingImage(false);
-    }
-  };
-
-  const uploadCover = async (file) => {
-    setIsUploadingCover(true);
-    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/dfu1zqt5s/image/upload`;
-    const formDataUpload = new FormData();
-    formDataUpload.append('file', file);
-    formDataUpload.append('upload_preset', 'final_project');
-
-    try {
-      const response = await fetch(cloudinaryUrl, {
-        method: 'POST',
-        body: formDataUpload,
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to upload cover photo. Please try again.');
-      }
-
-      const data = await response.json();
-      setCoverFileUrl(data.secure_url);
-    } catch (error) {
-      console.error(error.message);
-    } finally {
-      setIsUploadingCover(false);
     }
   };
 
@@ -132,176 +71,141 @@ export default function DashProfile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted'); 
-    setUpdateUserError(null);
-    setUpdateUserSuccess(null);
-
-    try {
-      dispatch(updateStart());
-      const res = await fetch(`/Back/user/update/${currentUser._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          profilePicture: imageFileUrl || currentUser.profilePicture,
-          coverPicture: coverFileUrl || currentUser.coverPicture,
-        }),
-      });
-      const data = await res.json();
-      console.log(data);
-      if (!res.ok) {
-        dispatch(updateFailure(data.message));
-        setUpdateUserError(data.message);
-      } else {
-        dispatch(updateSuccess(data));
-        setUpdateUserSuccess("User's profile updated successfully");
-        toast.success('Profile updated successfully'); 
-      }
-    } catch (error) {
-      dispatch(updateFailure(error.message));
-      setUpdateUserError(error.message);
-      toast.error('Failed to update profile'); 
-    }
+    console.log("Form submitted");
+    // Add your form submission logic here
   };
 
   const handleDeleteAccount = async () => {
-    try {
-      // Show a loading state or spinner
-      const res = await fetch(`/Back/user/delete/${currentUser._id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await res.json();
-  
-      if (!res.ok) {
-        // Handle failure
-        toast.error('Failed to delete account.');
-      } else {
-        // Dispatch success action or signout
-        dispatch(deleteUserSuccess());
-        toast.success('Account deleted successfully');
-        navigate('/');  // Redirect to home or login page
-      }
-    } catch (error) {
-      toast.error('Error deleting account.');
-    } finally {
-      setShowModal(false); // Close the modal after the operation
-    }
+    console.log("Account deletion logic here");
+    setShowModal(false);
   };
-  
-  return (
-    <div className="max-w-3xl mx-auto p-3 w-full">
-      {/* Cover Photo Picker */}
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleCoverChange}
-        ref={coverPickerRef}
-        hidden
-      />
-      <div
-        className="relative mb-4 w-full bg-gray-200 cursor-pointer overflow-hidden h-48"
-        onClick={() => coverPickerRef.current.click()}
-      >
-        <img
-          src={coverFileUrl || currentUser.coverPicture || image2} // Default cover photo
-          alt="Cover"
-          className="w-full h-full object-cover"
-        />
-        {/* Hover overlay for changing cover photo */}
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-          <span className="text-white text-lg">Change Cover Photo</span>
-        </div>
-      </div>
 
-      {/* Profile Image */}
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleImageChange}
-        ref={filePickerRef}
-        hidden
-      />
-      <div className="relative flex justify-center -mt-16 mb-8">
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-dark-blue via-blue-900 to-blue-700 text-white p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Cover Photo */}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleCoverChange}
+          ref={coverPickerRef}
+          hidden
+        />
         <div
-          className="relative w-40 h-40 border-4 border-white rounded-full shadow-md overflow-hidden cursor-pointer"
-          onClick={() => filePickerRef.current.click()}
+          className="relative h-64 bg-gray-200 cursor-pointer rounded-lg overflow-hidden"
+          onClick={() => coverPickerRef.current.click()}
         >
           <img
-            src={imageFileUrl || currentUser.profilePicture || defaultProfilePicture}
-            alt="Profile"
-            className="w-full h-full object-cover rounded-full"
+            src={coverFileUrl || currentUser.coverPicture || newDefaultCover}
+            alt="Cover"
+            className="w-full h-full object-cover"
           />
-          {/* Hover overlay for changing profile picture */}
-          <div className="absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-full bg-black bg-opacity-50">
-            <span className="text-white text-sm">Change Profile Photo</span>
+          <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+            <span className="text-white text-lg">Change Cover Photo</span>
+          </div>
+        </div>
+
+        {/* Profile Section */}
+        <div className="relative -mt-20 flex justify-center">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            ref={filePickerRef}
+            hidden
+          />
+          <div
+            className="relative w-48 h-48 border-4 border-white rounded-full shadow-md overflow-hidden cursor-pointer"
+            onClick={() => filePickerRef.current.click()}
+          >
+            <img
+              src={imageFileUrl || currentUser.profilePicture || image1}
+              alt="Profile"
+              className="w-full h-full object-cover rounded-full"
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-full">
+              <span className="text-white text-sm">Change Profile Photo</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Profile Form */}
+        <div className="mt-8 px-12">
+          <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+            <TextInput
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Username"
+              value={formData.username}
+              onChange={handleChange}
+              aria-label="Username"
+              className="rounded-lg"
+            />
+            <TextInput
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              aria-label="Email"
+              className="rounded-lg"
+            />
+            <TextInput
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              aria-label="Password"
+              className="rounded-lg"
+            />
+            <Button
+              type="submit"
+              className="px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold rounded-lg shadow-md hover:from-purple-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-75 transition duration-300"
+            >
+              Update Profile
+            </Button>
+          </form>
+
+          {/* Delete and Signout */}
+          <div className="flex justify-between mt-6">
+            <button
+              onClick={() => setShowModal(true)}
+              className="px-4 py-2 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transition duration-300"
+            >
+              Delete Account
+            </button>
+            <button
+              onClick={() => dispatch(signoutSuccess())}
+              className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300"
+            >
+              Sign Out
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Remaining Profile Form */}
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <TextInput
-          type="text"
-          id="username"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleChange}
-          aria-label="Username"
-        />
-        <TextInput
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          aria-label="Email"
-        />
-        <TextInput
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          aria-label="Password"
-        />
-        <Button type="submit" gradientDuoTone="purpleToBlue" outline>
-          Update
-        </Button>
-
-
-      </form>
-
-      {/* Delete and Signout */}
-      <div className="text-red-500 flex justify-between mt-5">
-        <span onClick={() => setShowModal(true)} className="cursor-pointer">
-          Delete Account
-        </span>
-        <span onClick={() => dispatch(signoutSuccess())} className="cursor-pointer">
-          Sign Out
-        </span>
-      </div>
-    
-
-     {/* Modal for Account Deletion */}
-     {showModal && (
-      <Modal show={showModal} onClose={() => setShowModal(false)}>
-        <ModalBody>
-          Are you sure you want to delete your account?
-        </ModalBody>
-        <ModalFooter>
-          <Button onClick={handleDeleteAccount}>Delete</Button>
-          <Button onClick={() => setShowModal(false)}>Cancel</Button>
-        </ModalFooter>
-      </Modal>
-    )}
+      {/* Modal for Account Deletion */}
+      {showModal && (
+        <Modal show={showModal} onClose={() => setShowModal(false)}>
+          <ModalBody>
+            <p className="text-center text-lg">
+              Are you sure you want to delete your account?
+            </p>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={handleDeleteAccount} color="failure">
+              Delete
+            </Button>
+            <Button onClick={() => setShowModal(false)} color="gray">
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+      )}
     </div>
   );
 }
