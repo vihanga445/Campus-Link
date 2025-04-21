@@ -19,15 +19,15 @@ export default function LostFoundHeroSection() {
     },
     {
       icon: <ShieldCheck size={28} />,
-      title: "Prove ownership of the item",
+      title: "Contact the reporter of the item",
       description:
-        'Once the lost item "matched", prove who you are thanks to a security question (ex: describe the shell of your phone, ...). Then, our partner who found this item will be able to validate.',
+        'You can easily contact the person who reported the item by clicking on the "Contact Reporter" button. This will send a email to the person who reported the item, allowing you to communicate directly with them.',
     },
     {
       icon: <Handshake size={28} />,
       title: "Get it back!",
       description:
-        "As soon as you are authenticated, you receive the information to pick it up or have it delivered. Remember to communicate the reference’s number found.",
+        "As soon as you are authenticated, you can get the item from the reporter. ",
     },
   ];
 
@@ -319,7 +319,7 @@ export default function LostFoundHeroSection() {
           to find your belongings.
         </p>
         <div className="flex flex-wrap justify-center gap-6">
-          {["Fast Matching", "Secure Validation", "Student Friendly"].map(
+          {["Fast Matching", "Confidentiality", "Student Friendly"].map(
             (title, i) => (
               <motion.div
                 key={i}
@@ -333,8 +333,8 @@ export default function LostFoundHeroSection() {
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   {title === "Fast Matching"
                     ? "Our system helps you find a match quickly using smart filtering."
-                    : title === "Secure Validation"
-                    ? "Ownership is verified through questions before connecting people."
+                    : title === "Confidentiality"
+                    ? "Your data is safe with us. We prioritize your privacy."
                     : "No charges, no hassle – built for campus life by students."}
                 </p>
               </motion.div>
@@ -403,10 +403,16 @@ export default function LostFoundHeroSection() {
           platform.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <button className="bg-green-500 hover:bg-green-600 transition px-6 py-3 rounded-full font-semibold shadow">
+          <button
+            onClick={() => navigate("/lostfoundform?status=Lost")}
+            className="bg-green-500 hover:bg-green-600 transition px-6 py-3 rounded-full font-semibold shadow"
+          >
             Report Lost Item
           </button>
-          <button className="bg-white text-[#03396c] hover:bg-gray-100 transition px-6 py-3 rounded-full font-semibold shadow">
+          <button
+            onClick={() => navigate("/lostfoundform?status=Found")}
+            className="bg-white text-[#03396c] hover:bg-gray-100 transition px-6 py-3 rounded-full font-semibold shadow"
+          >
             I Found Something
           </button>
         </div>
