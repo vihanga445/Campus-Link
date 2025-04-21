@@ -7,9 +7,25 @@ import {
   HiSun,
   HiMoon,
   HiViewBoards,
-  HiOutlineViewGrid
+  HiOutlineViewGrid,
 } from "react-icons/hi";
-import { FaStar, FaUserPlus } from "react-icons/fa"; // New icons
+import {
+  FaStar,
+  FaUserPlus,
+  FaUserCircle,
+  FaTachometerAlt,
+  FaClipboardList,
+  FaUsers,
+  FaSearch,
+  FaFileAlt,
+  FaTimesCircle,
+  FaBookmark,
+  FaComments,
+  FaUsersCog,
+  FaSignOutAlt,
+  FaSun,
+  FaMoon,
+} from "react-icons/fa"; // New icons
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { signoutSuccess } from "../redux/user/userSlice";
@@ -65,121 +81,185 @@ export default function DashSidebar() {
   };
 
   return (
-    <Sidebar className="w-full md:w-56">
+    <Sidebar className="w-full md:w-56 bg-blue-900 text-white shadow-lg">
       <Sidebar.Items>
         <Sidebar.ItemGroup>
+          {/* Profile */}
           <Link to="/dashboard?tab=profile">
             <Sidebar.Item
               active={tab === "profile"}
-              icon={HiUser}
-              label={
-                currentUser.isAdmin
-                  ? "Admin"
-                  : currentUser.moderatorRole?.isModerator
-                  ? `Moderator (${currentUser.moderatorRole.category})`
-                  : "User"
-              }
-              labelColor="dark"
+              icon={FaUserCircle} // Updated icon
+              className={`hover:bg-blue-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                tab === "profile" ? "bg-blue-700 text-white shadow-md" : ""
+              }`}
             >
-              Profile
+              {currentUser.isAdmin
+                ? "Admin"
+                : currentUser.moderatorRole?.isModerator
+                ? `Moderator (${currentUser.moderatorRole.category})`
+                : "User"}
             </Sidebar.Item>
           </Link>
 
+          {/* Admin Dashboard */}
           {currentUser.isAdmin && (
-            <Link to="/dashboard?tab=admin-home">            
-              <Sidebar.Item active={tab === "announcements"} icon={HiOutlineViewGrid}>
+            <Link to="/dashboard?tab=admin-home">
+              <Sidebar.Item
+                active={tab === "admin-home"}
+                icon={FaTachometerAlt} // Updated icon
+                className={`hover:bg-blue-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                  tab === "admin-home" ? "bg-blue-700 text-white shadow-md" : ""
+                }`}
+              >
                 Dashboard
-              </Sidebar.Item>            
+              </Sidebar.Item>
             </Link>
           )}
 
-
+          {/* Pending Posts */}
           {currentUser.moderatorRole?.isModerator && (
             <Link to="/dashboard?tab=pending">
-              <Sidebar.Item active={tab === "pending"} icon={HiDocumentText}>
+              <Sidebar.Item
+                active={tab === "pending"}
+                icon={FaClipboardList} // Updated icon
+                className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                  tab === "pending" ? "bg-blue-700 text-white shadow-md" : ""
+                }`}
+              >
                 Pending Posts
               </Sidebar.Item>
             </Link>
           )}
 
-          {/* Pending Club Approvals (Only for Club Moderators) */}
+          {/* Club Approvals */}
           {currentUser.moderatorRole?.category === "Clubs and Societies" && (
             <Link to="/dashboard?tab=pending-clubs">
               <Sidebar.Item
                 active={tab === "pending-clubs"}
-                icon={HiDocumentText}
+                icon={FaUsers} // Updated icon
+                className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                  tab === "pending-clubs"
+                    ? "bg-blue-700 text-white shadow-md"
+                    : ""
+                }`}
               >
                 Club Approvals
               </Sidebar.Item>
             </Link>
           )}
 
-          {/* Pending Lost & Found Approvals (Only for Lost & Found Moderators) */}
+          {/* Lost & Found Approvals */}
           {currentUser.moderatorRole?.category === "Lost-Found" && (
             <Link to="/dashboard?tab=pending-lostfound">
               <Sidebar.Item
                 active={tab === "pending-lostfound"}
-                icon={HiDocumentText}
+                icon={FaSearch} // Updated icon
+                className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                  tab === "pending-lostfound"
+                    ? "bg-blue-700 text-white shadow-md"
+                    : ""
+                }`}
               >
                 Pending Approvals
               </Sidebar.Item>
             </Link>
           )}
 
+          {/* My Posts */}
           <Link to="/dashboard?tab=posts">
-            <Sidebar.Item active={tab === "posts"} icon={HiDocumentText}>
+            <Sidebar.Item
+              active={tab === "posts"}
+              icon={FaFileAlt} // Updated icon
+              className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                tab === "posts" ? "bg-blue-700 text-white shadow-md" : ""
+              }`}
+            >
               My Posts
             </Sidebar.Item>
           </Link>
+
+          {/* Rejected Posts */}
           {!currentUser.isAdmin && !currentUser.moderatorRole?.isModerator && (
             <Link to="/dashboard?tab=rejected">
-              <Sidebar.Item active={tab === "rejected"} icon={HiX}>
+              <Sidebar.Item
+                active={tab === "rejected"}
+                icon={FaTimesCircle} // Updated icon
+                className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                  tab === "rejected" ? "bg-blue-700 text-white shadow-md" : ""
+                }`}
+              >
                 My Rejected Posts
               </Sidebar.Item>
             </Link>
           )}
 
-          {/* New Favourites button */}
+          {/* Saved Posts */}
           <Link to="/dashboard?tab=saved">
-            <Sidebar.Item active={tab === "saved"} icon={FaStar}>
-              Saved posts
+            <Sidebar.Item
+              active={tab === "saved"}
+              icon={FaBookmark} // Updated icon
+              className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                tab === "saved" ? "bg-blue-700 text-white shadow-md" : ""
+              }`}
+            >
+              Saved Posts
             </Sidebar.Item>
           </Link>
 
-          {/* New Invite Friends button */}
+          {/* Invite Friends */}
           <Link to="/dashboard?tab=invite">
-            <Sidebar.Item active={tab === "invite"} icon={FaUserPlus}>
+            <Sidebar.Item
+              active={tab === "invite"}
+              icon={FaUserPlus} // Updated icon
+              className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                tab === "invite" ? "bg-blue-700 text-white shadow-md" : ""
+              }`}
+            >
               Invite Friends
             </Sidebar.Item>
           </Link>
 
+          {/* Chat */}
           <Link to="/dashboard/messages">
-            <Sidebar.Item active={tab === "chat"} icon={HiUser}>
+            <Sidebar.Item
+              active={tab === "chat"}
+              icon={FaComments} // Updated icon
+              className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                tab === "chat" ? "bg-blue-700 text-white shadow-md" : ""
+              }`}
+            >
               Chat
             </Sidebar.Item>
           </Link>
+
+          {/* Users (Admin Only) */}
           {currentUser.isAdmin && (
             <Link to="/dashboard?tab=users">
-              <Sidebar.Item active={tab === "users"} icon={HiUser}>
+              <Sidebar.Item
+                active={tab === "users"}
+                icon={FaUsersCog} // Updated icon
+                className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                  tab === "users" ? "bg-blue-700 text-white shadow-md" : ""
+                }`}
+              >
                 Users
               </Sidebar.Item>
             </Link>
           )}
 
-          {/* New Club Moderators button */}
-
+          {/* Sign Out */}
           <Sidebar.Item
-            icon={HiArrowSmRight}
-            className="cursor-pointer"
+            icon={FaSignOutAlt} // Updated icon
+            className="cursor-pointer hover:bg-red-600 transition-colors duration-300 rounded-lg flex items-center space-x-2"
             onClick={handleSignout}
           >
             Sign Out
           </Sidebar.Item>
 
-          {/* Theme toggle button */}
+          {/* Theme Toggle */}
           <Sidebar.Item
-            icon={darkMode ? HiSun : HiMoon}
-            className="cursor-pointer"
+            icon={darkMode ? FaSun : FaMoon} // Updated icon
+            className="cursor-pointer hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2"
             onClick={() => setDarkMode(!darkMode)}
           >
             {darkMode ? "Light Mode" : "Dark Mode"}

@@ -24,29 +24,25 @@ export default function Dashboard() {
     }
   }, [location]);
   return (
-    <div className="min-h-screen flex flex-col md:flex-row dark:bg-gray-900">
-      <div className="md:w-56">
-        {/* Sidebar */}
+    <div className="min-h-screen min-w-screen flex flex-col md:flex-row dark:bg-gray-900 bg-gray-100 text-gray-900 dark:text-white">
+      {/* Sidebar */}
+      <div className="md:w-56 flex-shrink-0">
         <DashSidebar />
       </div>
-      {tab === "pending-clubs" && <PendingClubApprovals />}
-      {tab === "pending-lostfound" && <PendingReports />}
-      {/* profile... */}
-      {tab === "profile" && <DashProfile />}
-      {/* posts... */}
-      {tab === "posts" && <DashPosts />}
-      {/* pending posts... */}
-      {tab === "pending" && <PendingPosts />}
-      {/* rejected posts... */}
-      {tab === "rejected" && <RejectedPosts />}
 
-      {tab === "invite" && <InviteFriends />}
-
-      {tab === "saved" && <SavedPosts />}
-
-      {tab === "users" && <DashUsers />}
-
-      {tab === "admin-home" && <AdminHome />} 
+      {/* Main Content */}
+      <div className="flex-grow">
+        {tab === "pending-clubs" && <PendingClubApprovals />}
+        {tab === "pending-lostfound" && <PendingReports />}
+        {tab === "profile" && <DashProfile />}
+        {tab === "posts" && <DashPosts />}
+        {tab === "pending" && <PendingPosts />}
+        {tab === "rejected" && <RejectedPosts />}
+        {tab === "invite" && <InviteFriends />}
+        {tab === "saved" && <SavedPosts />}
+        {tab === "users" && <DashUsers />}
+        {tab === "admin-home" && <AdminHome />}
+      </div>
     </div>
   );
 }
