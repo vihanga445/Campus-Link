@@ -220,7 +220,7 @@ export default function DashSidebar() {
           </Link>
 
           {/* Chat */}
-          {/* <Link to="/dashboard/messages">
+          <Link to="/dashboard/messages">
             <Sidebar.Item
               active={tab === "chat"}
               icon={FaComments} // Updated icon
@@ -230,10 +230,10 @@ export default function DashSidebar() {
             >
               Chat
             </Sidebar.Item>
-          </Link> */}
+          </Link>
 
           {/* Users (Admin Only) */}
-          {/* {currentUser.isAdmin && (
+          {currentUser.isAdmin && (
             <Link to="/dashboard?tab=users">
               <Sidebar.Item
                 active={tab === "users"}
@@ -245,7 +245,7 @@ export default function DashSidebar() {
                 Users
               </Sidebar.Item>
             </Link>
-          )} */}
+          )}
 
           {/* Sign Out */}
           <Sidebar.Item
@@ -257,13 +257,13 @@ export default function DashSidebar() {
           </Sidebar.Item>
 
           {/* Theme Toggle */}
-          {/* <Sidebar.Item
+          <Sidebar.Item
             icon={darkMode ? FaSun : FaMoon} // Updated icon
             className="cursor-pointer hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2"
             onClick={() => setDarkMode(!darkMode)}
           >
             {darkMode ? "Light Mode" : "Dark Mode"}
-          </Sidebar.Item> */}
+          </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>

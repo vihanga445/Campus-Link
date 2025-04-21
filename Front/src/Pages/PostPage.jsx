@@ -511,7 +511,16 @@ export default function PostPage() {
                                     </div>
                                 </div>
                                 
-                              
+                                {currentUser && currentUser._id !== post.userId && (
+                                    <Button 
+                                        gradientDuoTone='purpleToBlue' 
+                                        size='sm' 
+                                        onClick={handleContactOwner}
+                                        className='mt-4 w-full'
+                                    >
+                                        <BiEnvelope className='mr-1' /> Contact Organizer
+                                    </Button>
+                                )}
                             </div>
 
                             {post.eventDetails.registration && post.eventDetails.registration.link && (
