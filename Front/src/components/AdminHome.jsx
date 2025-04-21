@@ -61,9 +61,11 @@ function AdminHome() {
           <FaUserShield size={40} className="mb-4" />
           <h2 className="text-xl font-bold">Moderators</h2>
           <p className="text-2xl font-semibold">10</p>
+          <Link to="/all-moderators" >
           <button className="mt-4 bg-white text-indigo-500 px-4 py-2 rounded-lg hover:bg-gray-200">
             View All
           </button>
+          </Link>
         </div>
 
         {/* Users */}

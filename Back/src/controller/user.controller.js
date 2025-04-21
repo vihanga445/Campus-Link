@@ -141,3 +141,15 @@ export const deleteUser = async (req, res, next) => {
       res.status(500).json({ message: "Failed to fetch users", error });
     }
   };
+
+
+  export const getAllModerators = async (req, res) => {
+    try {
+      const moderators = await User.find({ "moderatorRole.isModerator": true })
+        .select("username email profilePicture moderatorRole.category");
+      res.status(200).json(moderators);
+    } catch (error) {
+      console.error("Error fetching moderators:", error);
+      res.status(500).json({ message: "Failed to fetch moderators", error });
+    }
+  };
