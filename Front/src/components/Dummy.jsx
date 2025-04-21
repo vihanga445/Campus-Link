@@ -1,8 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
-import parse from 'html-react-parser';
-import PostCard from './PostCard';
-import { Link } from 'react-router-dom'
-
+import React, { useRef, useState, useEffect } from "react";
+import parse from "html-react-parser";
+import PostCard from "./PostCard";
+import { Link } from "react-router-dom";
 
 function Dummy() {
   const carouselRef = useRef(null);
@@ -11,14 +10,14 @@ function Dummy() {
   const scrollLeft = () => {
     carouselRef.current.scrollBy({
       left: -300, // Adjust the scroll distance
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   };
 
   const scrollRight = () => {
     carouselRef.current.scrollBy({
       left: 300, // Adjust the scroll distance
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   };
 
@@ -31,7 +30,7 @@ function Dummy() {
           setUserPosts(data.posts);
         }
       } catch (error) {
-        console.log('Error fetching posts:', error.message);
+        console.log("Error fetching posts:", error.message);
       }
     };
 
@@ -44,9 +43,9 @@ function Dummy() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="mx-8 text-3xl font-bold">Events</h2>
         <Link to="/events">
-        <button className="bg-blue-800 text-white py-2 px-4 rounded-lg shadow-lg transition ml-auto mr-10">
-          All Events
-        </button>
+          <button className="bg-blue-800 text-white py-2 px-4 rounded-lg shadow-lg transition ml-auto mr-10">
+            All Events
+          </button>
         </Link>
       </div>
 
@@ -61,30 +60,25 @@ function Dummy() {
         </button>
 
         {/* Carousel Container */}
-        <div
-          className="relative w-full px-4 py-6"
-          ref={carouselRef}
-        >
-            <div 
-    className="flex overflow-x-auto gap-6 pb-4 scroll-smooth no-scrollbar" 
-    ref={carouselRef}
-    style={{ 
-      scrollbarWidth: 'none',
-      '-ms-overflow-style': 'none'
-    }}
-  >
-          {userPosts && userPosts.length > 0 ? (
-            userPosts.map((post) => (
-              
-              <div key={post._id} className='flex-none w-[300px]'>
-               <PostCard key={post._id} post={post} />
-              </div>
-  
-            ))
-          ) : (
-            <div className="p-4 text-gray-500">No posts available.</div>
-          )}
-        </div>
+        <div className="relative w-full px-4 py-6" ref={carouselRef}>
+          <div
+            className="flex overflow-x-auto gap-6 pb-4 scroll-smooth no-scrollbar"
+            ref={carouselRef}
+            style={{
+              scrollbarWidth: "none",
+              "-ms-overflow-style": "none",
+            }}
+          >
+            {userPosts && userPosts.length > 0 ? (
+              userPosts.map((post) => (
+                <div key={post._id} className="flex-none w-[300px]">
+                  <PostCard key={post._id} post={post} />
+                </div>
+              ))
+            ) : (
+              <div className="p-4 text-gray-500">No posts available.</div>
+            )}
+          </div>
         </div>
 
         {/* Right Arrow */}
