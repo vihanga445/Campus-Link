@@ -214,10 +214,10 @@ export default function PendingPosts() {
                                     <div className="p-6">
                                         <div className="mb-6">
                                             {selectedPost.image && (
-                                                <img 
-                                                    src={selectedPost.image} 
+                                                <img
+                                                    src={selectedPost.image}
                                                     alt={selectedPost.title}
-                                                    className="w-full h-64 object-cover rounded-lg mb-4"
+                                                    className="w-full max-h-[500px] object-contain rounded-lg mb-4"
                                                 />
                                             )}
                                             
@@ -353,12 +353,12 @@ export default function PendingPosts() {
                                                             disabled={documentLoading}
                                                         >
                                                             {documentLoading ? <Spinner size="sm" /> : <HiDownload className="mr-1" />}
-                                                            Download
+                                                            View
                                                         </Button>
                                                     </div>
                                                 </div>
                                                 
-                                                <div className="border rounded-lg w-full h-[400px]">
+                                                {/* <div className="border rounded-lg w-full h-[400px]">
                                                     <iframe 
                                                         src={selectedPost.eventDetails.approvalDocument}
                                                         className="w-full h-full"
@@ -368,7 +368,7 @@ export default function PendingPosts() {
                                                 
                                                 <p className="mt-2 text-sm text-gray-500">
                                                     If the document doesn't display properly, please download it.
-                                                </p>
+                                                </p> */}
                                             </div>
                                         ) : (
                                             <div className="bg-red-50 text-red-700 p-4 rounded-lg">
