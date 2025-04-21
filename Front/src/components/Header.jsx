@@ -65,12 +65,7 @@ export default function Header() {
         </div>
 
         {/* Hamburger Menu Button */}
-        <button
-          className="text-white text-3xl md:hidden focus:outline-none"
-          onClick={toggleMenu}
-        >
-          &#9776;
-        </button>
+       
 
         {/* Navigation Links */}
         <ul
@@ -78,13 +73,13 @@ export default function Header() {
             menuOpen ? "block" : "hidden"
           } md:block`}
         >
-          <li>
+          {/* <li>
             {currentUser && (
               <div className="flex items-center gap-4">
                 <NotificationBell />
               </div>
             )}
-          </li>
+          </li> */}
           <li>
             <Link to="/" className="text-white hover:text-gray-300 text-lg ">
               Home
@@ -180,7 +175,7 @@ export default function Header() {
             ) : (
               <Link
                 to="/sign-up"
-                className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-bold shadow-lg text-lg"
+                className="text-blue-600 border border-blue-600 hover:bg-blue-600 hover:text-white py-2 px-4 rounded-lg font-medium transition duration-300"
               >
                 Sign Up
               </Link>
