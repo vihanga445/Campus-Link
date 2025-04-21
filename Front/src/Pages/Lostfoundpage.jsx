@@ -192,6 +192,7 @@ export default function LostFoundHeroSection() {
               <motion.div
                 key={i}
                 className="bg-[#e0f7fa] dark:bg-cyan-900 text-cyan-800 dark:text-cyan-100 w-40 h-40 flex flex-col items-center justify-center rounded-xl shadow-md"
+                onClick={() => navigate(`/categories/${label}`)}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: i * 0.2 }}
@@ -205,7 +206,7 @@ export default function LostFoundHeroSection() {
         </div>
       </motion.section>
 
-      {/* Lost Items Section */}
+      {/* Recently Lost Items Section */}
       <motion.section
         className="bg-gray-100 dark:bg-gray-900 py-16 px-6 text-center"
         initial={{ opacity: 0, y: 50 }}
@@ -218,40 +219,42 @@ export default function LostFoundHeroSection() {
             Recently Lost Items
           </h3>
           <button
-            onClick={() => navigate("/lostitems")} // Replace with the route for all lost items
-            className="text-sm font-semibold text-blue-600 hover:underline ml-4 "
+            onClick={() => navigate("/lostitems")}
+            className="text-sm font-semibold text-blue-600 hover:underline ml-4"
           >
             See All Lost Items
           </button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {lostItems.map((item) => (
-            <div
-              key={item._id}
-              className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md cursor-pointer"
-              onClick={() => navigate(`/lostitems/${item._id}`)} // Navigate to the detailed page
-            >
-              <img
-                src={item.imageUrl || "https://via.placeholder.com/150"}
-                alt={item.itemName}
-                className="w-full h-40 object-cover rounded-md mb-4"
-              />
-              <h4 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-2">
-                {item.itemName}
-              </h4>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                <strong>Location:</strong> {item.location}
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                <strong>Date:</strong>{" "}
-                {new Date(item.date).toLocaleDateString()}
-              </p>
-            </div>
-          ))}
+        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+          <div className="flex space-x-6">
+            {lostItems.map((item) => (
+              <div
+                key={item._id}
+                className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md cursor-pointer min-w-[250px]"
+                onClick={() => navigate(`/lostitems`)}
+              >
+                <img
+                  src={item.imageUrl || "https://via.placeholder.com/150"}
+                  alt={item.itemName}
+                  className="w-full h-40 object-cover rounded-md mb-4"
+                />
+                <h4 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-2">
+                  {item.itemName}
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <strong>Location:</strong> {item.location}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <strong>Date:</strong>{" "}
+                  {new Date(item.date).toLocaleDateString()}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </motion.section>
 
-      {/* Found Items Section */}
+      {/* Recently Found Items Section */}
       <motion.section
         className="bg-white dark:bg-gray-950 py-16 px-6 text-center"
         initial={{ opacity: 0, y: 50 }}
@@ -264,36 +267,38 @@ export default function LostFoundHeroSection() {
             Recently Found Items
           </h3>
           <button
-            onClick={() => navigate("/founditems")} // Replace with the route for all found items
+            onClick={() => navigate("/founditems")}
             className="text-sm font-semibold text-blue-600 hover:underline ml-4"
           >
             See All Found Items
           </button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {foundItems.map((item) => (
-            <div
-              key={item._id}
-              className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md cursor-pointer"
-              onClick={() => navigate(`/founditems/${item._id}`)} // Navigate to the detailed page
-            >
-              <img
-                src={item.imageUrl || "https://via.placeholder.com/150"}
-                alt={item.itemName}
-                className="w-full h-40 object-cover rounded-md mb-4"
-              />
-              <h4 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-2">
-                {item.itemName}
-              </h4>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                <strong>Location:</strong> {item.location}
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                <strong>Date:</strong>{" "}
-                {new Date(item.date).toLocaleDateString()}
-              </p>
-            </div>
-          ))}
+        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+          <div className="flex space-x-6">
+            {foundItems.map((item) => (
+              <div
+                key={item._id}
+                className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md cursor-pointer min-w-[250px]"
+                onClick={() => navigate(`/founditems`)}
+              >
+                <img
+                  src={item.imageUrl || "https://via.placeholder.com/150"}
+                  alt={item.itemName}
+                  className="w-full h-40 object-cover rounded-md mb-4"
+                />
+                <h4 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-2">
+                  {item.itemName}
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <strong>Location:</strong> {item.location}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <strong>Date:</strong>{" "}
+                  {new Date(item.date).toLocaleDateString()}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </motion.section>
 
