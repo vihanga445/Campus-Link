@@ -64,26 +64,6 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Search Bar */}
-        <form
-          onSubmit={handleSearch}
-          className="hidden md:flex items-center bg-dark-blue rounded-xl px-2 py-2 w-1/5 h-10 mx-6 ml-auto"
-        >
-          <input
-            type="text"
-            placeholder="Search"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-xl text-gray-200 bg-transparent placeholder-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-          <button
-            type="submit"
-            className="text-blue-600 hover:text-blue-800 font-bold ml-2"
-          >
-            <FaSearch className="text-lg" /> {/* Search Icon */}
-          </button>
-        </form>
-
         {/* Hamburger Menu Button */}
         <button
           className="text-white text-3xl md:hidden focus:outline-none"
