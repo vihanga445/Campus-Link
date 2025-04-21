@@ -14,7 +14,7 @@ const LostItemsPage = () => {
     const fetchLostItems = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/Back/lostfound/:id/approved"
+          "http://localhost:5000/Back/lostfound/approved"
         );
         const approvedLostItems = response.data.filter(
           (item) => item.status === "Lost"

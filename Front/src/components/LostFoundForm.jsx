@@ -23,8 +23,8 @@ const LostFoundForm = () => {
   const [loading, setLoading] = useState(false); // Loading state
 
   const categories = [
-    { name: "Wallet, credit card & money", icon: "💳" },
-    { name: "Identity document", icon: "🆔" },
+    { name: "Wallets", icon: "💳" },
+    { name: "ID", icon: "🆔" },
     { name: "Phones", icon: "📱" },
     { name: "Accessories", icon: "🎧" },
     { name: "Books", icon: "📚" },
