@@ -1,5 +1,5 @@
 import express from "express";
-import { createAnnouncement, getAnnouncements, markAsSeen, getAllAnnouncements, deleteAnnouncement } from "../controller/announcementController.js";
+import { createAnnouncement, getAnnouncements, markAsSeen, getAllAnnouncements, deleteAnnouncement, getLatestAnnouncements } from "../controller/announcementController.js";
 import { verifyToken } from "../../utils/verifyUser.js";
 import { upload } from "../../utils/fileUpload.js";
 
@@ -14,6 +14,8 @@ router.post("/create", verifyToken,upload.array("attachments"), createAnnounceme
 
 // Get all announcements
 router.get("/get-announcements", verifyToken, getAnnouncements);
+router.get("/latest",verifyToken, getLatestAnnouncements);
+
 
 router.get("/get-all-announcements", verifyToken, getAllAnnouncements);
 router.delete("/:id", verifyToken, deleteAnnouncement);

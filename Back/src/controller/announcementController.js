@@ -135,3 +135,15 @@ export const markAsSeen = async (req, res) => {
     res.status(500).json({ message: "Error marking announcement as seen", error });
   }
 };
+
+export const getLatestAnnouncements = async (req, res) => {
+  try {
+    const announcements = await Announcement.find()
+      .sort({ createdAt: -1 }) // Sort by newest first
+      .limit(5); // Limit to the latest 5 announcements
+    res.status(200).json(announcements);
+  } catch (error) {
+    console.error("Error fetching announcements:", error);
+    res.status(500).json({ message: "Failed to fetch announcements", error });
+  }
+};
