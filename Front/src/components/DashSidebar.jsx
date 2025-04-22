@@ -89,7 +89,7 @@ export default function DashSidebar() {
             <Sidebar.Item
               active={tab === "profile"}
               icon={FaUserCircle} // Updated icon
-              className={`hover:bg-blue-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+              className={`hover:bg-blue-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 mb-4 ${
                 tab === "profile" ? "bg-blue-700 text-white shadow-md" : ""
               }`}
             >
@@ -107,7 +107,7 @@ export default function DashSidebar() {
               <Sidebar.Item
                 active={tab === "admin-home"}
                 icon={FaTachometerAlt} // Updated icon
-                className={`hover:bg-blue-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                className={`hover:bg-blue-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 mb-4 ${
                   tab === "admin-home" ? "bg-blue-700 text-white shadow-md" : ""
                 }`}
               >
@@ -122,7 +122,7 @@ export default function DashSidebar() {
               <Sidebar.Item
                 active={tab === "pending"}
                 icon={FaClipboardList} // Updated icon
-                className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 mb-4 ${
                   tab === "pending" ? "bg-blue-700 text-white shadow-md" : ""
                 }`}
               >
@@ -137,7 +137,7 @@ export default function DashSidebar() {
               <Sidebar.Item
                 active={tab === "pending-clubs"}
                 icon={FaUsers} // Updated icon
-                className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 mb-4 ${
                   tab === "pending-clubs"
                     ? "bg-blue-700 text-white shadow-md"
                     : ""
@@ -154,7 +154,7 @@ export default function DashSidebar() {
               <Sidebar.Item
                 active={tab === "pending-lostfound"}
                 icon={FaSearch} // Updated icon
-                className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 mb-4 ${
                   tab === "pending-lostfound"
                     ? "bg-blue-700 text-white shadow-md"
                     : ""
@@ -170,7 +170,7 @@ export default function DashSidebar() {
             <Sidebar.Item
               active={tab === "posts"}
               icon={FaFileAlt} // Updated icon
-              className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+              className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 mb-4 ${
                 tab === "posts" ? "bg-blue-700 text-white shadow-md" : ""
               }`}
             >
@@ -184,7 +184,7 @@ export default function DashSidebar() {
               <Sidebar.Item
                 active={tab === "rejected"}
                 icon={FaTimesCircle} // Updated icon
-                className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+                className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 mb-4 ${
                   tab === "rejected" ? "bg-blue-700 text-white shadow-md" : ""
                 }`}
               >
@@ -198,7 +198,7 @@ export default function DashSidebar() {
             <Sidebar.Item
               active={tab === "saved"}
               icon={FaBookmark} // Updated icon
-              className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+              className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 mb-4 ${
                 tab === "saved" ? "bg-blue-700 text-white shadow-md" : ""
               }`}
             >
@@ -211,7 +211,7 @@ export default function DashSidebar() {
             <Sidebar.Item
               active={tab === "invite"}
               icon={FaUserPlus} // Updated icon
-              className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
+              className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 mb-4 ${
                 tab === "invite" ? "bg-blue-700 text-white shadow-md" : ""
               }`}
             >
@@ -219,51 +219,14 @@ export default function DashSidebar() {
             </Sidebar.Item>
           </Link>
 
-          {/* Chat */}
-          {/* <Link to="/dashboard/messages">
-            <Sidebar.Item
-              active={tab === "chat"}
-              icon={FaComments} // Updated icon
-              className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
-                tab === "chat" ? "bg-blue-700 text-white shadow-md" : ""
-              }`}
-            >
-              Chat
-            </Sidebar.Item>
-          </Link> */}
-
-          {/* Users (Admin Only) */}
-          {/* {currentUser.isAdmin && (
-            <Link to="/dashboard?tab=users">
-              <Sidebar.Item
-                active={tab === "users"}
-                icon={FaUsersCog} // Updated icon
-                className={`hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 ${
-                  tab === "users" ? "bg-blue-700 text-white shadow-md" : ""
-                }`}
-              >
-                Users
-              </Sidebar.Item>
-            </Link>
-          )} */}
-
           {/* Sign Out */}
           <Sidebar.Item
             icon={FaSignOutAlt} // Updated icon
-            className="cursor-pointer hover:bg-red-600 transition-colors duration-300 rounded-lg flex items-center space-x-2"
+            className="cursor-pointer hover:bg-red-600 transition-colors duration-300 rounded-lg flex items-center space-x-2 mb-4"
             onClick={handleSignout}
           >
             Sign Out
           </Sidebar.Item>
-
-          {/* Theme Toggle */}
-          {/* <Sidebar.Item
-            icon={darkMode ? FaSun : FaMoon} // Updated icon
-            className="cursor-pointer hover:bg-gray-600 transition-colors duration-300 rounded-lg flex items-center space-x-2"
-            onClick={() => setDarkMode(!darkMode)}
-          >
-            {darkMode ? "Light Mode" : "Dark Mode"}
-          </Sidebar.Item> */}
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>

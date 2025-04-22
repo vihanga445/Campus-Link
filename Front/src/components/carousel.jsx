@@ -83,12 +83,14 @@ const Carousel = () => {
                   {index === 3 && "Get the latest news and updates here."}
                   {index === 4 && "Lost something? We're here to help!"}
                 </p>
-                {/* Use Link for navigation */}
-                <Link to={slide.link}>
-                  <button className="mt-6 bg-blue-900 hover:bg-blue-800 text-white py-2 px-6 rounded-lg text-lg">
-                    {slide.button}
-                  </button>
-                </Link>
+                {/* Conditionally render the button */}
+                {index !== 0 && (
+                  <Link to={slide.link}>
+                    <button className="mt-6 bg-blue-900 hover:bg-blue-800 text-white py-2 px-6 rounded-lg text-lg">
+                      {slide.button}
+                    </button>
+                  </Link>
+                )}
               </div>
             </div>
           ))}
