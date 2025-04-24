@@ -52,6 +52,7 @@ const LostFoundSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    rejectionReason: { type: String },
   },
   { timestamps: true }
 );

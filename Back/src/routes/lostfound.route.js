@@ -6,6 +6,7 @@ import {
   sendEmailNotification,
 } from "../controller/lostfound.controller.js";
 import LostFound from "../model/lostfound.model.js"; // Import the LostFound model
+import nodemailer from "nodemailer";
 
 const router = express.Router();
 
@@ -45,6 +46,13 @@ router.patch("/:id/approve", async (req, res) => {
 router.patch("/:id/reject", async (req, res) => {
   try {
     const { id } = req.params;
+    const { rejectionReason } = req.body; // Get the rejection reason from the request body
+
+    if (!rejectionReason) {
+      return res.status(400).json({ error: "Rejection reason is required." });
+    }
+
+    // Update the report's moderation status to "Rejected"
     const updatedReport = await LostFound.findByIdAndUpdate(
       id,
       { moderationStatus: "Rejected" },
@@ -55,9 +63,36 @@ router.patch("/:id/reject", async (req, res) => {
       return res.status(404).json({ error: "Report not found." });
     }
 
-    res
-      .status(200)
-      .json({ message: "Report rejected successfully.", updatedReport });
+    // Send an email to the reporter with the rejection reason
+    const { reporterEmail, reporterName, itemName } = updatedReport;
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail", // Use your email service (e.g., Gmail, Outlook)
+      auth: {
+        user: process.env.EMAIL_USER, // Your email address
+        pass: process.env.EMAIL_PASS, // Your email password or app password
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: reporterEmail,
+      subject: `Your Lost/Found Report for "${itemName}" Has Been Rejected`,
+      html: `
+        <h3>Hello ${reporterName},</h3>
+        <p>We regret to inform you that your lost/found report for the item <strong>${itemName}</strong> has been rejected.</p>
+        <p><strong>Reason for Rejection:</strong> ${rejectionReason}</p>
+        <p>If you have any questions, please feel free to contact us.</p>
+        <p>Best regards,<br>Lost & Found Team</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({
+      message: "Report rejected successfully and email sent to the reporter.",
+      updatedReport,
+    });
   } catch (error) {
     console.error("Error rejecting report:", error);
     res.status(500).json({ message: "Failed to reject report." });
