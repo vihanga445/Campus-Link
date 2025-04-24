@@ -7,18 +7,18 @@ import img from "../No data.png";
 const PendingReports = () => {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectReason, setRejectReason] = useState("");
+  const [reportId, setCurrentReportId] = useState(null);
 
   useEffect(() => {
     const fetchPendingReports = async () => {
       try {
-        console.log("Fetching pending reports...");
         const response = await axios.get(
           "http://localhost:5000/Back/lostfound/pending"
         );
-        console.log("Pending Reports Response:", response.data);
         setReports(response.data);
       } catch (error) {
-        console.error("Error fetching pending reports:", error);
         toast.error("Failed to fetch pending reports. Please try again.");
       } finally {
         setLoading(false);
@@ -30,28 +30,38 @@ const PendingReports = () => {
 
   const handleApprove = async (reportId) => {
     try {
-      console.log("Approving report with ID:", reportId);
       await axios.patch(
         `http://localhost:5000/Back/lostfound/${reportId}/approve`
       );
       setReports(reports.filter((report) => report._id !== reportId));
       toast.success("Report approved successfully!");
     } catch (error) {
-      console.error("Error approving report:", error);
       toast.error("Failed to approve the report. Please try again.");
     }
   };
 
-  const handleReject = async (reportId) => {
+  const handleReject = (reportId) => {
+    setCurrentReportId(reportId);
+    setShowRejectModal(true);
+  };
+
+  const submitRejectReason = async () => {
+    if (!rejectReason.trim()) {
+      toast.error("Please provide a rejection reason.");
+      return;
+    }
+
     try {
-      console.log("Rejecting report with ID:", reportId);
       await axios.patch(
-        `http://localhost:5000/Back/lostfound/${reportId}/reject`
+        `http://localhost:5000/Back/lostfound/${reportId}/reject`, // Updated to use reportId
+        { rejectionReason: rejectReason }
       );
-      setReports(reports.filter((report) => report._id !== reportId));
+      setReports(reports.filter((report) => report._id !== reportId)); // Updated to use reportId
       toast.success("Report rejected successfully!");
+
+      setShowRejectModal(false);
+      setRejectReason("");
     } catch (error) {
-      console.error("Error rejecting report:", error);
       toast.error("Failed to reject the report. Please try again.");
     }
   };
@@ -155,6 +165,36 @@ const PendingReports = () => {
           </div>
         </div>
       ))}
+
+      {/* Reject Modal */}
+      {showRejectModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h3 className="text-xl font-bold mb-4">Reject Report</h3>
+            <textarea
+              className="w-full border rounded p-2 mb-4"
+              rows="4"
+              placeholder="Enter rejection reason..."
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+            ></textarea>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowRejectModal(false)}
+                className="bg-gray-300 text-gray-800 py-2 px-4 rounded-md"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={submitRejectReason}
+                className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-all duration-300"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
