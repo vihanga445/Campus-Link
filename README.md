@@ -116,7 +116,7 @@ npm run dev
 
 Frontend (in a new terminal):
 ```bash
-cd FRONT
+cd Front
 npm run dev
 ```
 
