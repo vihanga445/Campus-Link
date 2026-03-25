@@ -100,7 +100,7 @@ npm install
 
 **3. Install frontend dependencies**
 ```bash
-cd ../FRONT
+cd ../Front
 npm install
 ```
 
