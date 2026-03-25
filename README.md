@@ -1,57 +1,200 @@
-# CampusLink 
+# 🎓 CampusLink — Social Media Platform for University Students
 
-Short summary:
-A campus community web app (CampusLink) with event posts, clubs, announcements, lost & found, user accounts, moderation dashboard and notifications. Frontend is a React (Vite/Tailwind) app and backend is a Node/Express API (MongoDB).
 
-## Features
-- Public pages: Home (carousel), Events, Clubs, Announcements, Lost & Found
-- Post pages with images, event details, comments, share & calendar actions
-- Authentication (signup / signin)
-- Dashboard for users, moderators and admins (approve/reject posts)
-- Notifications with read/unread handling
-- File uploads (images, approval documents)
 
-## Tech stack
-- Frontend: React, Vite, Tailwind CSS, react-router, redux
-- Backend: Node.js, Express, MongoDB (Mongoose)
-- Icons: react-icons / FontAwesome
-- Optional: Cloudinary (or similar) for file storage
+## 📖 About
 
-## Prerequisites
-- Node.js (>=14)
+CampusLink is a full-stack social media web application designed to streamline communication and increase student engagement at the University of Ruhuna. It consolidates fragmented communication channels (WhatsApp groups, Facebook posts, notice boards) into a single, moderated platform where students can discover events, join clubs, report lost items, and stay updated on announcements.
+
+---
+
+## ✨ Features
+
+### 👤 For Students
+- **User Authentication** — Sign up / sign in with email & password or Google OAuth
+- **Profile Management** — Update profile picture, username, email, and password
+- **Events** — Browse, search, filter, create, save, and register for campus events; add events to Google Calendar
+- **Clubs & Societies** — Discover clubs by category, apply for membership, and create new clubs
+- **Lost & Found** — Report lost or found items with images and location; contact reporters; mark items as found/returned
+- **Announcements** — View university-wide announcements filtered by category, priority, and date
+- **Notifications** — Real-time in-app alerts for post approvals, event updates, and more
+- **Dark Mode** — Toggle between light and dark themes
+- **Invite Friends** — Invite peers to the platform via email
+
+### 🛡️ For Moderators
+| Role | Responsibilities |
+|------|-----------------|
+| **Event Moderator** | Review, approve/reject, edit, delete, and feature events |
+| **Club Moderator** | Approve/reject new club requests and moderate club posts |
+| **Lost & Found Moderator** | Review lost/found submissions and validate return requests |
+| **Announcement Moderator** | Create, review, edit, and publish university announcements |
+
+### ⚙️ For Admins
+- Full user management (create, update, deactivate accounts; assign roles)
+- Content oversight across all categories
+- System settings and configuration
+- Analytics and platform usage monitoring
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | React.js |
+| **Backend** | Node.js + Express.js |
+| **Database** | MongoDB (via Mongoose) |
+| **Media Storage** | Cloudinary |
+| **Authentication** | JWT + Google OAuth |
+| **API Testing** | Postman / Insomnia |
+| **Version Control** | Git & GitHub |
+| **Styling** | Tailwind CSS |
+
+---
+
+## 🏗️ System Architecture
+
+CampusLink follows the **MERN stack** architecture:
+
+```
+Browser (React UI)
+       ↕  HTTP Requests (Axios / Fetch API)
+   Express.js API Server (Node.js)
+       ↕  Mongoose ORM
+     MongoDB Database
+       ↕
+   Cloudinary (Media Storage)
+```
+
+**Request Flow:**
+- `GET` — Retrieve data (events, clubs, announcements, lost items)
+- `POST` — Create new records (submit posts, join clubs, report items)
+- `PUT` — Update existing records (edit profile, mark item as found)
+- `DELETE` — Remove records (delete posts, withdraw membership)
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18+)
 - npm or yarn
-- MongoDB instance (local or Atlas)
-  
-## Quick setup (Windows)
-1. Clone repository
-   > git clone <repo-url> c:\Users\vihan\OneDrive\Desktop\final_project\final_project
+- MongoDB (local instance or MongoDB Atlas)
+- Cloudinary account
+- Google OAuth credentials (optional, for Google sign-in)
 
-2. Frontend
-   > cd c:\Users\vihan\OneDrive\Desktop\final_project\final_project\Front
-   > npm install
-   > npm run dev
+### Installation
 
-3. Backend
-   > cd c:\Users\vihan\OneDrive\Desktop\final_project\final_project\Back
-   > npm install
-   > npm run dev
-   (or `npm start` if configured)
+**1. Clone the repository**
+```bash
+git clone https://github.com/<your-username>/campuslink.git
+cd campuslink
+```
 
-Adjust ports if needed and start both frontend and backend.
+**2. Install backend dependencies**
+```bash
+cd Back
+npm install
+```
+
+**3. Install frontend dependencies**
+```bash
+cd ../FRONT
+npm install
+```
+
+**4. Configure environment variables**
+
+Create a `.env` file in the `Back/` directory:
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_email_app_password
+GOOGLE_CLIENT_ID=your_google_client_id
+```
+
+**5. Run the development servers**
+
+Backend:
+```bash
+cd Back
+npm run dev
+```
+
+Frontend (in a new terminal):
+```bash
+cd FRONT
+npm run dev
+```
+
+The frontend will be available at `http://localhost:5173` and the backend API at `http://localhost:5000`.
+
+---
 
 
+## 👥 User Roles
 
-## Project structure (high level)
-- Back/ — backend API (routes, controllers, models)
-- Front/ — React app (src/components, src/Pages, assets)
-- README.md — this file
+| Role | Access Level | Description |
+|------|-------------|-------------|
+| `student` | Standard | Primary users — can post, browse, apply, and interact |
+| `moderator_event` | Elevated | Reviews and manages event posts |
+| `moderator_club` | Elevated | Reviews and manages club registrations |
+| `moderator_lostfound` | Elevated | Reviews lost & found reports |
+| `moderator_announcement` | Elevated | Creates and manages announcements |
+| `admin` | Full | Complete platform oversight and user management |
 
-## Common commands
-- Front: npm run dev — start Vite dev server
-- Front: npm run build — produce production build
-- Back: npm run dev — start backend in dev (nodemon)
-- Back: npm start — start production server
+---
 
+## 🧪 Testing
 
+The following testing strategies were applied:
 
+- **Functional Testing** — Verified all links, forms, CRUD operations, login, and role-based access
+- **Usability Testing** — Assessed navigation clarity, UI responsiveness, and accessibility compliance
+- **Backend / API Testing** — Used Insomnia to test all REST endpoints (GET, POST, PUT, DELETE) with data validation and JWT auth checks
+- **End-to-End Testing** — Validated complete user workflows using browser DevTools network inspection
 
+---
+
+## 📊 Survey Findings
+
+Requirements were gathered from **69 University of Ruhuna students**. Key findings:
+
+- **66.7%** currently rely on social media to find campus updates
+- **69.6%** have missed important events due to lack of a centralized source
+- **91.3%** want to use an app to apply for part-time jobs
+- **97.1%** would use a digital platform to report or find lost items
+- **98.6%** would recommend a campus centralisation app to other students
+
+---
+
+## 🔮 Future Work
+
+- 📱 **Mobile Application** (React Native / Flutter) with push notifications
+- 📊 **Advanced Analytics Dashboard** for event organizers and admins
+- 🤖 **AI-Powered Content Moderation** for automated post screening
+- 📍 **IoT Integration** — RFID tracking for lost items, QR code event check-ins
+- 💳 **Online Payment Gateway** for event ticketing
+- 🌐 **Multi-Language Support** for international students
+- 💬 **AI Chatbot** for instant student assistance
+- 📚 **Course Groups & Study Forums** for academic collaboration
+
+---
+
+## 📄 License
+
+This project was developed for academic purposes at the **University of Ruhuna, Department of Computer Science**.
+
+---
+
+## 🙏 Acknowledgements
+
+Special thanks to **Dr. Sugandima Vidanagamachchi** for her guidance throughout the development process, and to all University of Ruhuna students who participated in our requirements survey.
+
+---
