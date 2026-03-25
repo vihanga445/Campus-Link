@@ -1,4 +1,4 @@
-# CampusLink — Final Project
+# CampusLink 
 
 Short summary:
 A campus community web app (CampusLink) with event posts, clubs, announcements, lost & found, user accounts, moderation dashboard and notifications. Frontend is a React (Vite/Tailwind) app and backend is a Node/Express API (MongoDB).
