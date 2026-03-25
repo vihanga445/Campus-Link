@@ -88,7 +88,7 @@ Browser (React UI)
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/<your-username>/campuslink.git
+git clone https://github.com/vihanga445/Campus-Link.git
 cd campuslink
 ```
 
@@ -104,20 +104,7 @@ cd ../FRONT
 npm install
 ```
 
-**4. Configure environment variables**
 
-Create a `.env` file in the `Back/` directory:
-```env
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
-CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_email_app_password
-GOOGLE_CLIENT_ID=your_google_client_id
-```
 
 **5. Run the development servers**
 
@@ -133,7 +120,6 @@ cd FRONT
 npm run dev
 ```
 
-The frontend will be available at `http://localhost:5173` and the backend API at `http://localhost:5000`.
 
 ---
 
