@@ -11,8 +11,8 @@ function AdminHome() {
         {/* Total Events */}
         <div className="bg-blue-500 text-white p-6 rounded-lg shadow-md flex flex-col items-center">
           <FaCalendarAlt size={40} className="mb-4" />
-          <h2 className="text-xl font-bold">Total Events</h2>
-          <p className="text-2xl font-semibold">120</p>
+          <h2 className="text-xl font-bold"> Events</h2>
+          
             <Link to="/all-events" >
           <button className="mt-4 bg-white text-blue-500 px-4 py-2 rounded-lg hover:bg-gray-200">
             Show All
@@ -23,8 +23,8 @@ function AdminHome() {
         {/* Total Announcements */}
         <div className="bg-green-500 text-white p-6 rounded-lg shadow-md flex flex-col items-center">
           <FaBullhorn size={40} className="mb-4" />
-          <h2 className="text-xl font-bold">Total Announcements</h2>
-          <p className="text-2xl font-semibold">45</p>
+          <h2 className="text-xl font-bold"> Announcements</h2>
+          
           <Link to="/all-announcements" >
           <button className="mt-4 bg-white text-green-500 px-4 py-2 rounded-lg hover:bg-gray-200">
             Show All
@@ -36,8 +36,7 @@ function AdminHome() {
         {/* Total Lost & Found */}
         <div className="bg-yellow-500 text-white p-6 rounded-lg shadow-md flex flex-col items-center">
           <FaSearch size={40} className="mb-4" />
-          <h2 className="text-xl font-bold">Total Lost & Found</h2>
-          <p className="text-2xl font-semibold">30</p>
+          <h2 className="text-xl font-bold"> Lost & Found</h2>
           <button className="mt-4 bg-white text-yellow-500 px-4 py-2 rounded-lg hover:bg-gray-200">
             Show All
           </button>
@@ -46,8 +45,7 @@ function AdminHome() {
         {/* Total Clubs */}
         <div className="bg-purple-500 text-white p-6 rounded-lg shadow-md flex flex-col items-center">
           <MdGroups size={40} className="mb-4" />
-          <h2 className="text-xl font-bold">Total Clubs</h2>
-          <p className="text-2xl font-semibold">15</p>
+          <h2 className="text-xl font-bold"> Clubs</h2>
           <button className="mt-4 bg-white text-purple-500 px-4 py-2 rounded-lg hover:bg-gray-200">
             Show All
           </button>
@@ -60,7 +58,7 @@ function AdminHome() {
         <div className="bg-indigo-500 text-white p-6 rounded-lg shadow-md flex flex-col items-center">
           <FaUserShield size={40} className="mb-4" />
           <h2 className="text-xl font-bold">Moderators</h2>
-          <p className="text-2xl font-semibold">10</p>
+          
           <Link to="/all-moderators" >
           <button className="mt-4 bg-white text-indigo-500 px-4 py-2 rounded-lg hover:bg-gray-200">
             View All
@@ -72,7 +70,6 @@ function AdminHome() {
         <div className="bg-red-500 text-white p-6 rounded-lg shadow-md flex flex-col items-center">
           <FaUsers size={40} className="mb-4" />
           <h2 className="text-xl font-bold">Users</h2>
-          <p className="text-2xl font-semibold">500</p>
           <Link to="/all-users" >
           <button className="mt-4 bg-white text-red-500 px-4 py-2 rounded-lg hover:bg-gray-200">
             View All
