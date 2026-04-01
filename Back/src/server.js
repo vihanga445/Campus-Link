@@ -50,32 +50,29 @@ mongoose
     console.error("Error connecting to MongoDB:", error.message);
   });
 
-// Routes
 app.use("/Back/auth", authRoutes);
 app.use("/Back/user", userRoutes);
 app.use("/Back/post", postRoutes);
-app.use("/Back/events", eventRoutes); // Use the event routes
+app.use("/Back/events", eventRoutes); 
 app.use("/Back/invite", inviteRoutes);
 app.use("/Back/comment", commentRoutes);
 app.use("/Back/notification", notificationRoutes);
 app.use("/Back/clubs", clubRoutes);
-app.use("/Back/message", messageRoutes); // Use the message routes
+app.use("/Back/message", messageRoutes); 
 app.use("/Back/membership", membershipRoutes);
-app.use("/Back/lostfound", lostFoundRoutes); // Use the lost/found routes
+app.use("/Back/lostfound", lostFoundRoutes); 
 app.use("/Back/announcement", announcementRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
- // Serve static files from the uploads directory
-// Use the announcement routes
-// Error handling middleware
+
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
 
   if (process.env.NODE_ENV === "development") {
-    console.error(err.stack); // Log stack trace for development
+    console.error(err.stack); 
   }
 
   res.status(statusCode).json({
